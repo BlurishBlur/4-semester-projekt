@@ -7,6 +7,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>Common</module>
+        <module>Core</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
