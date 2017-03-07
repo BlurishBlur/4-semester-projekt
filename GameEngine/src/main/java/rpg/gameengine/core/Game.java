@@ -75,7 +75,7 @@ public class Game implements ApplicationListener {
         Entity player = world.getEntity(EntityType.PLAYER);
         shapeRenderer.setColor(1, 1, 1, 1);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.line(player.getX(), player.getY(), player.getX() + 10, player.getY() + 10);
+        shapeRenderer.circle(player.getX(), player.getY(), 10);
         shapeRenderer.end();
     }
     
