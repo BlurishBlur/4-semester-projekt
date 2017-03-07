@@ -7,13 +7,13 @@ public class Entity implements Serializable {
     
     private final UUID ID = UUID.randomUUID();
     private EntityType type;
-    private double x;
-    private double y;
-    private double dx;
-    private double dy;
-    private double speed;
+    private float x;
+    private float y;
+    private float dx;
+    private float dy;
+    private float speed;
     private int health;
-    private double radius;
+    private float radius;
 
     public EntityType getType() {
         return type;
@@ -23,43 +23,43 @@ public class Entity implements Serializable {
         this.type = type;
     }
 
-    public double getX() {
+    public float getX() {
         return x;
     }
 
-    public void setX(double x) {
+    public void setX(float x) {
         this.x = x;
     }
 
-    public double getY() {
+    public float getY() {
         return y;
     }
 
-    public void setY(double y) {
+    public void setY(float y) {
         this.y = y;
     }
 
-    public double getDx() {
+    public float getDx() {
         return dx;
     }
 
-    public void setDx(double dx) {
+    public void setDx(float dx) {
         this.dx = dx;
     }
 
-    public double getDy() {
+    public float getDy() {
         return dy;
     }
 
-    public void setDy(double dy) {
+    public void setDy(float dy) {
         this.dy = dy;
     }
 
-    public double getSpeed() {
+    public float getSpeed() {
         return speed;
     }
 
-    public void setSpeed(double speed) {
+    public void setSpeed(float speed) {
         this.speed = speed;
     }
 
@@ -71,11 +71,11 @@ public class Entity implements Serializable {
         this.health = health;
     }
 
-    public double getRadius() {
+    public float getRadius() {
         return radius;
     }
 
-    public void setRadius(double radius) {
+    public void setRadius(float radius) {
         this.radius = radius;
     }
     

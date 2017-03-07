@@ -60,6 +60,7 @@
         <module>application</module>
         <module>Common</module>
         <module>GameEngine</module>
+        <module>Player</module>
     </modules>
 
     <properties>
