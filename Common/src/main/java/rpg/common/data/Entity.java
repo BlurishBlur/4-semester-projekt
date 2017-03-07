@@ -13,7 +13,8 @@ public class Entity implements Serializable {
     private float dy;
     private float speed;
     private int health;
-    private float radius;
+    private float width;
+    private float height;
 
     public EntityType getType() {
         return type;
@@ -71,12 +72,20 @@ public class Entity implements Serializable {
         this.health = health;
     }
 
-    public float getRadius() {
-        return radius;
+    public float getWidth() {
+        return width;
     }
 
-    public void setRadius(float radius) {
-        this.radius = radius;
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
     }
     
     public String getID() {

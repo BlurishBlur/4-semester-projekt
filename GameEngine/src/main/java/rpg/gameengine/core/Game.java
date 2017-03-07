@@ -50,7 +50,7 @@ public class Game implements ApplicationListener {
     
     @Override
     public void render() {
-        gameData.setDeltaTime(Gdx.graphics.getDeltaTime());
+        gameData.setDeltaTime(Math.min(Gdx.graphics.getDeltaTime(), 0.0167f));
         gameData.getKeys().update();
         update();
         draw();
@@ -70,12 +70,12 @@ public class Game implements ApplicationListener {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        font.draw(batch, "FPS: " + fps, 100, 100);
+        font.draw(batch, "FPS: " + fps, 7.5f, 20);
         batch.end();
         Entity player = world.getEntity(EntityType.PLAYER);
         shapeRenderer.setColor(1, 1, 1, 1);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.circle(player.getX(), player.getY(), 10);
+        shapeRenderer.circle(player.getX(), player.getY(), 15);
         shapeRenderer.end();
     }
     
@@ -104,7 +104,9 @@ public class Game implements ApplicationListener {
         player.setType(EntityType.PLAYER);
         player.setX(20);
         player.setY(50);
-        player.setSpeed(3000);
+        player.setSpeed(4000);
+        player.setWidth(30);
+        player.setHeight(30);
         world.addEntity(player);
     }
     
