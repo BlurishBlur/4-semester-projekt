@@ -58,6 +58,8 @@
     <modules>
         <module>branding</module>
         <module>application</module>
+        <module>Common</module>
+        <module>GameEngine</module>
     </modules>
 
     <properties>

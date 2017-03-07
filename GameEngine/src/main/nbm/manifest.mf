@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+OpenIDE-Module-Install: rpg/gameengine/core/Installer.class
+OpenIDE-Module-Localizing-Bundle: rpg/gameengine/Bundle.properties
+

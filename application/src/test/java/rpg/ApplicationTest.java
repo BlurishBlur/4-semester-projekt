@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.cbse.rpg;
+package rpg;
 
 import java.util.logging.Level;
 import junit.framework.Test;
