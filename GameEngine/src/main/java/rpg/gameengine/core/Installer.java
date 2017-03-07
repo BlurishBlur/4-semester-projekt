@@ -13,8 +13,8 @@ public class Installer extends ModuleInstall {
         game = new Game();
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "RPG";
-        cfg.width = 640;
-        cfg.height = 480;
+        cfg.width = 1280;
+        cfg.height = 720;
         cfg.foregroundFPS = 60;
         cfg.backgroundFPS = 60;
         cfg.useGL30 = false;
