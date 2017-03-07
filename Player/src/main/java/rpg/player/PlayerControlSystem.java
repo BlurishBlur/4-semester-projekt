@@ -18,8 +18,8 @@ public class PlayerControlSystem implements IEntityProcessingService {
     public void process(GameData gameData, World world) {
         Entity player = world.getEntity(EntityType.PLAYER);
         float deltaTime = gameData.getDeltaTime();
-        //player.setDx(0);
-        //player.setDy(0);
+        player.setDx(0);
+        player.setDy(0);
         if(gameData.getKeys().isDown(GameKeys.W)) {
             player.setDy(player.getSpeed() * deltaTime);
         }

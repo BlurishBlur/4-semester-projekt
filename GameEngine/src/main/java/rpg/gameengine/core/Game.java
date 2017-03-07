@@ -50,35 +50,33 @@ public class Game implements ApplicationListener {
     
     @Override
     public void render() {
-        //Gdx.gl.glClearColor(0, 0, 0, 1);
-        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //gameData.setDeltaTime(Gdx.graphics.getDeltaTime());
-        if(System.currentTimeMillis() - fpsTimer > 1000) {
-            fps = (int) (Gdx.graphics.getDeltaTime() * 3600);
-            fpsTimer = System.currentTimeMillis();
-            System.out.println(fps);
-        }
-        //update();
-        //draw();
-        //gameData.getKeys().update();
+        gameData.setDeltaTime(Gdx.graphics.getDeltaTime());
+        gameData.getKeys().update();
+        update();
+        draw();
     }
     
     private void update() {
-        
-        /*batch.begin();
-        font.draw(batch, "FPS: " + fps, 100, 100);
-        batch.end();*/
-        /*for(IEntityProcessingService processor : getEntityProcessingServices()) {
+        if(System.currentTimeMillis() - fpsTimer > 1000) {
+            fps = (int) (gameData.getDeltaTime() * 3600);
+            fpsTimer = System.currentTimeMillis();
+        }
+        for(IEntityProcessingService processor : getEntityProcessingServices()) {
             processor.process(gameData, world);
-        }*/
+        }
     }
     
     private void draw() {
-        /*Entity player = world.getEntity(EntityType.PLAYER);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
+        font.draw(batch, "FPS: " + fps, 100, 100);
+        batch.end();
+        Entity player = world.getEntity(EntityType.PLAYER);
         shapeRenderer.setColor(1, 1, 1, 1);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.line(player.getX(), player.getY(), player.getX() + 10, player.getY() + 10);
-        shapeRenderer.end();*/
+        shapeRenderer.end();
     }
     
     private Collection<? extends IEntityProcessingService> getEntityProcessingServices() {
@@ -106,7 +104,7 @@ public class Game implements ApplicationListener {
         player.setType(EntityType.PLAYER);
         player.setX(20);
         player.setY(50);
-        player.setSpeed(1000);
+        player.setSpeed(3000);
         world.addEntity(player);
     }
     
