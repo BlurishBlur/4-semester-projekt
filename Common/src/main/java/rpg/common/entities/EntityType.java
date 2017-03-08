@@ -1,4 +1,4 @@
-package rpg.common.data;
+package rpg.common.entities;
 
 public enum EntityType {
     

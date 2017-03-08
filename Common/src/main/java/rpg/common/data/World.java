@@ -1,5 +1,7 @@
 package rpg.common.data;
 
+import rpg.common.entities.Entity;
+import rpg.common.entities.EntityType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

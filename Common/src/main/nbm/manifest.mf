@@ -1,3 +1,4 @@
 Manifest-Version: 1.0
 OpenIDE-Module-Localizing-Bundle: rpg/common/Bundle.properties
-OpenIDE-Module-Public-Packages: rpg.common.data.*, rpg.common.services.*
+OpenIDE-Module-Public-Packages: rpg.common.data.*, rpg.common.entities.*,
+ rpg.common.events.*, rpg.common.services.*

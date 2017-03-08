@@ -12,8 +12,17 @@ public class GameData {
     private int displayWidth;
     private int displayHeight;
     private float aspectRatio;
+    private float cameraZoom;
     private List<Event> events = new CopyOnWriteArrayList<>();
     private final GameKeys keys = new GameKeys();
+
+    public float getCameraZoom() {
+        return cameraZoom;
+    }
+
+    public void setCameraZoom(float cameraZoom) {
+        this.cameraZoom = cameraZoom;
+    }
 
     public List<Event> getEvents() {
         return events;

@@ -1,4 +1,4 @@
-package rpg.common.data;
+package rpg.common.entities;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -12,7 +12,33 @@ public class Entity implements Serializable {
     private float dx;
     private float dy;
     private float speed;
-    private int health;
+    private int currentHealth;
+    private int maxHealth;
+    private String spritePath;
+
+    public String getSpritePath() {
+        return spritePath;
+    }
+
+    public void setSpritePath(String spritePath) {
+        this.spritePath = spritePath;
+    }
+
+    public int getCurrentHealth() {
+        return currentHealth;
+    }
+
+    public void setCurrentHealth(int currentHealth) {
+        this.currentHealth = currentHealth;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+    }
     private float width;
     private float height;
 
@@ -62,14 +88,6 @@ public class Entity implements Serializable {
 
     public void setSpeed(float speed) {
         this.speed = speed;
-    }
-
-    public int getHealth() {
-        return health;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
     }
 
     public float getWidth() {

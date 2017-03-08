@@ -9,19 +9,24 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.openide.util.Lookup;
-import rpg.common.data.Entity;
-import rpg.common.data.EntityType;
+import rpg.common.entities.Entity;
+import rpg.common.entities.EntityType;
 import rpg.common.data.GameData;
 import rpg.common.data.World;
 import rpg.common.services.IEntityProcessingService;
+import rpg.common.services.IGamePluginService;
 import rpg.gameengine.managers.GameInputProcessor;
 
 public class Game implements ApplicationListener {
     
-    private OrthographicCamera camera;
-    private ShapeRenderer shapeRenderer;
+    private OrthographicCamera playerCamera;
+    private OrthographicCamera hudCamera;
     private Lookup lookup = Lookup.getDefault();
     private final GameData gameData = new GameData();
     private World world = new World();
@@ -29,6 +34,7 @@ public class Game implements ApplicationListener {
     private long fpsTimer;
     private SpriteBatch batch;
     private BitmapFont font;
+    private Map<Sprite, String> sprites;
     
     private Sprite map, playerSprite;
 
@@ -37,24 +43,34 @@ public class Game implements ApplicationListener {
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
         gameData.setAspectRatio(gameData.getDisplayHeight() / gameData.getDisplayWidth());
+        gameData.setCameraZoom(1.50f);
+        sprites = new HashMap<>();
+        
+        
+        playerCamera = new OrthographicCamera(gameData.getDisplayWidth() / gameData.getCameraZoom(), gameData.getDisplayHeight() / gameData.getCameraZoom());
+        playerCamera.position.set(playerCamera.viewportWidth / 2, playerCamera.viewportHeight / 2, 0);
+        playerCamera.update();
+        hudCamera = new OrthographicCamera(gameData.getDisplayWidth(), gameData.getDisplayHeight());
+        hudCamera.position.set(gameData.getDisplayWidth() / 2, gameData.getDisplayHeight() / 2, 0);
+        hudCamera.update();
+        
+        Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
+        
+        //start plugins
+        for(IGamePluginService plugin : getGamePluginServices()) {
+            plugin.start(gameData, world);
+        }
         
         map = new Sprite(new Texture(Gdx.files.internal("rpg/gameengine/grass.png")));
         map.setPosition(0, 0);
         map.setSize(gameData.getDisplayWidth(), gameData.getDisplayHeight());
         
-        playerSprite = new Sprite(new Texture(Gdx.files.internal("rpg/gameengine/char.png")));
-        playerSprite.setPosition(0, 0);
-        playerSprite.setSize(30, 30);
-        
-        camera = new OrthographicCamera(gameData.getDisplayWidth() / 1.30f, gameData.getDisplayHeight() / 1.30f);
-        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
-        camera.update();
-        
-        shapeRenderer = new ShapeRenderer();
-        
-        Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
-        
-        createPlayer();
+        for(Entity entity : world.getEntities()) {
+            Texture texture = new Texture(Gdx.files.internal(entity.getSpritePath()));
+            Sprite sprite = new Sprite(texture);
+            sprite.setSize(entity.getWidth(), entity.getHeight());
+            sprites.put(sprite, entity.getID());
+        }
         
         batch = new SpriteBatch();
         font = new BitmapFont();
@@ -66,26 +82,26 @@ public class Game implements ApplicationListener {
         gameData.setDeltaTime(Math.min(Gdx.graphics.getDeltaTime(), 0.0167f));
         gameData.getKeys().update();
         update();
-        handleCamera();
+        handlePlayerCamera();
         draw();
     }
     
-    private void handleCamera() {
+    private void handlePlayerCamera() {
         Entity player = world.getEntity(EntityType.PLAYER);
-        camera.position.set(player.getX(), player.getY(), 0);
-        if(camera.position.x - camera.viewportWidth / 2 < 0) {
-            camera.position.set(0 + camera.viewportWidth / 2, camera.position.y, 0);
+        playerCamera.position.set(player.getX(), player.getY(), 0);
+        if(playerCamera.position.x - playerCamera.viewportWidth / 2 < 0) {
+            playerCamera.position.set(0 + playerCamera.viewportWidth / 2, playerCamera.position.y, 0);
         }
-        else if(camera.position.x + camera.viewportWidth / 2 > gameData.getDisplayWidth()) {
-            camera.position.set(gameData.getDisplayWidth() - camera.viewportWidth / 2, camera.position.y, 0);
+        else if(playerCamera.position.x + playerCamera.viewportWidth / 2 > gameData.getDisplayWidth()) {
+            playerCamera.position.set(gameData.getDisplayWidth() - playerCamera.viewportWidth / 2, playerCamera.position.y, 0);
         }
-        if(camera.position.y - camera.viewportHeight / 2 < 0) {
-            camera.position.set(camera.position.x, 0 + camera.viewportHeight / 2, 0);
+        if(playerCamera.position.y - playerCamera.viewportHeight / 2 < 0) {
+            playerCamera.position.set(playerCamera.position.x, 0 + playerCamera.viewportHeight / 2, 0);
         }
-        else if(camera.position.y + camera.viewportHeight / 2 > gameData.getDisplayHeight()) {
-            camera.position.set(camera.position.x, gameData.getDisplayHeight() - camera.viewportHeight / 2, 0);
+        else if(playerCamera.position.y + playerCamera.viewportHeight / 2 > gameData.getDisplayHeight()) {
+            playerCamera.position.set(playerCamera.position.x, gameData.getDisplayHeight() - playerCamera.viewportHeight / 2, 0);
         }
-        camera.update();
+        playerCamera.update();
     }
     
     private void update() {
@@ -100,25 +116,37 @@ public class Game implements ApplicationListener {
     
     private void draw() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.setProjectionMatrix(camera.combined);
+        batch.setProjectionMatrix(playerCamera.combined);
         batch.begin();
         drawMap();
-        drawPlayer();
+        drawEntitySprites();
+        drawHud();
         batch.end();
+    }
+    
+    private void drawHud() {
+        batch.setProjectionMatrix(hudCamera.combined);
+        font.draw(batch, "FPS: " + fps, 7.5f, 20);
     }
     
     private void drawMap() {
         map.draw(batch);
     }
     
-    private void drawPlayer() {
-        Entity player = world.getEntity(EntityType.PLAYER);
-        playerSprite.setPosition(player.getX(), player.getY());
-        playerSprite.draw(batch);
+    private void drawEntitySprites() {
+        for(Sprite sprite : sprites.keySet()) {
+            Entity entity = world.getEntity(sprites.get(sprite));
+            sprite.setPosition(entity.getX(), entity.getY());
+            sprite.draw(batch);
+        }
     }
     
     private Collection<? extends IEntityProcessingService> getEntityProcessingServices() {
         return lookup.lookupAll(IEntityProcessingService.class);
+    }
+    
+    private Collection<? extends IGamePluginService> getGamePluginServices() {
+        return lookup.lookupAll(IGamePluginService.class);
     }
 
     @Override
@@ -135,17 +163,6 @@ public class Game implements ApplicationListener {
 
     @Override
     public void dispose() {
-    }
-
-    private void createPlayer() {
-        Entity player = new Entity();
-        player.setType(EntityType.PLAYER);
-        player.setX(20);
-        player.setY(50);
-        player.setSpeed(200);
-        player.setWidth(30);
-        player.setHeight(30);
-        world.addEntity(player);
     }
     
 }
