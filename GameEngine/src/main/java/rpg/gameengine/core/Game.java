@@ -84,9 +84,9 @@ public class Game implements ApplicationListener {
         else if(camera.position.y + camera.viewportHeight / 2 > gameData.getDisplayHeight()) {
             camera.position.set(camera.position.x, gameData.getDisplayHeight() - camera.viewportHeight / 2, 0);
         }
-        /*if(Math.abs(camera.position.x - pl.getX()) < 30 || Math.abs(camera.position.y - pl.getY()) < 30) {
+        //if(Math.abs(camera.position.x - pl.getX()) < 30 || Math.abs(camera.position.y - pl.getY()) < 30) {
             camera.translate(pl.getDx(), pl.getDy());
-        }*/
+        //}
         camera.update();
     }
     
