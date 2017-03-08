@@ -4,7 +4,9 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.Collection;
@@ -18,7 +20,7 @@ import rpg.gameengine.managers.GameInputProcessor;
 
 public class Game implements ApplicationListener {
     
-    private static OrthographicCamera camera;
+    private OrthographicCamera camera;
     private ShapeRenderer shapeRenderer;
     private Lookup lookup = Lookup.getDefault();
     private final GameData gameData = new GameData();
@@ -27,14 +29,25 @@ public class Game implements ApplicationListener {
     private long fpsTimer;
     private SpriteBatch batch;
     private BitmapFont font;
+    
+    private Sprite map, playerSprite;
 
     @Override
     public void create() {
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
+        gameData.setAspectRatio(gameData.getDisplayHeight() / gameData.getDisplayWidth());
         
-        camera = new OrthographicCamera(gameData.getDisplayWidth(), gameData.getDisplayHeight());
-        camera.translate(gameData.getDisplayWidth() / 2, gameData.getDisplayHeight() / 2);
+        map = new Sprite(new Texture(Gdx.files.internal("rpg/gameengine/grass.png")));
+        map.setPosition(0, 0);
+        map.setSize(gameData.getDisplayWidth(), gameData.getDisplayHeight());
+        
+        playerSprite = new Sprite(new Texture(Gdx.files.internal("rpg/gameengine/char.png")));
+        playerSprite.setPosition(0, 0);
+        playerSprite.setSize(30, 30);
+        
+        camera = new OrthographicCamera(gameData.getDisplayWidth() / 1.50f, gameData.getDisplayHeight() / 1.50f);
+        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
         camera.update();
         
         shapeRenderer = new ShapeRenderer();
@@ -53,7 +66,28 @@ public class Game implements ApplicationListener {
         gameData.setDeltaTime(Math.min(Gdx.graphics.getDeltaTime(), 0.0167f));
         gameData.getKeys().update();
         update();
+        handleCamera();
         draw();
+    }
+    
+    private void handleCamera() {
+        Entity pl = world.getEntity(EntityType.PLAYER);
+        if(camera.position.x - camera.viewportWidth / 2 < 0) {
+            camera.position.set(0 + camera.viewportWidth / 2, camera.position.y, 0);
+        }
+        else if(camera.position.x + camera.viewportWidth / 2 > gameData.getDisplayWidth()) {
+            camera.position.set(gameData.getDisplayWidth() - camera.viewportWidth / 2, camera.position.y, 0);
+        }
+        if(camera.position.y - camera.viewportHeight / 2 < 0) {
+            camera.position.set(camera.position.x, 0 + camera.viewportHeight / 2, 0);
+        }
+        else if(camera.position.y + camera.viewportHeight / 2 > gameData.getDisplayHeight()) {
+            camera.position.set(camera.position.x, gameData.getDisplayHeight() - camera.viewportHeight / 2, 0);
+        }
+        /*if(Math.abs(camera.position.x - pl.getX()) < 30 || Math.abs(camera.position.y - pl.getY()) < 30) {
+            camera.translate(pl.getDx(), pl.getDy());
+        }*/
+        camera.update();
     }
     
     private void update() {
@@ -67,16 +101,22 @@ public class Game implements ApplicationListener {
     }
     
     private void draw() {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        font.draw(batch, "FPS: " + fps, 7.5f, 20);
+        drawMap();
+        drawPlayer();
         batch.end();
-        Entity player = world.getEntity(EntityType.PLAYER);
-        shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.circle(player.getX(), player.getY(), 15);
-        shapeRenderer.end();
+    }
+    
+    private void drawMap() {
+        map.draw(batch);
+    }
+    
+    private void drawPlayer() {
+        Entity pl = world.getEntity(EntityType.PLAYER);
+        playerSprite.setPosition(pl.getX(), pl.getY());
+        playerSprite.draw(batch);
     }
     
     private Collection<? extends IEntityProcessingService> getEntityProcessingServices() {
@@ -104,7 +144,7 @@ public class Game implements ApplicationListener {
         player.setType(EntityType.PLAYER);
         player.setX(20);
         player.setY(50);
-        player.setSpeed(4000);
+        player.setSpeed(200);
         player.setWidth(30);
         player.setHeight(30);
         world.addEntity(player);

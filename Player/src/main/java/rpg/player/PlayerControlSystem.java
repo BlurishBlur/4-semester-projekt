@@ -33,8 +33,8 @@ public class PlayerControlSystem implements IEntityProcessingService {
             player.setDx(player.getSpeed() * deltaTime);
         }
         
-        player.setX(player.getX() + player.getDx() * deltaTime);
-        player.setY(player.getY() + player.getDy() * deltaTime);
+        player.setX(player.getX() + player.getDx());
+        player.setY(player.getY() + player.getDy());
         
         checkEdgeCollision(gameData, player);
     }
@@ -42,15 +42,19 @@ public class PlayerControlSystem implements IEntityProcessingService {
     private void checkEdgeCollision(GameData gameData, Entity player) {
         if(player.getX() - (player.getWidth() / 2) < 0) {
             player.setX(0 + (player.getWidth() / 2));
+            player.setDx(0);
+        }
+        else if(player.getX() + (player.getWidth() / 2) > gameData.getDisplayWidth()) {
+            player.setX(gameData.getDisplayWidth() - (player.getWidth() / 2));
+            player.setDx(0);
         }
         if(player.getY() - (player.getHeight() / 2) < 0) {
             player.setY(0 + (player.getHeight() / 2));
+            player.setDy(0);
         }
-        if(player.getX() + (player.getWidth() / 2) > gameData.getDisplayWidth()) {
-            player.setX(gameData.getDisplayWidth() - (player.getWidth() / 2));
-        }
-        if(player.getY() + (player.getHeight() / 2) > gameData.getDisplayHeight()) {
+        else if(player.getY() + (player.getHeight() / 2) > gameData.getDisplayHeight()) {
             player.setY(gameData.getDisplayHeight() - (player.getHeight() / 2));
+            player.setDy(0);
         }
     }
     
