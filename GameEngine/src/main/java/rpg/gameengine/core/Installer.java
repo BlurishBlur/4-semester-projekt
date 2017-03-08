@@ -18,7 +18,7 @@ public class Installer extends ModuleInstall {
         cfg.foregroundFPS = 60;
         cfg.backgroundFPS = 60;
         cfg.useGL30 = false;
-        cfg.resizable = false;
+        //cfg.resizable = false;
         
         new LwjglApplication(game, cfg);
     }

@@ -8,11 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.openide.util.Lookup;
 import rpg.common.entities.Entity;
@@ -36,16 +33,16 @@ public class Game implements ApplicationListener {
     private BitmapFont font;
     private Map<Sprite, String> sprites;
     
-    private Sprite map, playerSprite;
+    private Sprite map; // TODO load den her sprite ordentligt
 
     @Override
     public void create() {
+        Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
         gameData.setAspectRatio(gameData.getDisplayHeight() / gameData.getDisplayWidth());
         gameData.setCameraZoom(1.50f);
         sprites = new HashMap<>();
-        
         
         playerCamera = new OrthographicCamera(gameData.getDisplayWidth() / gameData.getCameraZoom(), gameData.getDisplayHeight() / gameData.getCameraZoom());
         playerCamera.position.set(playerCamera.viewportWidth / 2, playerCamera.viewportHeight / 2, 0);
@@ -54,9 +51,6 @@ public class Game implements ApplicationListener {
         hudCamera.position.set(gameData.getDisplayWidth() / 2, gameData.getDisplayHeight() / 2, 0);
         hudCamera.update();
         
-        Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
-        
-        //start plugins
         for(IGamePluginService plugin : getGamePluginServices()) {
             plugin.start(gameData, world);
         }

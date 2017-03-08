@@ -49,7 +49,7 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
         checkEdgeCollision(gameData, player);
     }
 
-    private void checkEdgeCollision(GameData gameData, Entity player) {
+    private void checkEdgeCollision(GameData gameData, Entity player) { // skal flyttes ud i seperat modul, da det skal ske for alle entites
         if(player.getX() - (player.getWidth() / 2) < 0) {
             player.setX(0 + (player.getWidth() / 2));
             player.setDx(0);
