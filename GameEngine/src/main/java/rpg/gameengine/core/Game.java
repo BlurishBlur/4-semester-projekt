@@ -46,7 +46,7 @@ public class Game implements ApplicationListener {
         playerSprite.setPosition(0, 0);
         playerSprite.setSize(30, 30);
         
-        camera = new OrthographicCamera(gameData.getDisplayWidth() / 1.50f, gameData.getDisplayHeight() / 1.50f);
+        camera = new OrthographicCamera(gameData.getDisplayWidth() / 1.30f, gameData.getDisplayHeight() / 1.30f);
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
         camera.update();
         
@@ -71,7 +71,8 @@ public class Game implements ApplicationListener {
     }
     
     private void handleCamera() {
-        Entity pl = world.getEntity(EntityType.PLAYER);
+        Entity player = world.getEntity(EntityType.PLAYER);
+        camera.position.set(player.getX(), player.getY(), 0);
         if(camera.position.x - camera.viewportWidth / 2 < 0) {
             camera.position.set(0 + camera.viewportWidth / 2, camera.position.y, 0);
         }
@@ -84,9 +85,6 @@ public class Game implements ApplicationListener {
         else if(camera.position.y + camera.viewportHeight / 2 > gameData.getDisplayHeight()) {
             camera.position.set(camera.position.x, gameData.getDisplayHeight() - camera.viewportHeight / 2, 0);
         }
-        //if(Math.abs(camera.position.x - pl.getX()) < 30 || Math.abs(camera.position.y - pl.getY()) < 30) {
-            camera.translate(pl.getDx(), pl.getDy());
-        //}
         camera.update();
     }
     
@@ -114,8 +112,8 @@ public class Game implements ApplicationListener {
     }
     
     private void drawPlayer() {
-        Entity pl = world.getEntity(EntityType.PLAYER);
-        playerSprite.setPosition(pl.getX(), pl.getY());
+        Entity player = world.getEntity(EntityType.PLAYER);
+        playerSprite.setPosition(player.getX(), player.getY());
         playerSprite.draw(batch);
     }
     
