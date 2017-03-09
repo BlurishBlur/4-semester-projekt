@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+OpenIDE-Module-Install: rpg/enemy/Installer.class
+OpenIDE-Module-Localizing-Bundle: rpg/enemy/Bundle.properties
+

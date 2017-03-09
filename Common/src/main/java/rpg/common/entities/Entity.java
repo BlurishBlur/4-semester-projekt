@@ -14,7 +14,38 @@ public class Entity implements Serializable {
     private float speed;
     private int currentHealth;
     private int maxHealth;
+    private int actionTimer = 10;
+    private double verticalMovementChance;
+    private double horizontalMovementChance;
     private String spritePath;
+
+    public int getActionTimer() {
+        return actionTimer;
+    }
+
+    public void setActionTimer(int actionTimer) {
+        this.actionTimer = actionTimer;
+    }
+    
+    public void reduceActionTimer() {
+        actionTimer--;
+    }
+
+    public double getVerticalMovementChance() {
+        return verticalMovementChance;
+    }
+
+    public void setVerticalMovementChance(double verticalMovementChance) {
+        this.verticalMovementChance = verticalMovementChance;
+    }
+
+    public double getHorizontalMovementChance() {
+        return horizontalMovementChance;
+    }
+
+    public void setHorizontalMovementChance(double horizontalMovementChance) {
+        this.horizontalMovementChance = horizontalMovementChance;
+    }
 
     public String getSpritePath() {
         return spritePath;

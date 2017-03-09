@@ -61,6 +61,7 @@
         <module>Common</module>
         <module>GameEngine</module>
         <module>Player</module>
+        <module>Enemy</module>
     </modules>
 
     <properties>
