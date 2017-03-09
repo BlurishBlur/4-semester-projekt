@@ -131,7 +131,7 @@ public class Game implements ApplicationListener {
     private void drawEntitySprites() {
         for(Entity entity : world.getEntities()) {         
             Sprite sprite = sprites.get(entity);
-
+/*
                 if(entity.getDy() > 0){
                     sprite.setRotation(90);
                     sprite.setOriginCenter(); 
@@ -147,8 +147,9 @@ public class Game implements ApplicationListener {
                 if(entity.getDx() < 0){
                     sprite.setRotation(180);
                     sprite.setOriginCenter();
-                }
-                
+                }*/
+            sprite.setOriginCenter();
+            sprite.setRotation(entity.getDirection());
             sprite.setPosition(entity.getX() - entity.getWidth() / 2, entity.getY() - entity.getHeight() / 2);
             
             sprite.draw(batch);

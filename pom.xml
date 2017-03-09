@@ -62,6 +62,7 @@
         <module>GameEngine</module>
         <module>Player</module>
         <module>Enemy</module>
+        <module>Movement</module>
     </modules>
 
     <properties>

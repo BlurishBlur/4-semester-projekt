@@ -17,7 +17,16 @@ public class Entity implements Serializable {
     private int actionTimer = 10;
     private double verticalMovementChance;
     private double horizontalMovementChance;
+    private int direction;
     private String spritePath;
+
+    public int getDirection() {
+        return direction;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
 
     public int getActionTimer() {
         return actionTimer;
