@@ -31,7 +31,7 @@ public class Game implements ApplicationListener {
     private long fpsTimer;
     private SpriteBatch batch;
     private BitmapFont font;
-    private Map<Sprite, String> sprites;
+    private Map<Entity, Sprite> sprites;
     
     private Sprite map; // TODO load den her sprite ordentligt
 
@@ -43,6 +43,13 @@ public class Game implements ApplicationListener {
         gameData.setAspectRatio(gameData.getDisplayHeight() / gameData.getDisplayWidth());
         gameData.setCameraZoom(1.50f);
         sprites = new HashMap<>();
+        batch = new SpriteBatch();
+        font = new BitmapFont();
+        fpsTimer = System.currentTimeMillis();
+        
+        for(IGamePluginService plugin : getGamePluginServices()) {
+            plugin.start(gameData, world);
+        }
         
         playerCamera = new OrthographicCamera(gameData.getDisplayWidth() / gameData.getCameraZoom(), gameData.getDisplayHeight() / gameData.getCameraZoom());
         playerCamera.position.set(playerCamera.viewportWidth / 2, playerCamera.viewportHeight / 2, 0);
@@ -50,10 +57,6 @@ public class Game implements ApplicationListener {
         hudCamera = new OrthographicCamera(gameData.getDisplayWidth(), gameData.getDisplayHeight());
         hudCamera.position.set(gameData.getDisplayWidth() / 2, gameData.getDisplayHeight() / 2, 0);
         hudCamera.update();
-        
-        for(IGamePluginService plugin : getGamePluginServices()) {
-            plugin.start(gameData, world);
-        }
         
         map = new Sprite(new Texture(Gdx.files.internal("rpg/gameengine/grass.png")));
         map.setPosition(0, 0);
@@ -63,12 +66,8 @@ public class Game implements ApplicationListener {
             Texture texture = new Texture(Gdx.files.internal(entity.getSpritePath()));
             Sprite sprite = new Sprite(texture);
             sprite.setSize(entity.getWidth(), entity.getHeight());
-            sprites.put(sprite, entity.getID());
+            sprites.put(entity, sprite);
         }
-        
-        batch = new SpriteBatch();
-        font = new BitmapFont();
-        fpsTimer = System.currentTimeMillis();
     }
     
     @Override
@@ -128,8 +127,8 @@ public class Game implements ApplicationListener {
     }
     
     private void drawEntitySprites() {
-        for(Sprite sprite : sprites.keySet()) {
-            Entity entity = world.getEntity(sprites.get(sprite));
+        for(Entity entity : world.getEntities()) {
+            Sprite sprite = sprites.get(entity);
             sprite.setPosition(entity.getX() - entity.getWidth() / 2, entity.getY() - entity.getHeight() / 2);
             sprite.draw(batch);
         }
