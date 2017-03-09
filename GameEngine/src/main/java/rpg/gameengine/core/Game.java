@@ -15,6 +15,7 @@ import org.openide.util.Lookup;
 import rpg.common.entities.Entity;
 import rpg.common.entities.EntityType;
 import rpg.common.data.GameData;
+import rpg.common.data.GameKeys;
 import rpg.common.data.World;
 import rpg.common.services.IEntityProcessingService;
 import rpg.common.services.IGamePluginService;
@@ -66,6 +67,7 @@ public class Game implements ApplicationListener {
             Texture texture = new Texture(Gdx.files.internal(entity.getSpritePath()));
             Sprite sprite = new Sprite(texture);
             sprite.setSize(entity.getWidth(), entity.getHeight());
+            
             sprites.put(entity, sprite);
         }
     }
@@ -127,9 +129,28 @@ public class Game implements ApplicationListener {
     }
     
     private void drawEntitySprites() {
-        for(Entity entity : world.getEntities()) {
+        for(Entity entity : world.getEntities()) {         
             Sprite sprite = sprites.get(entity);
+
+                if(entity.getDy() > 0){
+                    sprite.setRotation(90);
+                    sprite.setOriginCenter(); 
+                }
+                if(entity.getDy() < 0){
+                    sprite.setRotation(270);
+                    sprite.setOriginCenter(); 
+                }
+                if(entity.getDx() > 0){
+                    sprite.setRotation(0);
+                    sprite.setOriginCenter();
+                }
+                if(entity.getDx() < 0){
+                    sprite.setRotation(180);
+                    sprite.setOriginCenter();
+                }
+                
             sprite.setPosition(entity.getX() - entity.getWidth() / 2, entity.getY() - entity.getHeight() / 2);
+            
             sprite.draw(batch);
         }
     }
