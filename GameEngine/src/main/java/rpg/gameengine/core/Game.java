@@ -130,7 +130,7 @@ public class Game implements ApplicationListener {
     private void drawEntitySprites() {
         for(Sprite sprite : sprites.keySet()) {
             Entity entity = world.getEntity(sprites.get(sprite));
-            sprite.setPosition(entity.getX(), entity.getY());
+            sprite.setPosition(entity.getX() - entity.getWidth() / 2, entity.getY() - entity.getHeight() / 2);
             sprite.draw(batch);
         }
     }
