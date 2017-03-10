@@ -56,6 +56,12 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
             }
             player.setDirection(angle);
         }
+        
+        float diagonalFactor = (float) Math.sqrt(Math.pow(player.getSpeed(), 2) + Math.pow(player.getSpeed(), 2)) / player.getSpeed();
+        if(player.getDx() != 0 && player.getDy() != 0) {
+            player.setDx(player.getDx() / diagonalFactor);
+            player.setDy(player.getDy() / diagonalFactor);
+        }
 
         player.setX(player.getX() + player.getDx());
         player.setY(player.getY() + player.getDy());
