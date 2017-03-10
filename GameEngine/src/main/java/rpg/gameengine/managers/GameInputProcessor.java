@@ -39,6 +39,12 @@ public class GameInputProcessor extends InputAdapter {
         if(key == Keys.RIGHT) {
             gameData.getKeys().setKey(GameKeys.RIGHT, true);
         }
+        if(key == Keys.PLUS) {
+            gameData.getKeys().setKey(GameKeys.PLUS, true);
+        }
+        if(key == Keys.MINUS) {
+            gameData.getKeys().setKey(GameKeys.MINUS, true);
+        }
         return true;
     }
     
@@ -67,6 +73,12 @@ public class GameInputProcessor extends InputAdapter {
         }
         if(key == Keys.RIGHT) {
             gameData.getKeys().setKey(GameKeys.RIGHT, false);
+        }
+        if(key == Keys.PLUS) {
+            gameData.getKeys().setKey(GameKeys.PLUS, false);
+        }
+        if(key == Keys.MINUS) {
+            gameData.getKeys().setKey(GameKeys.MINUS, false);
         }
         return true;
     }

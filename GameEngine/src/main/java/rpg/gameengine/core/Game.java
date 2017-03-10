@@ -15,7 +15,6 @@ import org.openide.util.Lookup;
 import rpg.common.entities.Entity;
 import rpg.common.entities.EntityType;
 import rpg.common.data.GameData;
-import rpg.common.data.GameKeys;
 import rpg.common.data.World;
 import rpg.common.services.IEntityProcessingService;
 import rpg.common.services.IGamePluginService;
@@ -83,6 +82,8 @@ public class Game implements ApplicationListener {
     
     private void handlePlayerCamera() {
         Entity player = world.getEntity(EntityType.PLAYER);
+        playerCamera.viewportWidth = gameData.getDisplayWidth() / gameData.getCameraZoom();
+        playerCamera.viewportHeight = gameData.getDisplayHeight() / gameData.getCameraZoom();
         playerCamera.position.set(player.getX(), player.getY(), 0);
         if(playerCamera.position.x - playerCamera.viewportWidth / 2 < 0) {
             playerCamera.position.set(0 + playerCamera.viewportWidth / 2, playerCamera.position.y, 0);
@@ -129,12 +130,11 @@ public class Game implements ApplicationListener {
     }
     
     private void drawEntitySprites() {
-        for(Entity entity : world.getEntities()) {         
+        for(Entity entity : world.getEntities()) {
             Sprite sprite = sprites.get(entity);
             sprite.setOriginCenter();
             sprite.setRotation(entity.getDirection());
             sprite.setPosition(entity.getX() - entity.getWidth() / 2, entity.getY() - entity.getHeight() / 2);
-            
             sprite.draw(batch);
         }
     }

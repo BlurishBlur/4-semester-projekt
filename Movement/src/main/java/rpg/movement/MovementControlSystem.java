@@ -50,6 +50,7 @@ public class MovementControlSystem implements IEntityProcessingService {
                 }
                 enemy.setDirection(angle);
             }
+            enemy.setDirection(0);
 
             enemy.setX(enemy.getX() + enemy.getDx());
             enemy.setY(enemy.getY() + enemy.getDy());
