@@ -25,27 +25,25 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
 
     @Override
     public void process(GameData gameData, World world) {
-        float deltaTime = gameData.getDeltaTime();
         for (Entity enemy : world.getEntities(EntityType.ENEMY)) {
-            enemy.setDx(0);
-            enemy.setDy(0);
-            enemy.reduceActionTimer();
+            enemy.getMovement().set(0, 0);
+            enemy.reduceActionTimer(gameData.getDeltaTime());
             if (enemy.getActionTimer() < 0) {
                 enemy.setVerticalMovementChance(Math.random());
                 enemy.setHorizontalMovementChance(Math.random());
                 enemy.setActionTimer((int) (Math.random() * 90) + 10);
             }
             if (enemy.getVerticalMovementChance() < 0.20) { // up
-                enemy.setDy(enemy.getMovementSpeed() * deltaTime);
+                enemy.getMovement().addY(enemy.getMovementSpeed());
             }
             else if (enemy.getVerticalMovementChance() < 0.40) { // down
-                enemy.setDy(-enemy.getMovementSpeed() * deltaTime);
+                enemy.getMovement().subtractY(enemy.getMovementSpeed());
             }
             if (enemy.getHorizontalMovementChance() < 0.20) { // left
-                enemy.setDx(-enemy.getMovementSpeed() * deltaTime);
+                enemy.getMovement().subtractX(enemy.getMovementSpeed());
             }
             else if (enemy.getHorizontalMovementChance() < 0.40) { // right
-                enemy.setDx(enemy.getMovementSpeed() * deltaTime);
+                enemy.getMovement().addX(enemy.getMovementSpeed());
             }
         }
     }
@@ -53,8 +51,7 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
     private Entity createEnemy() {
         Entity newEnemy = new Entity();
         newEnemy.setType(EntityType.ENEMY);
-        newEnemy.setX(640);
-        newEnemy.setY(360);
+        newEnemy.getPosition().set(640, 360);
         newEnemy.setMovementSpeed(100);
         newEnemy.setMaxHealth(50);
         newEnemy.setCurrentHealth(newEnemy.getMaxHealth());

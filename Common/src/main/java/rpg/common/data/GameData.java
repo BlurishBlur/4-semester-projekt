@@ -11,7 +11,6 @@ public class GameData {
     private float deltaTime;
     private int displayWidth;
     private int displayHeight;
-    private float aspectRatio;
     private float cameraZoom;
     private List<Event> events = new CopyOnWriteArrayList<>();
     private final GameKeys keys = new GameKeys();
@@ -46,14 +45,6 @@ public class GameData {
 
     public void addEvent(Event event) {
         events.add(event);
-    }
-
-    public float getAspectRatio() {
-        return aspectRatio;
-    }
-
-    public void setAspectRatio(float aspectRatio) {
-        this.aspectRatio = aspectRatio;
     }
 
     public GameKeys getKeys() {

@@ -1,6 +1,5 @@
 package rpg.player;
 
-import com.badlogic.gdx.math.Vector2;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 import rpg.common.entities.Entity;
@@ -28,28 +27,25 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
     @Override
     public void process(GameData gameData, World world) {
         Entity player = world.getEntity(EntityType.PLAYER);
-        float deltaTime = gameData.getDeltaTime();
-        player.setDx(0);
-        player.setDy(0);
+        player.getMovement().set(0, 0);
         if (gameData.getKeys().isDown(GameKeys.W)) {
-            player.setDy(player.getMovementSpeed() * deltaTime);
+            player.getMovement().addY(player.getMovementSpeed());
         }
         else if (gameData.getKeys().isDown(GameKeys.S)) {
-            player.setDy(-player.getMovementSpeed() * deltaTime);
+            player.getMovement().subtractY(player.getMovementSpeed());
         }
         if (gameData.getKeys().isDown(GameKeys.A)) {
-            player.setDx(-player.getMovementSpeed() * deltaTime);
+            player.getMovement().subtractX(player.getMovementSpeed());
         }
         else if (gameData.getKeys().isDown(GameKeys.D)) {
-            player.setDx(player.getMovementSpeed() * deltaTime);
+            player.getMovement().addX(player.getMovementSpeed());
         }
     }
 
     private Entity createPlayer() {
         Entity newPlayer = new Entity();
         newPlayer.setType(EntityType.PLAYER);
-        newPlayer.setX(25);
-        newPlayer.setY(25);
+        newPlayer.getPosition().set(25, 25);
         newPlayer.setMovementSpeed(200);
         newPlayer.setMaxHealth(100);
         newPlayer.setCurrentHealth(newPlayer.getMaxHealth());

@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +40,6 @@ public class Game implements ApplicationListener {
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
-        gameData.setAspectRatio(gameData.getDisplayHeight() / gameData.getDisplayWidth());
         gameData.setCameraZoom(1.50f);
         sprites = new HashMap<>();
         batch = new SpriteBatch();
@@ -85,7 +83,7 @@ public class Game implements ApplicationListener {
         Entity player = world.getEntity(EntityType.PLAYER);
         playerCamera.viewportWidth = gameData.getDisplayWidth() / gameData.getCameraZoom();
         playerCamera.viewportHeight = gameData.getDisplayHeight() / gameData.getCameraZoom();
-        playerCamera.position.set(player.getX(), player.getY(), 0);
+        playerCamera.position.set(player.getPosition().getX(), player.getPosition().getY(), 0);
         if(playerCamera.position.x - playerCamera.viewportWidth / 2 < 0) {
             playerCamera.position.set(0 + playerCamera.viewportWidth / 2, playerCamera.position.y, 0);
         }
@@ -135,8 +133,8 @@ public class Game implements ApplicationListener {
         for(Entity entity : world.getEntities()) {
             Sprite sprite = sprites.get(entity);
             sprite.setOriginCenter();
-            sprite.setRotation((float) entity.getDirection());
-            sprite.setPosition(entity.getX() - entity.getWidth() / 2, entity.getY() - entity.getHeight() / 2);
+            sprite.setRotation(entity.getDirection());
+            sprite.setPosition(entity.getPosition().getX() - entity.getWidth() / 2, entity.getPosition().getY() - entity.getHeight() / 2);
             sprite.draw(batch);
         }
     }

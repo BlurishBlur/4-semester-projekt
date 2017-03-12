@@ -1,44 +1,57 @@
 package rpg.common.entities;
 
-import com.badlogic.gdx.math.Vector2;
 import java.io.Serializable;
 import java.util.UUID;
+import rpg.common.util.Vector;
 
 public class Entity implements Serializable {
     
     private final UUID ID = UUID.randomUUID();
     private EntityType type;
-    private float x;
-    private float y;
-    private float dx;
-    private float dy;
+    private Vector position;
+    private Vector movement;
     private float movementSpeed;
     private int currentHealth;
     private int maxHealth;
-    private int actionTimer = 10;
+    private float actionTimer = 10;
     private double verticalMovementChance;
     private double horizontalMovementChance;
-    private double direction;
+    private float direction;
+    private float width;
+    private float height;
     private String spritePath;
+    
+    public Entity() {
+        position = new Vector();
+        movement = new Vector();
+    }
 
-    public double getDirection() {
+    public Vector getPosition() {
+        return position;
+    }
+    
+    public Vector getMovement() {
+        return movement;
+    }
+    
+    public float getDirection() {
         return direction;
     }
 
-    public void setDirection(double direction) {
+    public void setDirection(float direction) {
         this.direction = direction;
     }
 
-    public int getActionTimer() {
+    public float getActionTimer() {
         return actionTimer;
     }
 
-    public void setActionTimer(int actionTimer) {
+    public void setActionTimer(float actionTimer) {
         this.actionTimer = actionTimer;
     }
     
-    public void reduceActionTimer() {
-        actionTimer--;
+    public void reduceActionTimer(float deltaTime) {
+        actionTimer -= deltaTime;
     }
 
     public double getVerticalMovementChance() {
@@ -80,8 +93,6 @@ public class Entity implements Serializable {
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
     }
-    private float width;
-    private float height;
 
     public EntityType getType() {
         return type;
@@ -89,38 +100,6 @@ public class Entity implements Serializable {
 
     public void setType(EntityType type) {
         this.type = type;
-    }
-
-    public float getX() {
-        return x;
-    }
-
-    public void setX(float x) {
-        this.x = x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
-    public void setY(float y) {
-        this.y = y;
-    }
-
-    public float getDx() {
-        return dx;
-    }
-
-    public void setDx(float dx) {
-        this.dx = dx;
-    }
-
-    public float getDy() {
-        return dy;
-    }
-
-    public void setDy(float dy) {
-        this.dy = dy;
     }
 
     public float getMovementSpeed() {
