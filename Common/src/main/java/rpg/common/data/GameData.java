@@ -12,8 +12,17 @@ public class GameData {
     private int displayWidth;
     private int displayHeight;
     private float cameraZoom;
+    private boolean showDebug;
     private List<Event> events = new CopyOnWriteArrayList<>();
     private final GameKeys keys = new GameKeys();
+
+    public boolean isShowDebug() {
+        return showDebug;
+    }
+
+    public void setShowDebug(boolean showDebug) {
+        this.showDebug = showDebug;
+    }
 
     public float getCameraZoom() {
         return cameraZoom;
