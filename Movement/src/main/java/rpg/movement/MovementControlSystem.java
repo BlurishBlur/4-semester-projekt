@@ -24,27 +24,6 @@ public class MovementControlSystem implements IEntityProcessingService {
                 entity.setDirection(entity.getMovement().getAngle());
             }
             entity.getPosition().add(entity.getMovement());
-
-            checkEdgeCollision(gameData, entity);
-        }
-    }
-
-    private void checkEdgeCollision(GameData gameData, Entity entity) {
-        if (entity.getPosition().getX() - (entity.getWidth() / 2) < 0) {
-            entity.getPosition().setX(0 + (entity.getWidth() / 2));
-            entity.getMovement().setX(0);
-        }
-        else if (entity.getPosition().getX() + (entity.getWidth() / 2) > gameData.getDisplayWidth()) {
-            entity.getPosition().setX(gameData.getDisplayWidth() - (entity.getWidth() / 2));
-            entity.getMovement().setX(0);
-        }
-        if (entity.getPosition().getY() - (entity.getHeight() / 2) < 0) {
-            entity.getPosition().setY(0 + (entity.getHeight() / 2));
-            entity.getMovement().setY(0);
-        }
-        else if (entity.getPosition().getY() + (entity.getHeight() / 2) > gameData.getDisplayHeight()) {
-            entity.getPosition().setY(gameData.getDisplayHeight() - (entity.getHeight() / 2));
-            entity.getMovement().setY(0);
         }
     }
 

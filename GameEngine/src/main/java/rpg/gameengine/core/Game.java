@@ -18,6 +18,7 @@ import rpg.common.data.GameData;
 import rpg.common.data.World;
 import rpg.common.services.IEntityProcessingService;
 import rpg.common.services.IGamePluginService;
+import rpg.common.services.IPostEntityProcessingService;
 import rpg.gameengine.managers.GameInputProcessor;
 
 public class Game implements ApplicationListener {
@@ -107,6 +108,9 @@ public class Game implements ApplicationListener {
         for(IEntityProcessingService processor : getEntityProcessingServices()) {
             processor.process(gameData, world);
         }
+        for(IPostEntityProcessingService postProcessor : getPostEntityProcessingServices()) {
+            postProcessor.process(gameData, world);
+        }
     }
     
     private void draw() {
@@ -150,6 +154,10 @@ public class Game implements ApplicationListener {
     
     private Collection<? extends IGamePluginService> getGamePluginServices() {
         return lookup.lookupAll(IGamePluginService.class);
+    }
+    
+    private Collection<? extends IPostEntityProcessingService> getPostEntityProcessingServices() {
+        return lookup.lookupAll(IPostEntityProcessingService.class);
     }
 
     @Override

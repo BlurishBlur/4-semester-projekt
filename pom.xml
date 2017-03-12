@@ -64,6 +64,7 @@
         <module>Enemy</module>
         <module>Movement</module>
         <module>Zoom</module>
+        <module>Collision</module>
     </modules>
 
     <properties>
