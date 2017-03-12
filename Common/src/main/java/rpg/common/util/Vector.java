@@ -99,7 +99,9 @@ public class Vector {
     }
     
     public float getAngleTo(Vector other) {
-        return (float) Math.toDegrees(Math.atan2(getCrossProduct(other), getDotProduct(other)));
+        //return (float) Math.toDegrees(Math.atan2(getCrossProduct(other), getDotProduct(other)));
+        
+        return (float) Math.toDegrees(Math.acos(getDotProduct(other) / getMagnitude() * other.getMagnitude()));
     }
 
     public void normalize(float factor) {
