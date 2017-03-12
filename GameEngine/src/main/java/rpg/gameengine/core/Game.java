@@ -120,9 +120,14 @@ public class Game implements ApplicationListener {
     }
     
     private void drawHud() {
+        Entity player = world.getEntity(EntityType.PLAYER);
         batch.setProjectionMatrix(hudCamera.combined);
-        font.draw(batch, "FPS: " + fps, 7.5f, 40);
-        font.draw(batch, "Zoom: " + gameData.getCameraZoom(), 7.5f, 20);
+        font.draw(batch, "FPS: " + fps, 7.5f, 120);
+        font.draw(batch, "Zoom: " + gameData.getCameraZoom(), 7.5f, 100);
+        font.draw(batch, "X: " + player.getPosition().getX(), 7.5f, 80);
+        font.draw(batch, "Y: " + player.getPosition().getY(), 7.5f, 60);
+        font.draw(batch, "DX: " + player.getMovement().getX(), 7.5f, 40);
+        font.draw(batch, "DY: " + player.getMovement().getY(), 7.5f, 20);
     }
     
     private void drawMap() {
