@@ -16,7 +16,7 @@ public class MovementControlSystem implements IEntityProcessingService {
     public void process(GameData gameData, World world) {
         for (Entity entity : world.getEntities()) {
             float deltaTime = gameData.getDeltaTime();
-            entity.getMovement().scale(deltaTime);
+            entity.getMovement().scalar(deltaTime);
             if(entity.getMovement().isDiagonal()) {
                 entity.getMovement().normalize(entity.getMovementSpeed());
             }

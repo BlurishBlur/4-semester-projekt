@@ -13,7 +13,7 @@ public class Entity implements Serializable {
     private float movementSpeed;
     private int currentHealth;
     private int maxHealth;
-    private float actionTimer = 10;
+    private float actionTimer = 2;
     private double verticalMovementChance;
     private double horizontalMovementChance;
     private float direction;

@@ -31,7 +31,7 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
             if (enemy.getActionTimer() < 0) {
                 enemy.setVerticalMovementChance(Math.random());
                 enemy.setHorizontalMovementChance(Math.random());
-                enemy.setActionTimer((int) (Math.random() * 90) + 10);
+                enemy.setActionTimer((int) (Math.random() * 4) + 1);
             }
             if (enemy.getVerticalMovementChance() < 0.20) { // up
                 enemy.getMovement().addY(enemy.getMovementSpeed());
