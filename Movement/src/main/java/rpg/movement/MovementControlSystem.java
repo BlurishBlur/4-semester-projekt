@@ -5,7 +5,6 @@ import org.openide.util.lookup.ServiceProviders;
 import rpg.common.data.GameData;
 import rpg.common.data.World;
 import rpg.common.entities.Entity;
-import rpg.common.entities.EntityType;
 import rpg.common.services.IEntityProcessingService;
 
 @ServiceProviders(value = {
@@ -15,62 +14,42 @@ public class MovementControlSystem implements IEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
-        for (Entity enemy : world.getEntites(EntityType.ENEMY)) {
+        for (Entity entity : world.getEntities()) {
             float deltaTime = gameData.getDeltaTime();
-            enemy.setDx(0);
-            enemy.setDy(0);
-            enemy.reduceActionTimer();
-            if (enemy.getActionTimer() < 0) {
-                enemy.setVerticalMovementChance(Math.random());
-                enemy.setHorizontalMovementChance(Math.random());
-                enemy.setActionTimer((int) (Math.random() * 90) + 10);
-            }
-            if (enemy.getVerticalMovementChance() < 0.20) { // up
-                enemy.setDy(enemy.getMovementSpeed() * deltaTime);
-            }
-            else if (enemy.getVerticalMovementChance() < 0.40) { // down
-                enemy.setDy(-enemy.getMovementSpeed() * deltaTime);
-            }
-            if (enemy.getHorizontalMovementChance() < 0.20) { // left
-                enemy.setDx(-enemy.getMovementSpeed() * deltaTime);
-            }
-            else if (enemy.getHorizontalMovementChance() < 0.40) { // right
-                enemy.setDx(enemy.getMovementSpeed() * deltaTime);
-            }
-            float diagonalFactor = (float) Math.sqrt(Math.pow(enemy.getMovementSpeed(), 2) + Math.pow(enemy.getMovementSpeed(), 2)) / enemy.getMovementSpeed();
-            if (enemy.getDx() != 0 && enemy.getDy() != 0) {
-                enemy.setDx(enemy.getDx() / diagonalFactor);
-                enemy.setDy(enemy.getDy() / diagonalFactor);
+            float diagonalFactor = (float) Math.sqrt(Math.pow(entity.getMovementSpeed(), 2) + Math.pow(entity.getMovementSpeed(), 2)) / entity.getMovementSpeed();
+            if (entity.getDx() != 0 && entity.getDy() != 0) {
+                entity.setDx(entity.getDx() / diagonalFactor);
+                entity.setDy(entity.getDy() / diagonalFactor);
             }
 
-            if (enemy.getDx() != 0 || enemy.getDy() != 0) {
-                double angle = Math.toDegrees(Math.atan2(enemy.getDy(), enemy.getDx()));
-                enemy.setDirection(angle);
+            if (entity.getDx() != 0 || entity.getDy() != 0) {
+                double angle = Math.toDegrees(Math.atan2(entity.getDy(), entity.getDx()));
+                entity.setDirection(angle);
             }
 
-            enemy.setX(enemy.getX() + enemy.getDx());
-            enemy.setY(enemy.getY() + enemy.getDy());
+            entity.setX(entity.getX() + entity.getDx());
+            entity.setY(entity.getY() + entity.getDy());
 
-            checkEdgeCollision(gameData, enemy);
+            checkEdgeCollision(gameData, entity);
         }
     }
 
-    private void checkEdgeCollision(GameData gameData, Entity enemy) { // skal flyttes ud i seperat modul, da det skal ske for alle entites
-        if (enemy.getX() - (enemy.getWidth() / 2) < 0) {
-            enemy.setX(0 + (enemy.getWidth() / 2));
-            enemy.setDx(0);
+    private void checkEdgeCollision(GameData gameData, Entity entity) {
+        if (entity.getX() - (entity.getWidth() / 2) < 0) {
+            entity.setX(0 + (entity.getWidth() / 2));
+            entity.setDx(0);
         }
-        else if (enemy.getX() + (enemy.getWidth() / 2) > gameData.getDisplayWidth()) {
-            enemy.setX(gameData.getDisplayWidth() - (enemy.getWidth() / 2));
-            enemy.setDx(0);
+        else if (entity.getX() + (entity.getWidth() / 2) > gameData.getDisplayWidth()) {
+            entity.setX(gameData.getDisplayWidth() - (entity.getWidth() / 2));
+            entity.setDx(0);
         }
-        if (enemy.getY() - (enemy.getHeight() / 2) < 0) {
-            enemy.setY(0 + (enemy.getHeight() / 2));
-            enemy.setDy(0);
+        if (entity.getY() - (entity.getHeight() / 2) < 0) {
+            entity.setY(0 + (entity.getHeight() / 2));
+            entity.setDy(0);
         }
-        else if (enemy.getY() + (enemy.getHeight() / 2) > gameData.getDisplayHeight()) {
-            enemy.setY(gameData.getDisplayHeight() - (enemy.getHeight() / 2));
-            enemy.setDy(0);
+        else if (entity.getY() + (entity.getHeight() / 2) > gameData.getDisplayHeight()) {
+            entity.setY(gameData.getDisplayHeight() - (entity.getHeight() / 2));
+            entity.setDy(0);
         }
     }
 

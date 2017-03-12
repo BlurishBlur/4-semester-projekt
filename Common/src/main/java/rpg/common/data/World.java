@@ -41,7 +41,7 @@ public class World {
         return entities.values();
     }
 
-    public List<Entity> getEntites(EntityType... entityTypes) {
+    public List<Entity> getEntities(EntityType... entityTypes) {
         List<Entity> results = new ArrayList<>();
         for (Entity entity : entities.values()) {
             for (EntityType entityType : entityTypes) {

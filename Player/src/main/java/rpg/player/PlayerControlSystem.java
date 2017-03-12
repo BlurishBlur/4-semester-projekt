@@ -43,40 +43,6 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
         else if (gameData.getKeys().isDown(GameKeys.D)) {
             player.setDx(player.getMovementSpeed() * deltaTime);
         }
-        float diagonalFactor = (float) Math.sqrt(Math.pow(player.getMovementSpeed(), 2) + Math.pow(player.getMovementSpeed(), 2)) / player.getMovementSpeed();
-        if (player.getDx() != 0 && player.getDy() != 0) {
-            player.setDx(player.getDx() / diagonalFactor);
-            player.setDy(player.getDy() / diagonalFactor);
-        }
-        
-        if(player.getDx() != 0 || player.getDy() != 0) {
-            double angle = Math.toDegrees(Math.atan2(player.getDy(), player.getDx()));
-            player.setDirection(angle);
-        }
-
-        player.setX(player.getX() + player.getDx());
-        player.setY(player.getY() + player.getDy());
-
-        checkEdgeCollision(gameData, player);
-    }
-
-    private void checkEdgeCollision(GameData gameData, Entity player) { // skal flyttes ud i seperat modul, da det skal ske for alle entites
-        if (player.getX() - (player.getWidth() / 2) < 0) {
-            player.setX(0 + (player.getWidth() / 2));
-            player.setDx(0);
-        }
-        else if (player.getX() + (player.getWidth() / 2) > gameData.getDisplayWidth()) {
-            player.setX(gameData.getDisplayWidth() - (player.getWidth() / 2));
-            player.setDx(0);
-        }
-        if (player.getY() - (player.getHeight() / 2) < 0) {
-            player.setY(0 + (player.getHeight() / 2));
-            player.setDy(0);
-        }
-        else if (player.getY() + (player.getHeight() / 2) > gameData.getDisplayHeight()) {
-            player.setY(gameData.getDisplayHeight() - (player.getHeight() / 2));
-            player.setDy(0);
-        }
     }
 
     private Entity createPlayer() {
