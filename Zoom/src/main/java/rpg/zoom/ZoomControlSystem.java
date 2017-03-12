@@ -28,7 +28,6 @@ public class ZoomControlSystem implements IEntityProcessingService {
                 System.out.println("zoom out");
             }
         }
-        System.out.println(gameData.getCameraZoom());
     }
 
 }

@@ -1,5 +1,6 @@
 package rpg.player;
 
+import com.badlogic.gdx.math.Vector2;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 import rpg.common.entities.Entity;
@@ -11,8 +12,7 @@ import rpg.common.services.IEntityProcessingService;
 import rpg.common.services.IGamePluginService;
 
 @ServiceProviders(value = {
-    @ServiceProvider(service = IEntityProcessingService.class)
-    ,
+    @ServiceProvider(service = IEntityProcessingService.class),
     @ServiceProvider(service = IGamePluginService.class)
 })
 public class PlayerControlSystem implements IEntityProcessingService, IGamePluginService {
@@ -31,36 +31,27 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
         float deltaTime = gameData.getDeltaTime();
         player.setDx(0);
         player.setDy(0);
-        player.setDirection(0);
         if (gameData.getKeys().isDown(GameKeys.W)) {
-            player.setDy(player.getSpeed() * deltaTime);
-            player.setDirection(360);
+            player.setDy(player.getMovementSpeed() * deltaTime);
         }
         else if (gameData.getKeys().isDown(GameKeys.S)) {
-            player.setDy(-player.getSpeed() * deltaTime);
-            player.setDirection(180);
+            player.setDy(-player.getMovementSpeed() * deltaTime);
         }
         if (gameData.getKeys().isDown(GameKeys.A)) {
-            player.setDx(-player.getSpeed() * deltaTime);
-            int angle = player.getDirection() + 90;
-            if(angle > 90) {
-                angle = (angle % 360) / 2;
-            }
-            player.setDirection(angle);
+            player.setDx(-player.getMovementSpeed() * deltaTime);
         }
         else if (gameData.getKeys().isDown(GameKeys.D)) {
-            player.setDx(player.getSpeed() * deltaTime);
-            int angle = player.getDirection() + 270;
-            if(angle > 270) {
-                angle /= 2;
-            }
-            player.setDirection(angle);
+            player.setDx(player.getMovementSpeed() * deltaTime);
         }
-        
-        float diagonalFactor = (float) Math.sqrt(Math.pow(player.getSpeed(), 2) + Math.pow(player.getSpeed(), 2)) / player.getSpeed();
-        if(player.getDx() != 0 && player.getDy() != 0) {
+        float diagonalFactor = (float) Math.sqrt(Math.pow(player.getMovementSpeed(), 2) + Math.pow(player.getMovementSpeed(), 2)) / player.getMovementSpeed();
+        if (player.getDx() != 0 && player.getDy() != 0) {
             player.setDx(player.getDx() / diagonalFactor);
             player.setDy(player.getDy() / diagonalFactor);
+        }
+        
+        if(player.getDx() != 0 || player.getDy() != 0) {
+            double angle = Math.toDegrees(Math.atan2(player.getDy(), player.getDx()));
+            player.setDirection(angle);
         }
 
         player.setX(player.getX() + player.getDx());
@@ -93,7 +84,7 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
         newPlayer.setType(EntityType.PLAYER);
         newPlayer.setX(25);
         newPlayer.setY(25);
-        newPlayer.setSpeed(200);
+        newPlayer.setMovementSpeed(200);
         newPlayer.setMaxHealth(100);
         newPlayer.setCurrentHealth(newPlayer.getMaxHealth());
         newPlayer.setWidth(30);

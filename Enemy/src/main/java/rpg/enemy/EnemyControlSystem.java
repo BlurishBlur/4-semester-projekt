@@ -26,7 +26,7 @@ public class EnemyControlSystem implements IGamePluginService {
         newEnemy.setType(EntityType.ENEMY);
         newEnemy.setX(640);
         newEnemy.setY(360);
-        newEnemy.setSpeed(100);
+        newEnemy.setMovementSpeed(100);
         newEnemy.setMaxHealth(50);
         newEnemy.setCurrentHealth(newEnemy.getMaxHealth());
         newEnemy.setWidth(30);

@@ -19,7 +19,6 @@ public class MovementControlSystem implements IEntityProcessingService {
             float deltaTime = gameData.getDeltaTime();
             enemy.setDx(0);
             enemy.setDy(0);
-            enemy.setDirection(0);
             enemy.reduceActionTimer();
             if (enemy.getActionTimer() < 0) {
                 enemy.setVerticalMovementChance(Math.random());
@@ -27,30 +26,27 @@ public class MovementControlSystem implements IEntityProcessingService {
                 enemy.setActionTimer((int) (Math.random() * 90) + 10);
             }
             if (enemy.getVerticalMovementChance() < 0.20) { // up
-                enemy.setDy(enemy.getSpeed() * deltaTime);
-                enemy.setDirection(360);
+                enemy.setDy(enemy.getMovementSpeed() * deltaTime);
             }
             else if (enemy.getVerticalMovementChance() < 0.40) { // down
-                enemy.setDy(-enemy.getSpeed() * deltaTime);
-                enemy.setDirection(180);
+                enemy.setDy(-enemy.getMovementSpeed() * deltaTime);
             }
             if (enemy.getHorizontalMovementChance() < 0.20) { // left
-                enemy.setDx(-enemy.getSpeed() * deltaTime);
-                int angle = enemy.getDirection() + 90;
-                if (angle > 90) {
-                    angle = (angle % 360) / 2;
-                }
-                enemy.setDirection(angle);
+                enemy.setDx(-enemy.getMovementSpeed() * deltaTime);
             }
             else if (enemy.getHorizontalMovementChance() < 0.40) { // right
-                enemy.setDx(enemy.getSpeed() * deltaTime);
-                int angle = enemy.getDirection() + 270;
-                if (angle > 270) {
-                    angle /= 2;
-                }
+                enemy.setDx(enemy.getMovementSpeed() * deltaTime);
+            }
+            float diagonalFactor = (float) Math.sqrt(Math.pow(enemy.getMovementSpeed(), 2) + Math.pow(enemy.getMovementSpeed(), 2)) / enemy.getMovementSpeed();
+            if (enemy.getDx() != 0 && enemy.getDy() != 0) {
+                enemy.setDx(enemy.getDx() / diagonalFactor);
+                enemy.setDy(enemy.getDy() / diagonalFactor);
+            }
+
+            if (enemy.getDx() != 0 || enemy.getDy() != 0) {
+                double angle = Math.toDegrees(Math.atan2(enemy.getDy(), enemy.getDx()));
                 enemy.setDirection(angle);
             }
-            enemy.setDirection(0);
 
             enemy.setX(enemy.getX() + enemy.getDx());
             enemy.setY(enemy.getY() + enemy.getDy());
@@ -63,14 +59,16 @@ public class MovementControlSystem implements IEntityProcessingService {
         if (enemy.getX() - (enemy.getWidth() / 2) < 0) {
             enemy.setX(0 + (enemy.getWidth() / 2));
             enemy.setDx(0);
-        } else if (enemy.getX() + (enemy.getWidth() / 2) > gameData.getDisplayWidth()) {
+        }
+        else if (enemy.getX() + (enemy.getWidth() / 2) > gameData.getDisplayWidth()) {
             enemy.setX(gameData.getDisplayWidth() - (enemy.getWidth() / 2));
             enemy.setDx(0);
         }
         if (enemy.getY() - (enemy.getHeight() / 2) < 0) {
             enemy.setY(0 + (enemy.getHeight() / 2));
             enemy.setDy(0);
-        } else if (enemy.getY() + (enemy.getHeight() / 2) > gameData.getDisplayHeight()) {
+        }
+        else if (enemy.getY() + (enemy.getHeight() / 2) > gameData.getDisplayHeight()) {
             enemy.setY(gameData.getDisplayHeight() - (enemy.getHeight() / 2));
             enemy.setDy(0);
         }

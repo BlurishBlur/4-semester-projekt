@@ -1,5 +1,6 @@
 package rpg.common.entities;
 
+import com.badlogic.gdx.math.Vector2;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -11,20 +12,20 @@ public class Entity implements Serializable {
     private float y;
     private float dx;
     private float dy;
-    private float speed;
+    private float movementSpeed;
     private int currentHealth;
     private int maxHealth;
     private int actionTimer = 10;
     private double verticalMovementChance;
     private double horizontalMovementChance;
-    private int direction;
+    private double direction;
     private String spritePath;
 
-    public int getDirection() {
+    public double getDirection() {
         return direction;
     }
 
-    public void setDirection(int direction) {
+    public void setDirection(double direction) {
         this.direction = direction;
     }
 
@@ -122,12 +123,12 @@ public class Entity implements Serializable {
         this.dy = dy;
     }
 
-    public float getSpeed() {
-        return speed;
+    public float getMovementSpeed() {
+        return movementSpeed;
     }
 
-    public void setSpeed(float speed) {
-        this.speed = speed;
+    public void setMovementSpeed(float speed) {
+        this.movementSpeed = speed;
     }
 
     public float getWidth() {

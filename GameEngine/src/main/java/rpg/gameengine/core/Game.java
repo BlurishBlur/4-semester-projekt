@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -122,7 +123,8 @@ public class Game implements ApplicationListener {
     
     private void drawHud() {
         batch.setProjectionMatrix(hudCamera.combined);
-        font.draw(batch, "FPS: " + fps, 7.5f, 20);
+        font.draw(batch, "FPS: " + fps, 7.5f, 40);
+        font.draw(batch, "Zoom: " + gameData.getCameraZoom(), 7.5f, 20);
     }
     
     private void drawMap() {
@@ -133,7 +135,7 @@ public class Game implements ApplicationListener {
         for(Entity entity : world.getEntities()) {
             Sprite sprite = sprites.get(entity);
             sprite.setOriginCenter();
-            sprite.setRotation(entity.getDirection());
+            sprite.setRotation((float) entity.getDirection());
             sprite.setPosition(entity.getX() - entity.getWidth() / 2, entity.getY() - entity.getHeight() / 2);
             sprite.draw(batch);
         }
