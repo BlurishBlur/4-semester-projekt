@@ -73,6 +73,10 @@ public class Game implements ApplicationListener {
     
     @Override
     public void render() {
+        if(System.currentTimeMillis() - fpsTimer > 1000) {
+            fps = (int) (gameData.getDeltaTime() * 3600);
+            fpsTimer = System.currentTimeMillis();
+        }
         gameData.setDeltaTime(Math.min(Gdx.graphics.getDeltaTime(), 0.0167f));
         gameData.getKeys().update();
         update();
@@ -101,10 +105,6 @@ public class Game implements ApplicationListener {
     }
     
     private void update() {
-        if(System.currentTimeMillis() - fpsTimer > 1000) {
-            fps = (int) (gameData.getDeltaTime() * 3600);
-            fpsTimer = System.currentTimeMillis();
-        }
         for(IEntityProcessingService processor : getEntityProcessingServices()) {
             processor.process(gameData, world);
         }
