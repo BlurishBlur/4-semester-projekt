@@ -9,7 +9,7 @@ public class Entity implements Serializable {
     private final UUID ID = UUID.randomUUID();
     private EntityType type;
     private Vector position;
-    private Vector movement;
+    private Vector velocity;
     private float movementSpeed;
     private int currentHealth;
     private int maxHealth;
@@ -23,15 +23,15 @@ public class Entity implements Serializable {
     
     public Entity() {
         position = new Vector();
-        movement = new Vector();
+        velocity = new Vector();
     }
 
     public Vector getPosition() {
         return position;
     }
     
-    public Vector getMovement() {
-        return movement;
+    public Vector getVelocity() {
+        return velocity;
     }
     
     public float getDirection() {

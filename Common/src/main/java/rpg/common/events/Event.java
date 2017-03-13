@@ -1,21 +1,23 @@
 package rpg.common.events;
 
+import rpg.common.entities.Entity;
+
 public class Event {
     
     private final EventType type;
-    private final String entityID;
+    private final Entity entity;
     
-    public Event(EventType type, String entityID) {
+    public Event(EventType type, Entity entity) {
         this.type = type;
-        this.entityID = entityID;
+        this.entity = entity;
     }
 
     public EventType getType() {
         return type;
     }
 
-    public String getEntityID() {
-        return entityID;
+    public Entity getEntity() {
+        return entity;
     }
     
     

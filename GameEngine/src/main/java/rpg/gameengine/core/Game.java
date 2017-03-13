@@ -62,14 +62,6 @@ public class Game implements ApplicationListener {
         map = new Sprite(new Texture(Gdx.files.internal("rpg/gameengine/grass.png")));
         map.setPosition(0, 0);
         map.setSize(gameData.getDisplayWidth(), gameData.getDisplayHeight());
-
-        for (Entity entity : world.getEntities()) {
-            Texture texture = new Texture(Gdx.files.internal(entity.getSpritePath()));
-            Sprite sprite = new Sprite(texture);
-            sprite.setSize(entity.getWidth(), entity.getHeight());
-
-            sprites.put(entity, sprite);
-        }
     }
 
     @Override
@@ -81,6 +73,7 @@ public class Game implements ApplicationListener {
         gameData.setDeltaTime(Math.min(Gdx.graphics.getDeltaTime(), 0.0167f));
         update();
         handlePlayerCamera();
+        loadSprites();
         draw();
         gameData.getKeys().update();
     }
@@ -114,6 +107,17 @@ public class Game implements ApplicationListener {
         }
     }
 
+    private void loadSprites() {
+        for (Entity entity : world.getEntities()) {
+            if (sprites.get(entity) == null) {
+                Texture texture = new Texture(Gdx.files.internal(entity.getSpritePath()));
+                Sprite sprite = new Sprite(texture);
+                sprite.setSize(entity.getWidth(), entity.getHeight());
+                sprites.put(entity, sprite);
+            }
+        }
+    }
+
     private void draw() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.setProjectionMatrix(playerCamera.combined);
@@ -135,9 +139,9 @@ public class Game implements ApplicationListener {
             font.draw(batch, "Zoom: " + gameData.getCameraZoom(), 7.5f, 120);
             font.draw(batch, "X: " + player.getPosition().getX(), 7.5f, 100);
             font.draw(batch, "Y: " + player.getPosition().getY(), 7.5f, 80);
-            font.draw(batch, "DX: " + player.getMovement().getX(), 7.5f, 60);
-            font.draw(batch, "DY: " + player.getMovement().getY(), 7.5f, 40);
-            font.draw(batch, "Rotation: " + player.getMovement().getAngle(), 7.5f, 20);
+            font.draw(batch, "DX: " + player.getVelocity().getX(), 7.5f, 60);
+            font.draw(batch, "DY: " + player.getVelocity().getY(), 7.5f, 40);
+            font.draw(batch, "Rotation: " + player.getVelocity().getAngle(), 7.5f, 20);
         }
     }
 
@@ -148,6 +152,7 @@ public class Game implements ApplicationListener {
     private void drawEntitySprites() {
         for (Entity entity : world.getEntities()) {
             Sprite sprite = sprites.get(entity);
+            sprite.setSize(entity.getWidth(), entity.getHeight());
             sprite.setOriginCenter();
             sprite.setRotation(entity.getDirection());
             sprite.setPosition(entity.getPosition().getX() - entity.getWidth() / 2, entity.getPosition().getY() - entity.getHeight() / 2);

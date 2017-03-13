@@ -1,8 +1,12 @@
 package rpg.common.data;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import rpg.common.entities.Entity;
 import rpg.common.events.Event;
 import rpg.common.events.EventType;
 
@@ -15,6 +19,19 @@ public class GameData {
     private boolean showDebug;
     private List<Event> events = new CopyOnWriteArrayList<>();
     private final GameKeys keys = new GameKeys();
+    private Map<Entity, Entity> weapons = new ConcurrentHashMap<>();
+    
+    public Collection<Entity> getWeapons() {
+        return weapons.values();
+    }
+    
+    public void addWeapon(Entity entity, Entity weapon) {
+        weapons.put(entity, weapon);
+    }
+    
+    public Entity getWeapon(Entity entity) {
+        return weapons.get(entity);
+    }
 
     public boolean isShowDebug() {
         return showDebug;

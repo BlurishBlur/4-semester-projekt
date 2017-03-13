@@ -27,18 +27,18 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
     @Override
     public void process(GameData gameData, World world) {
         Entity player = world.getEntity(EntityType.PLAYER);
-        player.getMovement().set(0, 0);
+        player.getVelocity().set(0, 0);
         if (gameData.getKeys().isDown(GameKeys.W)) {
-            player.getMovement().addY(player.getMovementSpeed());
+            player.getVelocity().addY(player.getMovementSpeed());
         }
         else if (gameData.getKeys().isDown(GameKeys.S)) {
-            player.getMovement().subtractY(player.getMovementSpeed());
+            player.getVelocity().subtractY(player.getMovementSpeed());
         }
         if (gameData.getKeys().isDown(GameKeys.A)) {
-            player.getMovement().subtractX(player.getMovementSpeed());
+            player.getVelocity().subtractX(player.getMovementSpeed());
         }
         else if (gameData.getKeys().isDown(GameKeys.D)) {
-            player.getMovement().addX(player.getMovementSpeed());
+            player.getVelocity().addX(player.getMovementSpeed());
         }
     }
 

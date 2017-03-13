@@ -16,14 +16,17 @@ public class MovementControlSystem implements IEntityProcessingService {
     public void process(GameData gameData, World world) {
         for (Entity entity : world.getEntities()) {
             float deltaTime = gameData.getDeltaTime();
-            entity.getMovement().scalar(deltaTime);
-            if (entity.getMovement().isDiagonal()) {
-                entity.getMovement().normalize(entity.getMovementSpeed());
+            entity.getVelocity().scalar(deltaTime);
+            if (entity.getVelocity().isDiagonal()) {
+                entity.getVelocity().normalize(entity.getMovementSpeed());
             }
-            if (entity.getMovement().isMoving()) {
-                entity.setDirection(entity.getMovement().getAngle());
+            if (entity.getVelocity().isMoving()) {
+                entity.setDirection(entity.getVelocity().getAngle());
             }
-            entity.getPosition().add(entity.getMovement());
+            entity.getPosition().add(entity.getVelocity());
+            if(gameData.getWeapon(entity) != null) {
+                gameData.getWeapon(entity).getPosition().set(entity.getPosition());
+            }
         }
     }
 

@@ -87,6 +87,16 @@
             <artifactId>Collision</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>Combat</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>AcquireWeapon</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

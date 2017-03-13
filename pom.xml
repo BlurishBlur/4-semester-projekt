@@ -65,6 +65,8 @@
         <module>Movement</module>
         <module>Zoom</module>
         <module>Collision</module>
+        <module>Combat</module>
+        <module>AcquireWeapon</module>
     </modules>
 
     <properties>

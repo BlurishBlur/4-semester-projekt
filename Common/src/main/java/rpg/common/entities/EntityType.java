@@ -2,6 +2,6 @@ package rpg.common.entities;
 
 public enum EntityType {
     
-    PLAYER, ENEMY
+    PLAYER, ENEMY, MELEE
     
 }

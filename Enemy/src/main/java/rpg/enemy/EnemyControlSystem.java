@@ -26,7 +26,7 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
     @Override
     public void process(GameData gameData, World world) {
         for (Entity enemy : world.getEntities(EntityType.ENEMY)) {
-            enemy.getMovement().set(0, 0);
+            enemy.getVelocity().set(0, 0);
             enemy.reduceActionTimer(gameData.getDeltaTime());
             if (enemy.getActionTimer() < 0) {
                 enemy.setVerticalMovementChance(Math.random());
@@ -34,16 +34,16 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
                 enemy.setActionTimer((int) (Math.random() * 4) + 1);
             }
             if (enemy.getVerticalMovementChance() < 0.20) { // up
-                enemy.getMovement().addY(enemy.getMovementSpeed());
+                enemy.getVelocity().addY(enemy.getMovementSpeed());
             }
             else if (enemy.getVerticalMovementChance() < 0.40) { // down
-                enemy.getMovement().subtractY(enemy.getMovementSpeed());
+                enemy.getVelocity().subtractY(enemy.getMovementSpeed());
             }
             if (enemy.getHorizontalMovementChance() < 0.20) { // left
-                enemy.getMovement().subtractX(enemy.getMovementSpeed());
+                enemy.getVelocity().subtractX(enemy.getMovementSpeed());
             }
             else if (enemy.getHorizontalMovementChance() < 0.40) { // right
-                enemy.getMovement().addX(enemy.getMovementSpeed());
+                enemy.getVelocity().addX(enemy.getMovementSpeed());
             }
         }
     }
