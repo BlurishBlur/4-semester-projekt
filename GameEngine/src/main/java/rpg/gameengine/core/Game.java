@@ -136,13 +136,13 @@ public class Game implements ApplicationListener {
         if (gameData.isShowDebug()) {
             Entity player = world.getEntity(EntityType.PLAYER);
             batch.setProjectionMatrix(hudCamera.combined);
-            font.draw(batch, "FPS: " + fps, 7.5f, 140);
-            font.draw(batch, "Zoom: " + gameData.getCameraZoom(), 7.5f, 120);
-            font.draw(batch, "X: " + player.getPosition().getX(), 7.5f, 100);
-            font.draw(batch, "Y: " + player.getPosition().getY(), 7.5f, 80);
-            font.draw(batch, "DX: " + player.getVelocity().getX(), 7.5f, 60);
-            font.draw(batch, "DY: " + player.getVelocity().getY(), 7.5f, 40);
-            font.draw(batch, "Rotation: " + player.getVelocity().getAngle(), 7.5f, 20);
+            font.draw(batch, "FPS: " + fps + "\n" +
+                    "Zoom: " + gameData.getCameraZoom() + "\n" +
+                    "X: " + player.getPosition().getX() + "\n" +
+                    "Y: " + player.getPosition().getY() + "\n" +
+                    "DX: " + player.getVelocity().getX() + "\n" +
+                    "DY: " + player.getVelocity().getY() + "\n" +
+                    "Rotation: " + player.getVelocity().getAngle(), 7.5f, 127.5f);
         }
     }
 

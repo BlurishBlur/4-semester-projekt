@@ -45,7 +45,7 @@ public class CombatSystem implements IEntityProcessingService {
             if (event.getType() == EventType.PLAYER_ATTACK) {
                 for (Entity enemy : world.getEntities(EntityType.ENEMY)) {
                     if (isHit(gameData.getWeapon(event.getEntity()), enemy)) {
-                        System.out.println("ramt");
+                        System.out.println("enemy hit");
                     }
                 }
                 gameData.removeEvent(event);
