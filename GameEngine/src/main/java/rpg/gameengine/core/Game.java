@@ -74,7 +74,9 @@ public class Game implements ApplicationListener {
         update();
         handlePlayerCamera();
         loadSprites();
+        long currentTime = System.currentTimeMillis();
         draw();
+        System.out.println("Draw: " + (System.currentTimeMillis() - currentTime) + " ms.");
         gameData.getKeys().update();
     }
 
@@ -139,10 +141,10 @@ public class Game implements ApplicationListener {
             font.draw(batch, "FPS: " + fps + "\n" +
                     "Zoom: " + gameData.getCameraZoom() + "\n" +
                     "X: " + player.getPosition().getX() + "\n" +
-                    "Y: " + player.getPosition().getY() + "\n" +
+                    "Y: " + player.getPosition().getY() + "\n" /*+
                     "DX: " + player.getVelocity().getX() + "\n" +
                     "DY: " + player.getVelocity().getY() + "\n" +
-                    "Rotation: " + player.getVelocity().getAngle(), 7.5f, 127.5f);
+                    "Rotation: " + player.getVelocity().getAngle()*/, 7.5f, 127.5f);
         }
     }
 

@@ -3,6 +3,7 @@ package rpg.common.data;
 import rpg.common.entities.Entity;
 import rpg.common.entities.EntityType;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -29,12 +30,11 @@ public class World {
     }
 
     public Entity getEntity(EntityType entityType) {
-        for (Entity entity : entities.values()) {
-            if (entity.getType() == entityType) {
-                return entity;
-            }
-        }
-        return null;
+        return entities.values()
+                .parallelStream()
+                .filter(entity -> entity.getType() == entityType)
+                .findFirst()
+                .get();
     }
 
     public Collection<Entity> getEntities() {
