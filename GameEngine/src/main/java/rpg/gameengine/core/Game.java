@@ -113,6 +113,7 @@ public class Game implements ApplicationListener {
                 Texture texture = new Texture(Gdx.files.internal(entity.getSpritePath()));
                 Sprite sprite = new Sprite(texture);
                 sprite.setSize(entity.getWidth(), entity.getHeight());
+                sprite.setOriginCenter();
                 sprites.put(entity, sprite);
             }
         }
@@ -150,10 +151,14 @@ public class Game implements ApplicationListener {
     }
 
     private void drawEntitySprites() {
-        for (Entity entity : world.getEntities()) {
+        for (Entity entity : world.getEntities(EntityType.PLAYER, EntityType.ENEMY)) {
             Sprite sprite = sprites.get(entity);
-            sprite.setSize(entity.getWidth(), entity.getHeight());
-            sprite.setOriginCenter();
+            sprite.setRotation(entity.getDirection());
+            sprite.setPosition(entity.getPosition().getX() - entity.getWidth() / 2, entity.getPosition().getY() - entity.getHeight() / 2);
+            sprite.draw(batch);
+        }
+        for (Entity entity : world.getEntities(EntityType.MELEE)) {
+            Sprite sprite = sprites.get(entity);
             sprite.setRotation(entity.getDirection());
             sprite.setPosition(entity.getPosition().getX() - entity.getWidth() / 2, entity.getPosition().getY() - entity.getHeight() / 2);
             sprite.draw(batch);
