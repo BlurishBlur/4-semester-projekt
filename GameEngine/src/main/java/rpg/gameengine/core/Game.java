@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,9 +75,7 @@ public class Game implements ApplicationListener {
         update();
         handlePlayerCamera();
         loadSprites();
-        long currentTime = System.currentTimeMillis();
         draw();
-        System.out.println("Draw: " + (System.currentTimeMillis() - currentTime) + " ms.");
         gameData.getKeys().update();
     }
 
@@ -84,20 +83,23 @@ public class Game implements ApplicationListener {
         Entity player = world.getEntity(EntityType.PLAYER);
         playerCamera.viewportWidth = gameData.getDisplayWidth() / gameData.getCameraZoom();
         playerCamera.viewportHeight = gameData.getDisplayHeight() / gameData.getCameraZoom();
-        playerCamera.position.set(player.getPosition().getX(), player.getPosition().getY(), 0);
-        if (playerCamera.position.x - playerCamera.viewportWidth / 2 < 0) {
-            playerCamera.position.set(0 + playerCamera.viewportWidth / 2, playerCamera.position.y, 0);
+        if (player.getPosition().getX() != playerCamera.position.x || player.getPosition().getY() != playerCamera.position.y) {
+            //playerCamera.position.set(player.getPosition().getX(), player.getPosition().getY(), 0);
+            playerCamera.position.lerp(new Vector3(player.getPosition().getX(), player.getPosition().getY(), 0), 0.1f);
+            if (playerCamera.position.x - playerCamera.viewportWidth / 2 < 0) {
+                playerCamera.position.set(0 + playerCamera.viewportWidth / 2, playerCamera.position.y, 0);
+            }
+            else if (playerCamera.position.x + playerCamera.viewportWidth / 2 > gameData.getDisplayWidth()) {
+                playerCamera.position.set(gameData.getDisplayWidth() - playerCamera.viewportWidth / 2, playerCamera.position.y, 0);
+            }
+            if (playerCamera.position.y - playerCamera.viewportHeight / 2 < 0) {
+                playerCamera.position.set(playerCamera.position.x, 0 + playerCamera.viewportHeight / 2, 0);
+            }
+            else if (playerCamera.position.y + playerCamera.viewportHeight / 2 > gameData.getDisplayHeight()) {
+                playerCamera.position.set(playerCamera.position.x, gameData.getDisplayHeight() - playerCamera.viewportHeight / 2, 0);
+            }
+            playerCamera.update();
         }
-        else if (playerCamera.position.x + playerCamera.viewportWidth / 2 > gameData.getDisplayWidth()) {
-            playerCamera.position.set(gameData.getDisplayWidth() - playerCamera.viewportWidth / 2, playerCamera.position.y, 0);
-        }
-        if (playerCamera.position.y - playerCamera.viewportHeight / 2 < 0) {
-            playerCamera.position.set(playerCamera.position.x, 0 + playerCamera.viewportHeight / 2, 0);
-        }
-        else if (playerCamera.position.y + playerCamera.viewportHeight / 2 > gameData.getDisplayHeight()) {
-            playerCamera.position.set(playerCamera.position.x, gameData.getDisplayHeight() - playerCamera.viewportHeight / 2, 0);
-        }
-        playerCamera.update();
     }
 
     private void update() {
@@ -138,10 +140,10 @@ public class Game implements ApplicationListener {
         if (gameData.isShowDebug()) {
             Entity player = world.getEntity(EntityType.PLAYER);
             batch.setProjectionMatrix(hudCamera.combined);
-            font.draw(batch, "FPS: " + fps + "\n" +
-                    "Zoom: " + gameData.getCameraZoom() + "\n" +
-                    "X: " + player.getPosition().getX() + "\n" +
-                    "Y: " + player.getPosition().getY() + "\n" /*+
+            font.draw(batch, "FPS: " + fps + "\n"
+                    + "Zoom: " + gameData.getCameraZoom() + "\n"
+                    + "X: " + player.getPosition().getX() + "\n"
+                    + "Y: " + player.getPosition().getY() + "\n" /*+
                     "DX: " + player.getVelocity().getX() + "\n" +
                     "DY: " + player.getVelocity().getY() + "\n" +
                     "Rotation: " + player.getVelocity().getAngle()*/, 7.5f, 127.5f);
@@ -149,7 +151,9 @@ public class Game implements ApplicationListener {
     }
 
     private void drawMap() {
+        batch.disableBlending();
         map.draw(batch);
+        batch.enableBlending();
     }
 
     private void drawEntitySprites() {
