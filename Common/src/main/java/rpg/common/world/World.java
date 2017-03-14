@@ -1,9 +1,9 @@
 package rpg.common.world;
 
-import java.io.File;
 import rpg.common.entities.Entity;
 import rpg.common.entities.EntityType;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -13,19 +13,23 @@ import rpg.common.util.Vector;
 public class World {
 
     private final int WORLD_WIDTH = 2;
-    private final int WORLD_HEIGHT = 1;
-    private Room[][] world = new Room[WORLD_WIDTH][WORLD_HEIGHT];
+    private final int WORLD_HEIGHT = 2;
+    private Room[][] world;
     private Room currentRoom;
     private final Map<String, Entity> entities = new ConcurrentHashMap<>();
     
     public World() {
-        for(int i = 0; i < WORLD_WIDTH; i++) {
-            for(int j = 0; j < WORLD_HEIGHT; j++) {
-                //world[i][j] = new Room();
-            }
-        }
-        world[0][0] = new Room("rpg/gameengine/grass.png");
-        world[1][0] = new Room("rpg/gameengine/player.png");
+        world = new Room[WORLD_WIDTH][WORLD_HEIGHT];
+        Room r1 = new Room("rpg/gameengine/grass.png");
+        r1.canExitRight(true);
+        r1.canExitUp(true);
+        world[0][0] = r1;
+        Room r2 = new Room("rpg/gameengine/player.png");
+        r2.canExitLeft(true);
+        world[1][0] = r2;
+        Room r3 = new Room("rpg/gameengine/enemy.png");
+        r3.canExitDown(true);
+        world[0][1] = r3;
     }
     
     public void setCurrentRoom(Vector worldPosition) {

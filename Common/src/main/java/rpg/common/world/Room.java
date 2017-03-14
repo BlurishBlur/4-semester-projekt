@@ -13,14 +13,46 @@ public class Room {
     private final Map<String, Entity> entities = new ConcurrentHashMap<>();
     private int width = 1280;
     private int height = 720;
+    private boolean canExitUp;
+    private boolean canExitDown;
+    private boolean canExitLeft;
+    private boolean canExitRight;
     private String spritePath;
     
     public Room(String spritePath) {
         this.spritePath = spritePath;
     }
     
+    public void canExitUp(boolean canExitUp) {
+        this.canExitUp = canExitUp;
+    }
+    
+    public void canExitDown(boolean canExitDown) {
+        this.canExitDown = canExitDown;
+    }
+    
+    public void canExitLeft(boolean canExitLeft) {
+        this.canExitLeft = canExitLeft;
+    }
+    
+    public void canExitRight(boolean canExitRight) {
+        this.canExitRight = canExitRight;
+    }
+    
+    public boolean canExitUp() {
+        return canExitUp;
+    }
+    
+    public boolean canExitDown() {
+        return canExitDown;
+    }
+    
+    public boolean canExitLeft() {
+        return canExitLeft;
+    }
+    
     public boolean canExitRight() {
-        return true;
+        return canExitRight;
     }
     
     public void addEntity(Entity entity) {

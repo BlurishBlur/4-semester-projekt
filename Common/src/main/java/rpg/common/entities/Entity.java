@@ -11,6 +11,7 @@ public class Entity implements Serializable {
     private Vector roomPosition;
     private Vector velocity;
     private Vector worldPosition;
+    private Vector worldVelocity;
     private float movementSpeed;
     private int currentHealth;
     private int maxHealth;
@@ -20,21 +21,17 @@ public class Entity implements Serializable {
     private float direction;
     private float width;
     private float height;
-    private boolean canMove = true;
     private String spritePath;
     
     public Entity() {
         roomPosition = new Vector();
         velocity = new Vector();
         worldPosition = new Vector();
+        worldVelocity = new Vector();
     }
-
-    public boolean isCanMove() {
-        return canMove;
-    }
-
-    public void setCanMove(boolean canMove) {
-        this.canMove = canMove;
+    
+    public Vector getWorldVelocity() {
+        return worldVelocity;
     }
     
     public Vector getWorldPosition() {

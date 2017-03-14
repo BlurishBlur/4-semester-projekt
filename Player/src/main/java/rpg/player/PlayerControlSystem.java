@@ -11,8 +11,7 @@ import rpg.common.services.IEntityProcessingService;
 import rpg.common.services.IGamePluginService;
 
 @ServiceProviders(value = {
-    @ServiceProvider(service = IEntityProcessingService.class)
-    ,
+    @ServiceProvider(service = IEntityProcessingService.class),
     @ServiceProvider(service = IGamePluginService.class)
 })
 public class PlayerControlSystem implements IEntityProcessingService, IGamePluginService {
@@ -29,17 +28,17 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
     public void process(GameData gameData, World world) {
         Entity player = world.getPlayer();
         player.getVelocity().set(0, 0);
-        if (player.isCanMove()) {
-            if (gameData.getKeys().isDown(GameKeys.W)) {
-                player.getVelocity().addY(player.getMovementSpeed());
-            } else if (gameData.getKeys().isDown(GameKeys.S)) {
-                player.getVelocity().subtractY(player.getMovementSpeed());
-            }
-            if (gameData.getKeys().isDown(GameKeys.A)) {
-                player.getVelocity().subtractX(player.getMovementSpeed());
-            } else if (gameData.getKeys().isDown(GameKeys.D)) {
-                player.getVelocity().addX(player.getMovementSpeed());
-            }
+        if (gameData.getKeys().isDown(GameKeys.W)) {
+            player.getVelocity().addY(player.getMovementSpeed());
+        }
+        else if (gameData.getKeys().isDown(GameKeys.S)) {
+            player.getVelocity().subtractY(player.getMovementSpeed());
+        }
+        if (gameData.getKeys().isDown(GameKeys.A)) {
+            player.getVelocity().subtractX(player.getMovementSpeed());
+        }
+        else if (gameData.getKeys().isDown(GameKeys.D)) {
+            player.getVelocity().addX(player.getMovementSpeed());
         }
     }
 
