@@ -31,15 +31,17 @@ public class Game implements ApplicationListener {
     private final GameData gameData = new GameData();
     private World world = new World();
     private int fps;
+    private int frames;
     private long fpsTimer;
     private SpriteBatch batch;
     private BitmapFont font;
     private Map<Entity, Sprite> sprites;
 
     private Sprite map; // TODO load den her sprite ordentligt
-
+    
     @Override
     public void create() {
+        fpsTimer = System.currentTimeMillis();
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
@@ -47,7 +49,6 @@ public class Game implements ApplicationListener {
         sprites = new HashMap<>();
         batch = new SpriteBatch();
         font = new BitmapFont();
-        fpsTimer = System.currentTimeMillis();
 
         for (IGamePluginService plugin : getGamePluginServices()) {
             plugin.start(gameData, world);
@@ -68,9 +69,11 @@ public class Game implements ApplicationListener {
     @Override
     public void render() {
         if (System.currentTimeMillis() - fpsTimer > 1000) {
-            fps = (int) (gameData.getDeltaTime() * 3600);
+            fps = frames;
+            frames = 0;
             fpsTimer = System.currentTimeMillis();
         }
+        frames++;
         gameData.setDeltaTime(Math.min(Gdx.graphics.getDeltaTime(), 0.0167f));
         update();
         handlePlayerCamera();
@@ -85,7 +88,7 @@ public class Game implements ApplicationListener {
         playerCamera.viewportHeight = gameData.getDisplayHeight() / gameData.getCameraZoom();
         if (player.getPosition().getX() != playerCamera.position.x || player.getPosition().getY() != playerCamera.position.y) {
             //playerCamera.position.set(player.getPosition().getX(), player.getPosition().getY(), 0);
-            playerCamera.position.lerp(new Vector3(player.getPosition().getX(), player.getPosition().getY(), 0), 0.1f);
+            playerCamera.position.lerp(new Vector3(player.getPosition().getX(), player.getPosition().getY(), 0), 2.5f * gameData.getDeltaTime());
             if (playerCamera.position.x - playerCamera.viewportWidth / 2 < 0) {
                 playerCamera.position.set(0 + playerCamera.viewportWidth / 2, playerCamera.position.y, 0);
             } else if (playerCamera.position.x + playerCamera.viewportWidth / 2 > gameData.getDisplayWidth()) {

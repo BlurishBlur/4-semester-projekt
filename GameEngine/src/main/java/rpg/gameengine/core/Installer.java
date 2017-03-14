@@ -15,10 +15,10 @@ public class Installer extends ModuleInstall {
         cfg.title = "RPG";
         cfg.width = 1280;
         cfg.height = 720;
+        cfg.useGL30 = false;
         cfg.foregroundFPS = 60;
         cfg.backgroundFPS = 60;
-        cfg.useGL30 = false;
-        //cfg.resizable = false;
+        cfg.vSyncEnabled = true;
         
         new LwjglApplication(game, cfg);
     }
