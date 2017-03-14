@@ -88,14 +88,12 @@ public class Game implements ApplicationListener {
             playerCamera.position.lerp(new Vector3(player.getPosition().getX(), player.getPosition().getY(), 0), 0.1f);
             if (playerCamera.position.x - playerCamera.viewportWidth / 2 < 0) {
                 playerCamera.position.set(0 + playerCamera.viewportWidth / 2, playerCamera.position.y, 0);
-            }
-            else if (playerCamera.position.x + playerCamera.viewportWidth / 2 > gameData.getDisplayWidth()) {
+            } else if (playerCamera.position.x + playerCamera.viewportWidth / 2 > gameData.getDisplayWidth()) {
                 playerCamera.position.set(gameData.getDisplayWidth() - playerCamera.viewportWidth / 2, playerCamera.position.y, 0);
             }
             if (playerCamera.position.y - playerCamera.viewportHeight / 2 < 0) {
                 playerCamera.position.set(playerCamera.position.x, 0 + playerCamera.viewportHeight / 2, 0);
-            }
-            else if (playerCamera.position.y + playerCamera.viewportHeight / 2 > gameData.getDisplayHeight()) {
+            } else if (playerCamera.position.y + playerCamera.viewportHeight / 2 > gameData.getDisplayHeight()) {
                 playerCamera.position.set(playerCamera.position.x, gameData.getDisplayHeight() - playerCamera.viewportHeight / 2, 0);
             }
             playerCamera.update();

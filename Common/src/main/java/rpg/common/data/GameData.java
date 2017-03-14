@@ -18,8 +18,12 @@ public class GameData {
     private float cameraZoom;
     private boolean showDebug;
     private List<Event> events = new CopyOnWriteArrayList<>();
-    private final GameKeys keys = new GameKeys();
     private Map<Entity, Entity> weapons = new ConcurrentHashMap<>();
+    private GameKeys keys = new GameKeys();
+    
+    public GameKeys getKeys() {
+        return keys;
+    }
     
     public Collection<Entity> getWeapons() {
         return weapons.values();
@@ -71,10 +75,6 @@ public class GameData {
 
     public void addEvent(Event event) {
         events.add(event);
-    }
-
-    public GameKeys getKeys() {
-        return keys;
     }
 
     public float getDeltaTime() {
