@@ -8,8 +8,9 @@ public class Entity implements Serializable {
     
     private final UUID ID = UUID.randomUUID();
     private EntityType type;
-    private Vector position;
+    private Vector roomPosition;
     private Vector velocity;
+    private Vector worldPosition;
     private float movementSpeed;
     private int currentHealth;
     private int maxHealth;
@@ -19,15 +20,29 @@ public class Entity implements Serializable {
     private float direction;
     private float width;
     private float height;
+    private boolean canMove = true;
     private String spritePath;
     
     public Entity() {
-        position = new Vector();
+        roomPosition = new Vector();
         velocity = new Vector();
+        worldPosition = new Vector();
     }
 
-    public Vector getPosition() {
-        return position;
+    public boolean isCanMove() {
+        return canMove;
+    }
+
+    public void setCanMove(boolean canMove) {
+        this.canMove = canMove;
+    }
+    
+    public Vector getWorldPosition() {
+        return worldPosition;
+    }
+
+    public Vector getRoomPosition() {
+        return roomPosition;
     }
     
     public Vector getVelocity() {

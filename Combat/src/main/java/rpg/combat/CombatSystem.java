@@ -4,7 +4,7 @@ import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 import rpg.common.data.GameData;
 import rpg.common.data.GameKeys;
-import rpg.common.data.World;
+import rpg.common.world.World;
 import rpg.common.entities.Entity;
 import rpg.common.entities.EntityType;
 import rpg.common.events.Event;
@@ -19,24 +19,24 @@ public class CombatSystem implements IEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
-        Entity player = world.getEntity(EntityType.PLAYER);
+        Entity player = world.getPlayer();
         if (gameData.getKeys().isPressed(GameKeys.UP)) {
-            gameData.getWeapon(player).getPosition().set(player.getPosition().plus(new Vector(0, player.getHeight() / 2)));
+            gameData.getWeapon(player).getRoomPosition().set(player.getRoomPosition().plus(new Vector(0, player.getHeight() / 2)));
             gameData.getWeapon(player).setDirection(0);
             gameData.addEvent(new Event(EventType.PLAYER_ATTACK, player));
         }
         else if (gameData.getKeys().isPressed(GameKeys.DOWN)) {
-            gameData.getWeapon(player).getPosition().set(player.getPosition().plus(new Vector(0, -player.getHeight() / 2)));
+            gameData.getWeapon(player).getRoomPosition().set(player.getRoomPosition().plus(new Vector(0, -player.getHeight() / 2)));
             gameData.getWeapon(player).setDirection(180);
             gameData.addEvent(new Event(EventType.PLAYER_ATTACK, player));
         }
         else if (gameData.getKeys().isPressed(GameKeys.LEFT)) {
-            gameData.getWeapon(player).getPosition().set(player.getPosition().plus(new Vector(-player.getWidth() / 2, 0)));
+            gameData.getWeapon(player).getRoomPosition().set(player.getRoomPosition().plus(new Vector(-player.getWidth() / 2, 0)));
             gameData.getWeapon(player).setDirection(90);
             gameData.addEvent(new Event(EventType.PLAYER_ATTACK, player));
         }
         else if (gameData.getKeys().isPressed(GameKeys.RIGHT)) {
-            gameData.getWeapon(player).getPosition().set(player.getPosition().plus(new Vector(player.getWidth() / 2, 0)));
+            gameData.getWeapon(player).getRoomPosition().set(player.getRoomPosition().plus(new Vector(player.getWidth() / 2, 0)));
             gameData.getWeapon(player).setDirection(270);
             gameData.addEvent(new Event(EventType.PLAYER_ATTACK, player));
         }
@@ -54,8 +54,8 @@ public class CombatSystem implements IEntityProcessingService {
     }
 
     private boolean isHit(Entity weaponAttack, Entity attackee) {
-        float a = weaponAttack.getPosition().getX() - attackee.getPosition().getX();
-        float b = weaponAttack.getPosition().getY() - attackee.getPosition().getY();
+        float a = weaponAttack.getRoomPosition().getX() - attackee.getRoomPosition().getX();
+        float b = weaponAttack.getRoomPosition().getY() - attackee.getRoomPosition().getY();
 
         double c = Math.sqrt((double) (a * a) + (double) (b * b));
 

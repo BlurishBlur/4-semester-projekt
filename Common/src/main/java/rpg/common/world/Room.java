@@ -1,18 +1,28 @@
-package rpg.common.data;
+package rpg.common.world;
 
-import rpg.common.entities.Entity;
-import rpg.common.entities.EntityType;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import rpg.common.entities.Entity;
+import rpg.common.entities.EntityType;
 
-public class World {
-
+public class Room {
+    
     private final Map<String, Entity> entities = new ConcurrentHashMap<>();
-
+    private int width = 1280;
+    private int height = 720;
+    private String spritePath;
+    
+    public Room(String spritePath) {
+        this.spritePath = spritePath;
+    }
+    
+    public boolean canExitRight() {
+        return true;
+    }
+    
     public void addEntity(Entity entity) {
         entities.put(entity.getID(), entity);
     }
@@ -53,4 +63,30 @@ public class World {
         return results;
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public String getSpritePath() {
+        return spritePath;
+    }
+
+    public void setSpritePath(String spritePath) {
+        this.spritePath = spritePath;
+    }
+    
+    
+    
 }

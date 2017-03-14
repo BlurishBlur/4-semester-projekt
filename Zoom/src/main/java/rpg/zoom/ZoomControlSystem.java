@@ -4,7 +4,7 @@ import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 import rpg.common.data.GameData;
 import rpg.common.data.GameKeys;
-import rpg.common.data.World;
+import rpg.common.world.World;
 import rpg.common.services.IEntityProcessingService;
 
 @ServiceProviders(value = {

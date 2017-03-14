@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector3;
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,10 +18,11 @@ import rpg.common.entities.Entity;
 import rpg.common.entities.EntityType;
 import rpg.common.data.GameData;
 import rpg.common.data.GameKeys;
-import rpg.common.data.World;
+import rpg.common.world.World;
 import rpg.common.services.IEntityProcessingService;
 import rpg.common.services.IGamePluginService;
 import rpg.common.services.IPostEntityProcessingService;
+import rpg.common.world.Room;
 import rpg.gameengine.managers.GameInputProcessor;
 
 public class Game implements ApplicationListener {
@@ -36,9 +38,8 @@ public class Game implements ApplicationListener {
     private SpriteBatch batch;
     private BitmapFont font;
     private Map<Entity, Sprite> sprites;
+    private Sprite currentRoom, previousRoom;
 
-    private Sprite map; // TODO load den her sprite ordentligt
-    
     @Override
     public void create() {
         fpsTimer = System.currentTimeMillis();
@@ -54,16 +55,23 @@ public class Game implements ApplicationListener {
             plugin.start(gameData, world);
         }
 
+        world.setCurrentRoom(world.getPlayer().getWorldPosition());
+        loadRoomSprite(0, 0);
+
         playerCamera = new OrthographicCamera(gameData.getDisplayWidth() / gameData.getCameraZoom(), gameData.getDisplayHeight() / gameData.getCameraZoom());
         playerCamera.position.set(playerCamera.viewportWidth / 2, playerCamera.viewportHeight / 2, 0);
         playerCamera.update();
         hudCamera = new OrthographicCamera(gameData.getDisplayWidth(), gameData.getDisplayHeight());
         hudCamera.position.set(gameData.getDisplayWidth() / 2, gameData.getDisplayHeight() / 2, 0);
         hudCamera.update();
+    }
 
-        map = new Sprite(new Texture(Gdx.files.internal("rpg/gameengine/grass.png")));
-        map.setPosition(0, 0);
-        map.setSize(gameData.getDisplayWidth(), gameData.getDisplayHeight());
+    private void loadRoomSprite(int x, int y) {
+        Room room = world.getCurrentRoom();
+        previousRoom = currentRoom;
+        currentRoom = new Sprite(new Texture(room.getSpritePath()));
+        currentRoom.setPosition(x, y);
+        currentRoom.setSize(room.getWidth(), room.getHeight());
     }
 
     @Override
@@ -76,6 +84,7 @@ public class Game implements ApplicationListener {
         frames++;
         gameData.setDeltaTime(Math.min(Gdx.graphics.getDeltaTime(), 0.0167f));
         update();
+        //handleRoomChange();
         handlePlayerCamera();
         loadSprites();
         draw();
@@ -83,23 +92,57 @@ public class Game implements ApplicationListener {
     }
 
     private void handlePlayerCamera() {
-        Entity player = world.getEntity(EntityType.PLAYER);
+        Entity player = world.getPlayer();
         playerCamera.viewportWidth = gameData.getDisplayWidth() / gameData.getCameraZoom();
         playerCamera.viewportHeight = gameData.getDisplayHeight() / gameData.getCameraZoom();
-        if (player.getPosition().getX() != playerCamera.position.x || player.getPosition().getY() != playerCamera.position.y) {
+        if (gameData.isChangingRoom()) {
+            if (world.getRoom(world.getPlayer().getWorldPosition()) != world.getCurrentRoom()) {
+                world.setCurrentRoom(world.getPlayer().getWorldPosition());
+                loadRoomSprite(world.getCurrentRoom().getWidth() + 1, 0);
+                player.getRoomPosition().setX(world.getCurrentRoom().getWidth() + (player.getWidth() / 2));
+                System.out.println("loading new map");
+                player.setCanMove(true);
+            } else {
+                playerCamera.position.interpolate(new Vector3(world.getCurrentRoom().getWidth() + playerCamera.viewportWidth / 2, playerCamera.viewportHeight / 2, 0), 1.0f * gameData.getDeltaTime(), Interpolation.linear);
+                playerCamera.update();
+                System.out.println("panning camera");
+            }
+        }
+        else if (player.getRoomPosition().getX() != playerCamera.position.x || player.getRoomPosition().getY() != playerCamera.position.y) {
             //playerCamera.position.set(player.getPosition().getX(), player.getPosition().getY(), 0);
-            playerCamera.position.lerp(new Vector3(player.getPosition().getX(), player.getPosition().getY(), 0), 2.5f * gameData.getDeltaTime());
+            playerCamera.position.lerp(new Vector3(player.getRoomPosition().getX(), player.getRoomPosition().getY(), 0), 2.5f * gameData.getDeltaTime());
             if (playerCamera.position.x - playerCamera.viewportWidth / 2 < 0) {
                 playerCamera.position.set(0 + playerCamera.viewportWidth / 2, playerCamera.position.y, 0);
-            } else if (playerCamera.position.x + playerCamera.viewportWidth / 2 > gameData.getDisplayWidth()) {
+            }
+            else if (playerCamera.position.x + playerCamera.viewportWidth / 2 > gameData.getDisplayWidth()) {
                 playerCamera.position.set(gameData.getDisplayWidth() - playerCamera.viewportWidth / 2, playerCamera.position.y, 0);
             }
             if (playerCamera.position.y - playerCamera.viewportHeight / 2 < 0) {
                 playerCamera.position.set(playerCamera.position.x, 0 + playerCamera.viewportHeight / 2, 0);
-            } else if (playerCamera.position.y + playerCamera.viewportHeight / 2 > gameData.getDisplayHeight()) {
+            }
+            else if (playerCamera.position.y + playerCamera.viewportHeight / 2 > gameData.getDisplayHeight()) {
                 playerCamera.position.set(playerCamera.position.x, gameData.getDisplayHeight() - playerCamera.viewportHeight / 2, 0);
             }
             playerCamera.update();
+        }
+
+    }
+
+    private void handleRoomChange() {
+        if (gameData.isChangingRoom()) {
+            System.out.println("hi");
+            if (world.getRoom(world.getPlayer().getWorldPosition()) != world.getCurrentRoom()) {
+                loadRoomSprite(world.getCurrentRoom().getWidth() + 1, 0);
+                world.setCurrentRoom(world.getPlayer().getWorldPosition());
+                System.out.println("loading new map");
+            } else {
+                if(previousRoom.getX() > 0) {
+                    previousRoom.translate(-1, 0);
+                }
+                playerCamera.position.lerp(new Vector3(world.getCurrentRoom().getWidth() + playerCamera.viewportWidth / 2, playerCamera.viewportHeight / 2, 0), 1.0f * gameData.getDeltaTime());
+                playerCamera.update();
+                System.out.println("panning camera");
+            }
         }
     }
 
@@ -139,12 +182,12 @@ public class Game implements ApplicationListener {
             gameData.setShowDebug(!gameData.isShowDebug());
         }
         if (gameData.isShowDebug()) {
-            Entity player = world.getEntity(EntityType.PLAYER);
+            Entity player = world.getPlayer();
             batch.setProjectionMatrix(hudCamera.combined);
             font.draw(batch, "FPS: " + fps + "\n"
                     + "Zoom: " + gameData.getCameraZoom() + "\n"
-                    + "X: " + player.getPosition().getX() + "\n"
-                    + "Y: " + player.getPosition().getY() + "\n" /*+
+                    + "X: " + player.getRoomPosition().getX() + "\n"
+                    + "Y: " + player.getRoomPosition().getY() + "\n" /*+
                     "DX: " + player.getVelocity().getX() + "\n" +
                     "DY: " + player.getVelocity().getY() + "\n" +
                     "Rotation: " + player.getVelocity().getAngle()*/, 7.5f, 127.5f);
@@ -153,7 +196,10 @@ public class Game implements ApplicationListener {
 
     private void drawMap() {
         batch.disableBlending();
-        map.draw(batch);
+        if (previousRoom != null) {
+            previousRoom.draw(batch);
+        }
+        currentRoom.draw(batch);
         batch.enableBlending();
     }
 
@@ -161,13 +207,13 @@ public class Game implements ApplicationListener {
         for (Entity entity : world.getEntities(EntityType.PLAYER, EntityType.ENEMY)) {
             Sprite sprite = sprites.get(entity);
             sprite.setRotation(entity.getDirection());
-            sprite.setPosition(entity.getPosition().getX() - entity.getWidth() / 2, entity.getPosition().getY() - entity.getHeight() / 2);
+            sprite.setPosition(entity.getRoomPosition().getX() - entity.getWidth() / 2, entity.getRoomPosition().getY() - entity.getHeight() / 2);
             sprite.draw(batch);
         }
         for (Entity entity : world.getEntities(EntityType.MELEE)) {
             Sprite sprite = sprites.get(entity);
             sprite.setRotation(entity.getDirection());
-            sprite.setPosition(entity.getPosition().getX() - entity.getWidth() / 2, entity.getPosition().getY() - entity.getHeight() / 2);
+            sprite.setPosition(entity.getRoomPosition().getX() - entity.getWidth() / 2, entity.getRoomPosition().getY() - entity.getHeight() / 2);
             sprite.draw(batch);
         }
     }

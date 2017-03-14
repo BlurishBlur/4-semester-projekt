@@ -17,9 +17,18 @@ public class GameData {
     private int displayHeight;
     private float cameraZoom;
     private boolean showDebug;
+    private boolean isChangingRoom;
     private List<Event> events = new CopyOnWriteArrayList<>();
     private Map<Entity, Entity> weapons = new ConcurrentHashMap<>();
     private GameKeys keys = new GameKeys();
+    
+    public void setIsChangingRoom(boolean isChangingRoom) {
+        this.isChangingRoom = isChangingRoom;
+    }
+    
+    public boolean isChangingRoom() {
+        return isChangingRoom;
+    }
     
     public GameKeys getKeys() {
         return keys;
