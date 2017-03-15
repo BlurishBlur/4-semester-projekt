@@ -82,12 +82,7 @@ public class Game implements ApplicationListener {
 
     @Override
     public void render() {
-        if (System.currentTimeMillis() - fpsTimer > 1000) {
-            fps = frames;
-            frames = 0;
-            fpsTimer = System.currentTimeMillis();
-        }
-        frames++;
+        calculateFPS();
         gameData.setDeltaTime(Math.min(Gdx.graphics.getDeltaTime(), 0.0167f));
         update();
         handlePlayerCamera();
@@ -100,11 +95,13 @@ public class Game implements ApplicationListener {
         Entity player = world.getPlayer();
         playerCamera.viewportWidth = gameData.getDisplayWidth() / gameData.getCameraZoom();
         playerCamera.viewportHeight = gameData.getDisplayHeight() / gameData.getCameraZoom();
-        if (gameData.isChangingRoom()) {
-            makeCameraChangeRoom();
-        }
-        else if (player.getRoomPosition().getX() != playerCamera.position.x || player.getRoomPosition().getY() != playerCamera.position.y) {
-            makeCameraFollowPlayer();
+        if(player != null) {
+            if (gameData.isChangingRoom()) {
+                makeCameraChangeRoom();
+            }
+            else if (player.getRoomPosition().getX() != playerCamera.position.x || player.getRoomPosition().getY() != playerCamera.position.y) {
+                makeCameraFollowPlayer();
+            }
         }
     }
 
@@ -244,6 +241,15 @@ public class Game implements ApplicationListener {
             sprite.setPosition(entity.getRoomPosition().getX() - entity.getWidth() / 2, entity.getRoomPosition().getY() - entity.getHeight() / 2);
             sprite.draw(batch);
         }
+    }
+    
+    private void calculateFPS() {
+        if (System.currentTimeMillis() - fpsTimer > 1000) {
+            fps = frames;
+            frames = 0;
+            fpsTimer = System.currentTimeMillis();
+        }
+        frames++;
     }
 
     private Collection<? extends IEntityProcessingService> getEntityProcessingServices() {
