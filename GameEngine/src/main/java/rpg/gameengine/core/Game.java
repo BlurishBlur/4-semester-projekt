@@ -184,7 +184,7 @@ public class Game implements ApplicationListener {
     private void loadSprites() {
         for (Entity entity : world.getEntities()) {
             if (sprites.get(entity) == null) {
-                Texture texture = new Texture(Gdx.files.internal(entity.getSpritePath()));
+                Texture texture = new Texture(entity.getSpritePath());
                 Sprite sprite = new Sprite(texture);
                 sprite.setSize(entity.getWidth(), entity.getHeight());
                 sprite.setOriginCenter();
@@ -216,7 +216,9 @@ public class Game implements ApplicationListener {
                     + "Y: " + player.getRoomPosition().getY() + "\n" /*+
                     "DX: " + player.getVelocity().getX() + "\n" +
                     "DY: " + player.getVelocity().getY() + "\n" +
-                    "Rotation: " + player.getVelocity().getAngle()*/, 7.5f, 127.5f);
+                    "Rotation: " + player.getVelocity().getAngle()*/ +
+                    "Movement speed: " + player.getMovementSpeed() + "\n" +
+                    "Movement speed modifier: " + player.getMovementSpeedModifier(), 7.5f, 127.5f);
         }
     }
 

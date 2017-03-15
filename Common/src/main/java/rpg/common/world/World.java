@@ -3,7 +3,6 @@ package rpg.common.world;
 import rpg.common.entities.Entity;
 import rpg.common.entities.EntityType;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;

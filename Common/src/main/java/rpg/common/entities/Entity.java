@@ -12,7 +12,9 @@ public class Entity implements Serializable {
     private Vector velocity;
     private Vector worldPosition;
     private Vector worldVelocity;
+    private float defaultMovementSpeed;
     private float movementSpeed;
+    private float movementSpeedModifier;
     private int currentHealth;
     private int maxHealth;
     private float actionTimer = 2;
@@ -28,6 +30,22 @@ public class Entity implements Serializable {
         velocity = new Vector();
         worldPosition = new Vector();
         worldVelocity = new Vector();
+    }
+
+    public float getDefaultMovementSpeed() {
+        return defaultMovementSpeed;
+    }
+
+    public void setDefaultMovementSpeed(float defaultMovementSpeed) {
+        this.defaultMovementSpeed = defaultMovementSpeed;
+    }
+
+    public float getMovementSpeedModifier() {
+        return movementSpeedModifier;
+    }
+
+    public void setMovementSpeedModifier(float movementSpeedModifier) {
+        this.movementSpeedModifier = movementSpeedModifier;
     }
     
     public Vector getWorldVelocity() {

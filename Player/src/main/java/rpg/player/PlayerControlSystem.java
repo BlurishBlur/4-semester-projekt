@@ -28,6 +28,7 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
     public void process(GameData gameData, World world) {
         Entity player = world.getPlayer();
         player.getVelocity().set(0, 0);
+        player.setMovementSpeedModifier(1);
         if (gameData.getKeys().isDown(GameKeys.W)) {
             player.getVelocity().addY(player.getMovementSpeed());
         }
@@ -40,6 +41,10 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
         else if (gameData.getKeys().isDown(GameKeys.D)) {
             player.getVelocity().addX(player.getMovementSpeed());
         }
+        if(gameData.getKeys().isDown(GameKeys.SHIFT)) {
+            player.setMovementSpeedModifier(1.75f);
+        }
+        player.setMovementSpeed(player.getDefaultMovementSpeed() * player.getMovementSpeedModifier());
     }
 
     private Entity createPlayer() {
@@ -47,7 +52,7 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
         newPlayer.setType(EntityType.PLAYER);
         newPlayer.getRoomPosition().set(25, 25);
         newPlayer.getWorldPosition().set(0, 0);
-        newPlayer.setMovementSpeed(200);
+        newPlayer.setDefaultMovementSpeed(200);
         newPlayer.setMaxHealth(100);
         newPlayer.setCurrentHealth(newPlayer.getMaxHealth());
         newPlayer.setWidth(30);
