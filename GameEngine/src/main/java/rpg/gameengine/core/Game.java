@@ -180,7 +180,7 @@ public class Game implements ApplicationListener {
 
     private void loadSprites() {
         for (Entity entity : world.getEntities()) {
-            if (sprites.get(entity) == null) {
+            if (sprites.containsKey(entity)) {
                 Texture texture = new Texture(entity.getSpritePath());
                 Sprite sprite = new Sprite(texture);
                 sprite.setSize(entity.getWidth(), entity.getHeight());
