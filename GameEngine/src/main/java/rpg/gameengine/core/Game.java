@@ -40,8 +40,6 @@ public class Game implements ApplicationListener {
     private SpriteBatch batch;
     private TextureAtlas atlas;
     private TextureRegion region;
-    private int currentFrame = 1;
-    private int MAX_FRAMES = 4;
     private Sprite playerSprite;
 
     private Sprite map; // TODO load den her sprite ordentligt
@@ -175,10 +173,19 @@ public class Game implements ApplicationListener {
 
     private void drawEntitySprites() {
         for (Entity entity : world.getEntities(EntityType.PLAYER, EntityType.ENEMY)) {
-            Sprite sprite = sprites.get(entity);
-            sprite.setRotation(entity.getDirection());
-            sprite.setPosition(entity.getPosition().getX() - entity.getWidth() / 2, entity.getPosition().getY() - entity.getHeight() / 2);
-            sprite.draw(batch);
+            if (entity.getType() == EntityType.PLAYER) {
+                Sprite sprite = sprites.get(entity);
+                sprite.setRotation(entity.getDirection());
+                sprite.setPosition(entity.getPosition().getX() - entity.getWidth() / 2, entity.getPosition().getY() - entity.getHeight() / 2);
+                playerSprite.setRegion(atlas.findRegion(String.format("%04d", entity.getCurrentFrame())));
+                sprite.draw(batch);
+            } else {
+                Sprite sprite = sprites.get(entity);
+                sprite.setRotation(entity.getDirection());
+                sprite.setPosition(entity.getPosition().getX() - entity.getWidth() / 2, entity.getPosition().getY() - entity.getHeight() / 2);
+                sprite.draw(batch);
+            }
+
         }
         for (Entity entity : world.getEntities(EntityType.MELEE)) {
             Sprite sprite = sprites.get(entity);

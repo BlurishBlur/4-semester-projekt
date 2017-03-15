@@ -20,6 +20,8 @@ public class Entity implements Serializable {
     private float width;
     private float height;
     private String spritePath;
+    private int currentFrame;
+    private int MAX_FRAMES;
     
     public Entity() {
         position = new Vector();
@@ -130,4 +132,19 @@ public class Entity implements Serializable {
         return ID.toString();
     }
     
+    public int getCurrentFrame(){
+        return currentFrame;
+    }
+    
+    public void setCurrentFrame(int frame){
+        this.currentFrame = frame;
+    }
+    
+    public int getMaxFrames(){
+        return MAX_FRAMES;
+    }
+    
+    public void setMaxFrames(int frames){
+        this.MAX_FRAMES = frames;
+    }
 }

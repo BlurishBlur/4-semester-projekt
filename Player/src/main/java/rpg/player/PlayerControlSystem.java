@@ -30,15 +30,30 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
         player.getVelocity().set(0, 0);
         if (gameData.getKeys().isDown(GameKeys.W)) {
             player.getVelocity().addY(player.getMovementSpeed());
-        }
-        else if (gameData.getKeys().isDown(GameKeys.S)) {
+            movePlayer(player);
+        } else if (gameData.getKeys().isDown(GameKeys.S)) {
             player.getVelocity().subtractY(player.getMovementSpeed());
+            movePlayer(player);
         }
         if (gameData.getKeys().isDown(GameKeys.A)) {
             player.getVelocity().subtractX(player.getMovementSpeed());
-        }
-        else if (gameData.getKeys().isDown(GameKeys.D)) {
+            movePlayer(player);
+        } else if (gameData.getKeys().isDown(GameKeys.D)) {
             player.getVelocity().addX(player.getMovementSpeed());
+            
+        }
+        if(player.getVelocity().isMoving()){
+            movePlayer(player);
+        }
+        else{
+            player.setCurrentFrame(1);
+        }
+    }
+
+    private void movePlayer(Entity player) {
+        player.setCurrentFrame(player.getCurrentFrame() + 1);
+        if (player.getCurrentFrame() > player.getMaxFrames()) {
+            player.setCurrentFrame(1);
         }
     }
 
@@ -52,6 +67,8 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
         newPlayer.setWidth(100);
         newPlayer.setHeight(100);
         newPlayer.setSpritePath("rpg/gameengine/noget.atlas");
+        newPlayer.setCurrentFrame(1);
+        newPlayer.setMaxFrames(4);
         return newPlayer;
     }
 
