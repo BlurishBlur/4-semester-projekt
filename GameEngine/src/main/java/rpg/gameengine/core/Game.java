@@ -120,20 +120,17 @@ public class Game implements ApplicationListener {
 
     private void loadSprites() {
         for (Entity entity : world.getEntities()) {
+            Sprite sprite;
             if (sprites.get(entity) == null) {
                 if (entity.getType() == EntityType.PLAYER) {
-                    playerSprite = new Sprite(region);
-                    playerSprite.setSize(entity.getWidth(), entity.getHeight());
-                    playerSprite.setOriginCenter();
-                    sprites.put(entity, playerSprite);
+                    sprite = new Sprite(region);
                 } else {
                     Texture texture = new Texture(Gdx.files.internal(entity.getSpritePath()));
-                    Sprite sprite = new Sprite(texture);
-                    sprite.setSize(entity.getWidth(), entity.getHeight());
-                    sprite.setOriginCenter();
-                    sprites.put(entity, sprite);
+                    sprite = new Sprite(texture);
                 }
-
+                sprite.setSize(entity.getWidth(), entity.getHeight());
+                sprite.setOriginCenter();
+                sprites.put(entity, sprite);
             }
         }
     }
@@ -173,19 +170,13 @@ public class Game implements ApplicationListener {
 
     private void drawEntitySprites() {
         for (Entity entity : world.getEntities(EntityType.PLAYER, EntityType.ENEMY)) {
+            Sprite sprite = sprites.get(entity);
             if (entity.getType() == EntityType.PLAYER) {
-                Sprite sprite = sprites.get(entity);
-                sprite.setRotation(entity.getDirection());
-                sprite.setPosition(entity.getPosition().getX() - entity.getWidth() / 2, entity.getPosition().getY() - entity.getHeight() / 2);
-                playerSprite.setRegion(atlas.findRegion(String.format("%04d", entity.getCurrentFrame())));
-                sprite.draw(batch);
-            } else {
-                Sprite sprite = sprites.get(entity);
-                sprite.setRotation(entity.getDirection());
-                sprite.setPosition(entity.getPosition().getX() - entity.getWidth() / 2, entity.getPosition().getY() - entity.getHeight() / 2);
-                sprite.draw(batch);
+                sprite.setRegion(atlas.findRegion(String.format("%04d", entity.getCurrentFrame())));   
             }
-
+            sprite.setRotation(entity.getDirection());
+            sprite.setPosition(entity.getPosition().getX() - entity.getWidth() / 2, entity.getPosition().getY() - entity.getHeight() / 2);
+            sprite.draw(batch);
         }
         for (Entity entity : world.getEntities(EntityType.MELEE)) {
             Sprite sprite = sprites.get(entity);
