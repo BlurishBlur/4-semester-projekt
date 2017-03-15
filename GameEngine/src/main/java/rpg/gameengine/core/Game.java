@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import java.util.Collection;
 import java.util.HashMap;
@@ -32,9 +34,15 @@ public class Game implements ApplicationListener {
     private World world = new World();
     private int fps;
     private long fpsTimer;
-    private SpriteBatch batch;
     private BitmapFont font;
     private Map<Entity, Sprite> sprites;
+
+    private SpriteBatch batch;
+    private TextureAtlas atlas;
+    private TextureRegion region;
+    private int currentFrame = 1;
+    private int MAX_FRAMES = 4;
+    private Sprite playerSprite;
 
     private Sprite map; // TODO load den her sprite ordentligt
 
@@ -52,6 +60,9 @@ public class Game implements ApplicationListener {
         for (IGamePluginService plugin : getGamePluginServices()) {
             plugin.start(gameData, world);
         }
+
+        atlas = new TextureAtlas(Gdx.files.internal(world.getEntities(EntityType.PLAYER).get(0).getSpritePath()));
+        region = atlas.findRegion("0001");
 
         playerCamera = new OrthographicCamera(gameData.getDisplayWidth() / gameData.getCameraZoom(), gameData.getDisplayHeight() / gameData.getCameraZoom());
         playerCamera.position.set(playerCamera.viewportWidth / 2, playerCamera.viewportHeight / 2, 0);
@@ -88,14 +99,12 @@ public class Game implements ApplicationListener {
             playerCamera.position.lerp(new Vector3(player.getPosition().getX(), player.getPosition().getY(), 0), 0.1f);
             if (playerCamera.position.x - playerCamera.viewportWidth / 2 < 0) {
                 playerCamera.position.set(0 + playerCamera.viewportWidth / 2, playerCamera.position.y, 0);
-            }
-            else if (playerCamera.position.x + playerCamera.viewportWidth / 2 > gameData.getDisplayWidth()) {
+            } else if (playerCamera.position.x + playerCamera.viewportWidth / 2 > gameData.getDisplayWidth()) {
                 playerCamera.position.set(gameData.getDisplayWidth() - playerCamera.viewportWidth / 2, playerCamera.position.y, 0);
             }
             if (playerCamera.position.y - playerCamera.viewportHeight / 2 < 0) {
                 playerCamera.position.set(playerCamera.position.x, 0 + playerCamera.viewportHeight / 2, 0);
-            }
-            else if (playerCamera.position.y + playerCamera.viewportHeight / 2 > gameData.getDisplayHeight()) {
+            } else if (playerCamera.position.y + playerCamera.viewportHeight / 2 > gameData.getDisplayHeight()) {
                 playerCamera.position.set(playerCamera.position.x, gameData.getDisplayHeight() - playerCamera.viewportHeight / 2, 0);
             }
             playerCamera.update();
@@ -114,11 +123,19 @@ public class Game implements ApplicationListener {
     private void loadSprites() {
         for (Entity entity : world.getEntities()) {
             if (sprites.get(entity) == null) {
-                Texture texture = new Texture(Gdx.files.internal(entity.getSpritePath()));
-                Sprite sprite = new Sprite(texture);
-                sprite.setSize(entity.getWidth(), entity.getHeight());
-                sprite.setOriginCenter();
-                sprites.put(entity, sprite);
+                if (entity.getType() == EntityType.PLAYER) {
+                    playerSprite = new Sprite(region);
+                    playerSprite.setSize(entity.getWidth(), entity.getHeight());
+                    playerSprite.setOriginCenter();
+                    sprites.put(entity, playerSprite);
+                } else {
+                    Texture texture = new Texture(Gdx.files.internal(entity.getSpritePath()));
+                    Sprite sprite = new Sprite(texture);
+                    sprite.setSize(entity.getWidth(), entity.getHeight());
+                    sprite.setOriginCenter();
+                    sprites.put(entity, sprite);
+                }
+
             }
         }
     }
