@@ -29,8 +29,8 @@ import rpg.gameengine.managers.GameInputProcessor;
 
 public class Game implements ApplicationListener {
 
-    private OrthographicCamera playerCamera;
-    private OrthographicCamera hudCamera;
+    private Camera playerCamera;
+    private Camera hudCamera;
     private Lookup lookup = Lookup.getDefault();
     private final GameData gameData = new GameData();
     private World world = new World();
@@ -61,12 +61,10 @@ public class Game implements ApplicationListener {
         world.setCurrentRoom(world.getPlayer().getWorldPosition());
         loadRoomSprite();
 
-        playerCamera = new OrthographicCamera(gameData.getDisplayWidth() / gameData.getCameraZoom(), gameData.getDisplayHeight() / gameData.getCameraZoom());
-        playerCamera.position.set(playerCamera.viewportWidth / 2, playerCamera.viewportHeight / 2, 0);
-        playerCamera.update();
-        hudCamera = new OrthographicCamera(gameData.getDisplayWidth(), gameData.getDisplayHeight());
-        hudCamera.position.set(gameData.getDisplayWidth() / 2, gameData.getDisplayHeight() / 2, 0);
-        hudCamera.update();
+        playerCamera = new Camera(gameData.getDisplayWidth() / gameData.getCameraZoom(), gameData.getDisplayHeight() / gameData.getCameraZoom(), world.getPlayer());
+        playerCamera.update(gameData, world);
+        hudCamera = new Camera(gameData.getDisplayWidth(), gameData.getDisplayHeight());
+        hudCamera.update(gameData, world);
     }
 
     private void loadRoomSprite() {
@@ -86,88 +84,18 @@ public class Game implements ApplicationListener {
         calculateFPS();
         gameData.setDeltaTime(Math.min(Gdx.graphics.getDeltaTime(), 0.0167f));
         update();
-        handlePlayerCamera();
+        updatePlayerCamera();
         loadSprites();
         draw();
         gameData.getKeys().update();
     }
 
-    private void handlePlayerCamera() {
-        Entity player = world.getPlayer();
-        playerCamera.viewportWidth = gameData.getDisplayWidth() / gameData.getCameraZoom();
-        playerCamera.viewportHeight = gameData.getDisplayHeight() / gameData.getCameraZoom();
-        if (player != null) {
-            if (gameData.isChangingRoom()) {
-                makeCameraChangeRoom();
-            }
-            else if (player.getRoomPosition().getX() != playerCamera.position.x || player.getRoomPosition().getY() != playerCamera.position.y) {
-                makeCameraFollowPlayer();
-            }
-        }
-    }
-
-    private void makeCameraChangeRoom() {
-        Entity player = world.getPlayer();
-        if (world.getRoom(player.getWorldPosition()) != world.getCurrentRoom()) {
-            world.setCurrentRoom(world.getPlayer().getWorldPosition());
+    private void updatePlayerCamera() {
+        if(gameData.isChangingRoom() && world.getRoom(playerCamera.getTarget().getWorldPosition()) != world.getCurrentRoom()) {
+            playerCamera.initializeRoomChange(world);
             loadRoomSprite();
-            Vector worldVelocity = player.getWorldVelocity();
-            if (worldVelocity.getX() > 0) {
-                player.getRoomPosition().setX(player.getWidth() / 2);
-                playerCamera.position.set(-playerCamera.viewportWidth / 2, playerCamera.position.y, 0);
-            }
-            else if (worldVelocity.getX() < 0) {
-                player.getRoomPosition().setX(world.getCurrentRoom().getWidth() - (player.getWidth() / 2));
-                playerCamera.position.set(world.getCurrentRoom().getWidth() + playerCamera.viewportWidth / 2, playerCamera.position.y, 0);
-            }
-            else if (worldVelocity.getY() > 0) {
-                player.getRoomPosition().setY(player.getHeight() / 2);
-                playerCamera.position.set(playerCamera.position.x, -playerCamera.viewportHeight / 2, 0);
-            }
-            else if (worldVelocity.getY() < 0) {
-                player.getRoomPosition().setY(world.getCurrentRoom().getHeight() - (player.getWidth() / 2));
-                playerCamera.position.set(playerCamera.position.x, world.getCurrentRoom().getHeight() + playerCamera.viewportHeight / 2, 0);
-            }
-            cameraPanTime = 1;
-            playerCamera.update();
         }
-        else {
-            if (player.getWorldVelocity().getX() > 0) {
-                playerCamera.position.interpolate(new Vector3(playerCamera.viewportWidth / 2, playerCamera.position.y, 0), 1.0f * gameData.getDeltaTime(), Interpolation.pow2InInverse);
-            }
-            else if (player.getWorldVelocity().getX() < 0) {
-                playerCamera.position.interpolate(new Vector3(world.getCurrentRoom().getWidth() - playerCamera.viewportWidth / 2, playerCamera.position.y, 0), 1.0f * gameData.getDeltaTime(), Interpolation.pow2InInverse);
-            }
-            else if (player.getWorldVelocity().getY() > 0) {
-                playerCamera.position.interpolate(new Vector3(playerCamera.position.x, playerCamera.viewportHeight / 2, 0), 1.0f * gameData.getDeltaTime(), Interpolation.pow2InInverse);
-            }
-            else if (player.getWorldVelocity().getY() < 0) {
-                playerCamera.position.interpolate(new Vector3(playerCamera.position.x, world.getCurrentRoom().getHeight() - playerCamera.viewportHeight / 2, 0), 1.0f * gameData.getDeltaTime(), Interpolation.pow2InInverse);
-            }
-            playerCamera.update();
-            cameraPanTime -= gameData.getDeltaTime();
-            if (cameraPanTime < 0) {
-                gameData.setIsChangingRoom(false);
-            }
-        }
-    }
-
-    private void makeCameraFollowPlayer() {
-        Entity player = world.getPlayer();
-        playerCamera.position.lerp(new Vector3(player.getRoomPosition().getX(), player.getRoomPosition().getY(), 0), 2.5f * gameData.getDeltaTime());
-        if (playerCamera.position.x - playerCamera.viewportWidth / 2 < 0) {
-            playerCamera.position.set(0 + playerCamera.viewportWidth / 2, playerCamera.position.y, 0);
-        }
-        else if (playerCamera.position.x + playerCamera.viewportWidth / 2 > world.getCurrentRoom().getWidth()) {
-            playerCamera.position.set(world.getCurrentRoom().getWidth() - playerCamera.viewportWidth / 2, playerCamera.position.y, 0);
-        }
-        if (playerCamera.position.y - playerCamera.viewportHeight / 2 < 0) {
-            playerCamera.position.set(playerCamera.position.x, 0 + playerCamera.viewportHeight / 2, 0);
-        }
-        else if (playerCamera.position.y + playerCamera.viewportHeight / 2 > world.getCurrentRoom().getHeight()) {
-            playerCamera.position.set(playerCamera.position.x, world.getCurrentRoom().getHeight() - playerCamera.viewportHeight / 2, 0);
-        }
-        playerCamera.update();
+        playerCamera.update(gameData, world);
     }
 
     private void update() {
@@ -198,7 +126,7 @@ public class Game implements ApplicationListener {
 
     private void draw() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.setProjectionMatrix(playerCamera.combined);
+        batch.setProjectionMatrix(playerCamera.getProjection());
         batch.begin();
         drawMap();
         drawEntitySprites();
@@ -212,7 +140,7 @@ public class Game implements ApplicationListener {
         }
         if (gameData.isShowDebug()) {
             Entity player = world.getPlayer();
-            batch.setProjectionMatrix(hudCamera.combined);
+            batch.setProjectionMatrix(hudCamera.getProjection());
             font.draw(batch, "FPS: " + fps + "\n"
                     + "Zoom: " + gameData.getCameraZoom() + "\n"
                     + "X: " + player.getRoomPosition().getX() + "\n"
