@@ -1,4 +1,4 @@
-package rpg.gameengine.core;
+package rpg.gameengine.managers;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Interpolation;

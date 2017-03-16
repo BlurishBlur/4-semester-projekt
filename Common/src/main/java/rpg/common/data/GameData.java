@@ -46,7 +46,7 @@ public class GameData {
         return weapons.get(entity);
     }
 
-    public boolean isShowDebug() {
+    public boolean showDebug() {
         return showDebug;
     }
 
