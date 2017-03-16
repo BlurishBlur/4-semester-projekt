@@ -21,11 +21,18 @@ public class Entity implements Serializable {
     private float height;
     private String spritePath;
     private int currentFrame;
-    private int MAX_FRAMES;
+    private int maxFrames;
     
     public Entity() {
         position = new Vector();
         velocity = new Vector();
+    }
+    
+    public void increaseFrame() {
+        currentFrame += 1;
+        if(currentFrame > maxFrames) {
+            currentFrame = 1;
+        }
     }
 
     public Vector getPosition() {
@@ -141,10 +148,10 @@ public class Entity implements Serializable {
     }
     
     public int getMaxFrames(){
-        return MAX_FRAMES;
+        return maxFrames;
     }
     
     public void setMaxFrames(int frames){
-        this.MAX_FRAMES = frames;
+        this.maxFrames = frames;
     }
 }

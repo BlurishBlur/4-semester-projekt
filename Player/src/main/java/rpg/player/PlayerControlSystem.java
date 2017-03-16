@@ -30,29 +30,19 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
         player.getVelocity().set(0, 0);
         if (gameData.getKeys().isDown(GameKeys.W)) {
             player.getVelocity().addY(player.getMovementSpeed());
-            movePlayer(player);
         } else if (gameData.getKeys().isDown(GameKeys.S)) {
             player.getVelocity().subtractY(player.getMovementSpeed());
-            movePlayer(player);
         }
         if (gameData.getKeys().isDown(GameKeys.A)) {
             player.getVelocity().subtractX(player.getMovementSpeed());
-            movePlayer(player);
         } else if (gameData.getKeys().isDown(GameKeys.D)) {
             player.getVelocity().addX(player.getMovementSpeed());
             
         }
-        if(player.getVelocity().isMoving()){
-            movePlayer(player);
+        if(player.getVelocity().isMoving()) {
+            player.increaseFrame();
         }
-        else{
-            player.setCurrentFrame(1);
-        }
-    }
-
-    private void movePlayer(Entity player) {
-        player.setCurrentFrame(player.getCurrentFrame() + 1);
-        if (player.getCurrentFrame() > player.getMaxFrames()) {
+        else {
             player.setCurrentFrame(1);
         }
     }
