@@ -29,10 +29,7 @@ public class Entity implements Serializable {
     }
     
     public void increaseFrame() {
-        currentFrame += 1;
-        if(currentFrame > maxFrames) {
-            currentFrame = 1;
-        }
+        currentFrame = (currentFrame % maxFrames) + 1;
     }
 
     public Vector getPosition() {

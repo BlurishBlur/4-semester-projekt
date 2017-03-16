@@ -1,0 +1,26 @@
+
+testTexture.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+0001
+  rotate: false
+  xy: 1, 1
+  size: 178, 178
+  orig: 178, 178
+  offset: 0, 0
+  index: -1
+0002
+  rotate: false
+  xy: 181, 1
+  size: 178, 178
+  orig: 178, 178
+  offset: 0, 0
+  index: -1
+0003
+  rotate: false
+  xy: 361, 1
+  size: 178, 178
+  orig: 178, 178
+  offset: 0, 0
+  index: -1
