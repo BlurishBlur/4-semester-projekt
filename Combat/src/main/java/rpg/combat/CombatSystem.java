@@ -19,28 +19,6 @@ public class CombatSystem implements IEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
-        Entity player = world.getPlayer();
-        if (gameData.getKeys().isPressed(GameKeys.UP)) {
-            gameData.getWeapon(player).getRoomPosition().set(player.getRoomPosition().plus(new Vector(0, player.getHeight() / 2)));
-            gameData.getWeapon(player).setDirection(0);
-            gameData.addEvent(new Event(EventType.PLAYER_ATTACK, player));
-        }
-        else if (gameData.getKeys().isPressed(GameKeys.DOWN)) {
-            gameData.getWeapon(player).getRoomPosition().set(player.getRoomPosition().plus(new Vector(0, -player.getHeight() / 2)));
-            gameData.getWeapon(player).setDirection(180);
-            gameData.addEvent(new Event(EventType.PLAYER_ATTACK, player));
-        }
-        else if (gameData.getKeys().isPressed(GameKeys.LEFT)) {
-            gameData.getWeapon(player).getRoomPosition().set(player.getRoomPosition().plus(new Vector(-player.getWidth() / 2, 0)));
-            gameData.getWeapon(player).setDirection(90);
-            gameData.addEvent(new Event(EventType.PLAYER_ATTACK, player));
-        }
-        else if (gameData.getKeys().isPressed(GameKeys.RIGHT)) {
-            gameData.getWeapon(player).getRoomPosition().set(player.getRoomPosition().plus(new Vector(player.getWidth() / 2, 0)));
-            gameData.getWeapon(player).setDirection(270);
-            gameData.addEvent(new Event(EventType.PLAYER_ATTACK, player));
-        }
-
         for (Event event : gameData.getEvents()) {
             if (event.getType() == EventType.PLAYER_ATTACK) {
                 for (Entity enemy : world.getEntities(EntityType.ENEMY)) {
