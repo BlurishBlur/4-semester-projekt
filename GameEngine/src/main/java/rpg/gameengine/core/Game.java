@@ -13,7 +13,7 @@ import rpg.common.world.World;
 import rpg.common.services.IEntityProcessingService;
 import rpg.common.services.IGamePluginService;
 import rpg.common.services.IPostEntityProcessingService;
-import rpg.gameengine.core.hud.Hud;
+import rpg.gameengine.managers.Hud;
 import rpg.gameengine.managers.GameInputProcessor;
 
 public class Game implements ApplicationListener {
