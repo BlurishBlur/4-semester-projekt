@@ -39,7 +39,6 @@ public class Hud {
         if (gameData.getKeys().isPressed(GameKeys.H)) {
             activeHud = !activeHud;
         }
-
         if (activeHud) {
             hudBatch.begin();
             hudBatch.setProjectionMatrix(camera.getProjection());
@@ -64,42 +63,34 @@ public class Hud {
     private void drawSkillUpButtons() {
         textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.font = font;
+        
         healthSkillUpButton = new TextButton("+", textButtonStyle);
         healthSkillUpButton.setPosition(155, gameData.getDisplayHeight() - 104);
-
         healthSkillUpButton.addListener(new ClickListener() {
-
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 world.getPlayer().setCurrentHealth(world.getPlayer().getCurrentHealth() + 10);
                 world.getPlayer().setSkillPoints(world.getPlayer().getSkillPoints() - 1);
             }
-
         });
 
         movementSkillUpButton = new TextButton("+", textButtonStyle);
         movementSkillUpButton.setPosition(180, gameData.getDisplayHeight() - 124);
-
         movementSkillUpButton.addListener(new ClickListener() {
-
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 world.getPlayer().setMovementSpeedModifier(world.getPlayer().getMovementSpeedModifier() + 0.10f);
                 world.getPlayer().setSkillPoints(world.getPlayer().getSkillPoints() - 1);
             }
-
         });
 
         armorSkillUpButton = new TextButton("+", textButtonStyle);
         armorSkillUpButton.setPosition(110, gameData.getDisplayHeight() - 144);
-
         armorSkillUpButton.addListener(new ClickListener() {
-
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("Armor up plox");
             }
-
         });
 
         gameInputProcessor.addActor(armorSkillUpButton);

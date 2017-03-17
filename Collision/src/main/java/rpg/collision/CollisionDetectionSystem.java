@@ -15,14 +15,14 @@ public class CollisionDetectionSystem implements IPostEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
-        for (Entity entity : world.getEntities(EntityType.PLAYER)) {
+        for (Entity entity : world.getEntities()) {
             detectEdgeCollision(gameData, world, entity);
         }
     }
-
+    
     private void detectEdgeCollision(GameData gameData, World world, Entity entity) {
         if (entity.getRoomPosition().getX() - (entity.getWidth() / 2) < 0) {
-            if (world.getCurrentRoom().canExitLeft() && !gameData.isChangingRoom()) {
+            if (entity.getType() == EntityType.PLAYER && world.getCurrentRoom().canExitLeft() && !gameData.isChangingRoom()) {
                 gameData.setIsChangingRoom(true);
                 entity.getWorldVelocity().set(-1, 0);
                 entity.getWorldPosition().add(entity.getWorldVelocity());
@@ -33,7 +33,7 @@ public class CollisionDetectionSystem implements IPostEntityProcessingService {
             }
         }
         else if (entity.getRoomPosition().getX() + (entity.getWidth() / 2) > gameData.getDisplayWidth()) {
-            if (world.getCurrentRoom().canExitRight() && !gameData.isChangingRoom()) {
+            if (entity.getType() == EntityType.PLAYER && world.getCurrentRoom().canExitRight() && !gameData.isChangingRoom()) {
                 gameData.setIsChangingRoom(true);
                 entity.getWorldVelocity().set(1, 0);
                 entity.getWorldPosition().add(entity.getWorldVelocity());
@@ -44,7 +44,7 @@ public class CollisionDetectionSystem implements IPostEntityProcessingService {
             }
         }
         if (entity.getRoomPosition().getY() - (entity.getHeight() / 2) < 0) {
-            if (world.getCurrentRoom().canExitDown() && !gameData.isChangingRoom()) {
+            if (entity.getType() == EntityType.PLAYER && world.getCurrentRoom().canExitDown() && !gameData.isChangingRoom()) {
                 gameData.setIsChangingRoom(true);
                 entity.getWorldVelocity().set(0, -1);
                 entity.getWorldPosition().add(entity.getWorldVelocity());
@@ -55,7 +55,7 @@ public class CollisionDetectionSystem implements IPostEntityProcessingService {
             }
         }
         else if (entity.getRoomPosition().getY() + (entity.getHeight() / 2) > gameData.getDisplayHeight()) {
-            if (world.getCurrentRoom().canExitUp() && !gameData.isChangingRoom()) {
+            if (entity.getType() == EntityType.PLAYER && world.getCurrentRoom().canExitUp() && !gameData.isChangingRoom()) {
                 gameData.setIsChangingRoom(true);
                 entity.getWorldVelocity().set(0, 1);
                 entity.getWorldPosition().add(entity.getWorldVelocity());
