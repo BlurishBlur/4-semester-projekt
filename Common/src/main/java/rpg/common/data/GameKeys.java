@@ -18,7 +18,6 @@ public class GameKeys {
     public static final int F1 = 10;
     public static final int SHIFT = 11;
     public static final int H = 12;
-    public static boolean click = false;
     
     public GameKeys() {
         keys = new boolean[NUMBER_OF_KEYS];
@@ -29,15 +28,6 @@ public class GameKeys {
         for (int i = 0; i < NUMBER_OF_KEYS; i++) {
             pressedKeys[i] = keys[i];
         }
-        this.click = false;
-    }
-    
-    public void setClick(boolean click){
-        this.click = click;
-    }
-    
-    public boolean isClicked(){
-        return this.click;
     }
     
     public void setKey(int key, boolean pressed) {

@@ -17,6 +17,7 @@ public class Entity implements Serializable {
     private float movementSpeedModifier;
     private int currentHealth;
     private int maxHealth;
+    private int skillPoints;
     private float actionTimer = 2;
     private double verticalMovementChance;
     private double horizontalMovementChance;
@@ -30,6 +31,14 @@ public class Entity implements Serializable {
         velocity = new Vector();
         worldPosition = new Vector();
         worldVelocity = new Vector();
+    }
+    
+    public int getSkillPoints() {
+        return skillPoints;
+    }
+    
+    public void setSkillPoints(int amount) {
+        this.skillPoints = amount;
     }
 
     public float getDefaultMovementSpeed() {

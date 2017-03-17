@@ -4,9 +4,6 @@ import rpg.gameengine.managers.Camera;
 import rpg.gameengine.managers.Renderer;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import java.util.Collection;
 import org.openide.util.Lookup;
 import rpg.common.entities.Entity;
@@ -16,7 +13,6 @@ import rpg.common.world.World;
 import rpg.common.services.IEntityProcessingService;
 import rpg.common.services.IGamePluginService;
 import rpg.common.services.IPostEntityProcessingService;
-import rpg.common.util.Logger;
 import rpg.gameengine.core.hud.Hud;
 import rpg.gameengine.managers.GameInputProcessor;
 
@@ -56,7 +52,7 @@ public class Game implements ApplicationListener {
         playerCamera.update(gameData, world);
         hudCamera = new Camera(gameData.getDisplayWidth(), gameData.getDisplayHeight());
         hudCamera.update(gameData, world);
-        hud = new Hud(hudCamera, gameInputProcessor, gameData);
+        hud = new Hud(hudCamera, gameInputProcessor, gameData, world);
     }
 
     @Override
@@ -68,7 +64,7 @@ public class Game implements ApplicationListener {
         renderer.loadSprites(world);
         renderer.draw(gameData, world, playerCamera);
         drawDebug();
-        hud.drawHUD(world);
+        hud.drawHUD();
         gameData.getKeys().update();
         
     }
@@ -93,6 +89,7 @@ public class Game implements ApplicationListener {
     public void drawDebug() {
         if (gameData.getKeys().isPressed(GameKeys.F1)) {
             gameData.setShowDebug(!gameData.showDebug());
+            world.getPlayer().setSkillPoints(world.getPlayer().getSkillPoints()+1);
         }
         if (gameData.showDebug()) {
             Entity player = world.getPlayer();

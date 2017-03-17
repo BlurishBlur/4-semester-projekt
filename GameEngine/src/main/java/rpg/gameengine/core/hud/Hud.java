@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package rpg.gameengine.core.hud;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -21,42 +16,28 @@ import rpg.gameengine.managers.GameInputProcessor;
 public class Hud {
     
     private Camera camera;
-    private TextButton textButton;
+    private TextButton healthSkillUpButton;
+    private TextButton movementSkillUpButton;
+    private TextButton armorSkillUpButton;
     private TextButton.TextButtonStyle textButtonStyle;
     private GameInputProcessor gameInputProcessor;
     private SpriteBatch hudBatch;
     private Sprite hudSprite;
     private BitmapFont font;
     private GameData gameData;
+    private World world;
     private boolean activeHud;
     
-    public Hud(Camera camera, GameInputProcessor gameInputProcessor, GameData gameData) {
+    public Hud(Camera camera, GameInputProcessor gameInputProcessor, GameData gameData, World world) {
         this.camera = camera;
         this.gameInputProcessor = gameInputProcessor;
         this.hudBatch = new SpriteBatch();
         this.font = new BitmapFont();
-        this.gameData = gameData;
-
-        textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.font = font;
-
-        textButton = new TextButton("Button1", textButtonStyle);
-        textButton.setPosition(150, gameData.getDisplayHeight() - 75);
-            
-        textButton.addListener(new ClickListener() {
-
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                //world.getPlayer().setCurrentHealth(world.getPlayer().getCurrentHealth()+10);
-                System.out.println("yo"); 
-            }
-
-        });
-        gameInputProcessor.addActor(textButton);
-            
+        this.gameData = gameData;    
+        this.world = world;
     }
     
-    public void drawHUD(World world) {
+    public void drawHUD() {
         if(gameData.getKeys().isPressed(GameKeys.H)){                      
             activeHud = !activeHud;
         }
@@ -70,13 +51,63 @@ public class Hud {
                 hudSprite.setPosition(40, gameData.getDisplayHeight() - 440);
                 hudSprite.draw(hudBatch);
                 
-                
-                font.draw(hudBatch, "Speed " + world.getPlayer().getCurrentHealth(), 60, gameData.getDisplayHeight() - 60);
+                font.draw(hudBatch, "Skill points: " + world.getPlayer().getSkillPoints(), 50, gameData.getDisplayHeight() - 60);
+                font.draw(hudBatch, "Max health: " + world.getPlayer().getCurrentHealth(), 50, gameData.getDisplayHeight() - 90);
+                font.draw(hudBatch, "Speed modifier: " + world.getPlayer().getMovementSpeedModifier(), 50, gameData.getDisplayHeight() - 110);
+                font.draw(hudBatch, "Armor: 0", 50, gameData.getDisplayHeight() - 130);
             hudBatch.end();
             
-            gameInputProcessor.draw();
-            
+            if(world.getPlayer().getSkillPoints() > 0){
+                drawSkillUpButtons();
+            }
         }
+    }
+    
+    private void drawSkillUpButtons(){
+        textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.font = font;
+        healthSkillUpButton = new TextButton("+", textButtonStyle);
+        healthSkillUpButton.setPosition(155, gameData.getDisplayHeight() - 104);
+            
+        healthSkillUpButton.addListener(new ClickListener() {
+
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                world.getPlayer().setCurrentHealth(world.getPlayer().getCurrentHealth()+10);
+                world.getPlayer().setSkillPoints(world.getPlayer().getSkillPoints()-1);
+            }
+
+        });
+        
+        movementSkillUpButton = new TextButton("+", textButtonStyle);
+        movementSkillUpButton.setPosition(180, gameData.getDisplayHeight() - 124);
+            
+        movementSkillUpButton.addListener(new ClickListener() {
+
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                world.getPlayer().setMovementSpeedModifier(world.getPlayer().getMovementSpeedModifier() + 0.10f);
+                world.getPlayer().setSkillPoints(world.getPlayer().getSkillPoints()-1);
+            }
+
+        });
+                
+        armorSkillUpButton = new TextButton("+", textButtonStyle);
+        armorSkillUpButton.setPosition(110, gameData.getDisplayHeight() - 144);
+            
+        armorSkillUpButton.addListener(new ClickListener() {
+
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                System.out.println("Armor up plox");
+            }
+
+        });
+        
+        gameInputProcessor.addActor(armorSkillUpButton);
+        gameInputProcessor.addActor(movementSkillUpButton);
+        gameInputProcessor.addActor(healthSkillUpButton);
+        gameInputProcessor.draw(); 
     }
     
     

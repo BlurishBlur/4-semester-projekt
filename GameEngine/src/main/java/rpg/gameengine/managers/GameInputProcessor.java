@@ -13,25 +13,6 @@ public class GameInputProcessor extends Stage {
         this.gameData = gameData;
     }
     
-    /*@Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if(button == Input.Buttons.LEFT){
-            gameData.getKeys().setClick(true);
-            System.out.println("screenx" + screenX);
-            System.out.println("screeny" + screenY);
-            System.out.println("pointer" + pointer);
-        }
-        return true;
-    }
-    
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if(button == Input.Buttons.LEFT){
-            gameData.getKeys().setClick(false);
-        }
-        return true;
-    }*/
-    
     @Override
     public boolean keyDown(int key) {
         if(key == Keys.W) {

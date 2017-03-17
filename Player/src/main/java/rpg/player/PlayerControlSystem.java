@@ -27,8 +27,9 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
     @Override
     public void process(GameData gameData, World world) {
         Entity player = world.getPlayer();
+        float sprintBoost = 1;
         player.getVelocity().set(0, 0);
-        player.setMovementSpeedModifier(1);
+        //player.setMovementSpeedModifier(1);
         if (gameData.getKeys().isDown(GameKeys.W)) {
             player.getVelocity().addY(player.getMovementSpeed());
         }
@@ -42,9 +43,10 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
             player.getVelocity().addX(player.getMovementSpeed());
         }
         if(gameData.getKeys().isDown(GameKeys.SHIFT)) {
-            player.setMovementSpeedModifier(1.75f);
+            //player.setMovementSpeedModifier(player.getMovementSpeedModifier() + 0.75f);
+            sprintBoost = 1.75f;
         }
-        player.setMovementSpeed(player.getDefaultMovementSpeed() * player.getMovementSpeedModifier());
+        player.setMovementSpeed(player.getDefaultMovementSpeed() * player.getMovementSpeedModifier() * sprintBoost);
     }
 
     private Entity createPlayer() {
@@ -55,6 +57,7 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
         newPlayer.setDefaultMovementSpeed(200);
         newPlayer.setMaxHealth(100);
         newPlayer.setCurrentHealth(newPlayer.getMaxHealth());
+        newPlayer.setMovementSpeedModifier(1);
         newPlayer.setWidth(30);
         newPlayer.setHeight(30);
         newPlayer.setSpritePath("rpg/gameengine/player.png");
