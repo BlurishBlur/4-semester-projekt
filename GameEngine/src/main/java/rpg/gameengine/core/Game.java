@@ -10,6 +10,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +35,10 @@ import rpg.gameengine.managers.GameInputProcessor;
 
 public class Game implements ApplicationListener {
 
+    private TextButton textButton;
+    private TextButtonStyle textButtonStyle;
+    private BitmapFont buttonFont;
+    
     private OrthographicCamera playerCamera;
     private OrthographicCamera hudCamera;
     private Lookup lookup = Lookup.getDefault();
@@ -39,19 +49,24 @@ public class Game implements ApplicationListener {
     private long fpsTimer;
     private float cameraPanTime;
     private SpriteBatch batch;
+    private SpriteBatch hudBatch;
+    private Sprite hudSprite;
     private BitmapFont font;
     private Map<Entity, Sprite> sprites;
     private Sprite currentRoom, previousRoom;
+    private boolean activeHud = true;
+    private GameInputProcessor gameInputProcessor;
 
     @Override
     public void create() {
         fpsTimer = System.currentTimeMillis();
-        Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
+        Gdx.input.setInputProcessor(gameInputProcessor = new GameInputProcessor(gameData));
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
         gameData.setCameraZoom(1.50f);
         sprites = new HashMap<>();
         batch = new SpriteBatch();
+        hudBatch = new SpriteBatch();
         font = new BitmapFont();
 
         for (IGamePluginService plugin : getGamePluginServices()) {
@@ -67,6 +82,25 @@ public class Game implements ApplicationListener {
         hudCamera = new OrthographicCamera(gameData.getDisplayWidth(), gameData.getDisplayHeight());
         hudCamera.position.set(gameData.getDisplayWidth() / 2, gameData.getDisplayHeight() / 2, 0);
         hudCamera.update();
+        
+        
+        buttonFont = new BitmapFont();
+            textButtonStyle = new TextButtonStyle();
+            textButtonStyle.font = buttonFont;
+
+            textButton = new TextButton("Button1", textButtonStyle);
+            textButton.setPosition(150, gameData.getDisplayHeight() - 75);
+            
+            textButton.addListener(new ClickListener() {
+
+                @Override
+                public void clicked(InputEvent event, float x, float y){
+                    world.getPlayer().setCurrentHealth(world.getPlayer().getCurrentHealth()+10);
+                    System.out.println("yo"); 
+                }
+
+            });
+            gameInputProcessor.addActor(textButton);
     }
 
     private void loadRoomSprite() {
@@ -89,7 +123,12 @@ public class Game implements ApplicationListener {
         handlePlayerCamera();
         loadSprites();
         draw();
+        if(gameData.getKeys().isClicked()){
+            System.out.println("click");
+        }
         gameData.getKeys().update();
+        
+        
     }
 
     private void handlePlayerCamera() {
@@ -202,11 +241,40 @@ public class Game implements ApplicationListener {
         batch.begin();
         drawMap();
         drawEntitySprites();
-        drawHud();
+        drawDebug();
         batch.end();
+        drawHUD();
+    }
+    
+    private void drawHUD() {
+        if(gameData.getKeys().isPressed(GameKeys.H)){                      
+            activeHud = !activeHud;
+        }
+        
+        if (activeHud){
+            hudBatch.begin();
+                hudBatch.setProjectionMatrix(hudCamera.combined);
+                Texture texture = new Texture("rpg/gameengine/hud2.jpg");
+                hudSprite = new Sprite(texture);
+                hudSprite.setSize(200, 400);
+                hudSprite.setPosition(40, gameData.getDisplayHeight() - 440);
+                hudSprite.draw(hudBatch);
+                
+                
+                font.draw(hudBatch, "Speed " + world.getPlayer().getCurrentHealth(), 60, gameData.getDisplayHeight() - 60);
+            hudBatch.end();
+            
+            gameInputProcessor.draw();
+            
+        }
+    }
+    
+    private void increaseHP(){
+        world.getPlayer().setCurrentHealth(world.getPlayer().getCurrentHealth()+10);
+        System.out.println("yo");
     }
 
-    private void drawHud() {
+    private void drawDebug() {
         if (gameData.getKeys().isPressed(GameKeys.F1)) {
             gameData.setShowDebug(!gameData.isShowDebug());
         }

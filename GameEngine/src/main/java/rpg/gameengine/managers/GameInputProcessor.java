@@ -1,17 +1,38 @@
 package rpg.gameengine.managers;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import rpg.common.data.GameData;
 import rpg.common.data.GameKeys;
 
-public class GameInputProcessor extends InputAdapter {
+public class GameInputProcessor extends Stage {
     
     private final GameData gameData;
     
     public GameInputProcessor(GameData gameData) {
         this.gameData = gameData;
     }
+    
+    /*@Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if(button == Input.Buttons.LEFT){
+            gameData.getKeys().setClick(true);
+            System.out.println("screenx" + screenX);
+            System.out.println("screeny" + screenY);
+            System.out.println("pointer" + pointer);
+        }
+        return true;
+    }
+    
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if(button == Input.Buttons.LEFT){
+            gameData.getKeys().setClick(false);
+        }
+        return true;
+    }*/
     
     @Override
     public boolean keyDown(int key) {
@@ -50,6 +71,9 @@ public class GameInputProcessor extends InputAdapter {
         }
         if(key == Keys.SHIFT_LEFT) {
             gameData.getKeys().setKey(GameKeys.SHIFT, true);
+        }
+        if(key == Keys.H) {
+            gameData.getKeys().setKey(GameKeys.H, true);
         }
         return true;
     }
@@ -91,6 +115,9 @@ public class GameInputProcessor extends InputAdapter {
         }
         if(key == Keys.SHIFT_LEFT) {
             gameData.getKeys().setKey(GameKeys.SHIFT, false);
+        }
+        if(key == Keys.H) {
+            gameData.getKeys().setKey(GameKeys.H, false);
         }
         return true;
     }

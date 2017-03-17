@@ -4,7 +4,7 @@ public class GameKeys {
     
     private static boolean[] keys;
     private static boolean[] pressedKeys;
-    private static final int NUMBER_OF_KEYS = 12;
+    private static final int NUMBER_OF_KEYS = 13;
     public static final int W = 0;
     public static final int A = 1;
     public static final int S = 2;
@@ -17,6 +17,8 @@ public class GameKeys {
     public static final int MINUS = 9;
     public static final int F1 = 10;
     public static final int SHIFT = 11;
+    public static final int H = 12;
+    public static boolean click = false;
     
     public GameKeys() {
         keys = new boolean[NUMBER_OF_KEYS];
@@ -27,6 +29,15 @@ public class GameKeys {
         for (int i = 0; i < NUMBER_OF_KEYS; i++) {
             pressedKeys[i] = keys[i];
         }
+        this.click = false;
+    }
+    
+    public void setClick(boolean click){
+        this.click = click;
+    }
+    
+    public boolean isClicked(){
+        return this.click;
     }
     
     public void setKey(int key, boolean pressed) {
