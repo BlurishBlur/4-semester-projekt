@@ -1,8 +1,6 @@
 package rpg.gameengine.managers;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import rpg.common.data.GameData;
 import rpg.common.data.GameKeys;
