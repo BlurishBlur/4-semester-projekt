@@ -3,6 +3,7 @@ package rpg.gameengine.core;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import org.openide.modules.ModuleInstall;
+import rpg.gameengine.core.Game;
 
 public class Installer extends ModuleInstall {
     
