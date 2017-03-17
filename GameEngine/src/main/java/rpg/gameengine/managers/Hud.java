@@ -73,17 +73,12 @@ public class Hud {
         healthSkillUpButton.addListener(new ClickListener() {
 
             @Override
-<<<<<<< Updated upstream:GameEngine/src/main/java/rpg/gameengine/managers/Hud.java
-            public void clicked(InputEvent event, float x, float y) {
-                world.getPlayer().setCurrentHealth(world.getPlayer().getCurrentHealth() + 10);
-                world.getPlayer().setSkillPoints(world.getPlayer().getSkillPoints() - 1);
-=======
+
             public void clicked(InputEvent event, float x, float y){
                 if(world.getPlayer().getSkillPoints() > 0){
                     world.getPlayer().setCurrentHealth(world.getPlayer().getCurrentHealth()+10);
                     world.getPlayer().setSkillPoints(world.getPlayer().getSkillPoints()-1);
                 }
->>>>>>> Stashed changes:GameEngine/src/main/java/rpg/gameengine/core/hud/Hud.java
             }
 
         });
@@ -94,17 +89,11 @@ public class Hud {
         movementSkillUpButton.addListener(new ClickListener() {
 
             @Override
-<<<<<<< Updated upstream:GameEngine/src/main/java/rpg/gameengine/managers/Hud.java
-            public void clicked(InputEvent event, float x, float y) {
-                world.getPlayer().setMovementSpeedModifier(world.getPlayer().getMovementSpeedModifier() + 0.10f);
-                world.getPlayer().setSkillPoints(world.getPlayer().getSkillPoints() - 1);
-=======
             public void clicked(InputEvent event, float x, float y){
                 if(world.getPlayer().getSkillPoints() > 0){
                     world.getPlayer().setMovementSpeedModifier(world.getPlayer().getMovementSpeedModifier() + 0.10f);
                     world.getPlayer().setSkillPoints(world.getPlayer().getSkillPoints()-1);
                 }
->>>>>>> Stashed changes:GameEngine/src/main/java/rpg/gameengine/core/hud/Hud.java
             }
 
         });
