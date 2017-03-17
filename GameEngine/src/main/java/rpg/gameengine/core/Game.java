@@ -64,7 +64,6 @@ public class Game implements ApplicationListener {
         drawDebug();
         hud.drawHud();
         gameData.getKeys().update();
-        
     }
 
     private void updatePlayerCamera() {
