@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.HashMap;
 import java.util.Map;
 import rpg.common.data.GameData;
-import rpg.common.data.GameKeys;
 import rpg.common.entities.Entity;
 import rpg.common.entities.EntityType;
 import rpg.common.util.Logger;
