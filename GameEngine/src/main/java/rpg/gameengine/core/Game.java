@@ -56,7 +56,7 @@ public class Game implements ApplicationListener {
     @Override
     public void render() {
         calculateFPS();
-        gameData.setDeltaTime(Math.min(Gdx.graphics.getDeltaTime(), 0.0167f));
+        gameData.setDeltaTime(Math.min(Gdx.graphics.getDeltaTime(), (float) 60f / 3600f));
         update();
         updatePlayerCamera();
         renderer.loadSprites(world);
