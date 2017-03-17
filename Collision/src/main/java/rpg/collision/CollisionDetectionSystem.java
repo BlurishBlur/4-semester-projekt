@@ -16,29 +16,26 @@ public class CollisionDetectionSystem implements IPostEntityProcessingService {
     @Override
     public void process(GameData gameData, World world) {
         for (Entity entity : world.getEntities()) {
-            detectEdgeCollision(gameData, world, entity);
+            handleEdgeCollision(gameData, world, entity);
         }
     }
-    
-    private void detectEdgeCollision(GameData gameData, World world, Entity entity) {
+
+    private void handleEdgeCollision(GameData gameData, World world, Entity entity) {
         if (entity.getRoomPosition().getX() - (entity.getWidth() / 2) < 0) {
             if (entity.getType() == EntityType.PLAYER && world.getCurrentRoom().canExitLeft() && !gameData.isChangingRoom()) {
                 gameData.setIsChangingRoom(true);
                 entity.getWorldVelocity().set(-1, 0);
                 entity.getWorldPosition().add(entity.getWorldVelocity());
-            }
-            else {
+            } else {
                 entity.getRoomPosition().setX(0 + (entity.getWidth() / 2));
                 entity.getVelocity().setX(0);
             }
-        }
-        else if (entity.getRoomPosition().getX() + (entity.getWidth() / 2) > gameData.getDisplayWidth()) {
+        } else if (entity.getRoomPosition().getX() + (entity.getWidth() / 2) > gameData.getDisplayWidth()) {
             if (entity.getType() == EntityType.PLAYER && world.getCurrentRoom().canExitRight() && !gameData.isChangingRoom()) {
                 gameData.setIsChangingRoom(true);
                 entity.getWorldVelocity().set(1, 0);
                 entity.getWorldPosition().add(entity.getWorldVelocity());
-            }
-            else {
+            } else {
                 entity.getRoomPosition().setX(gameData.getDisplayWidth() - (entity.getWidth() / 2));
                 entity.getVelocity().setX(0);
             }
@@ -48,19 +45,16 @@ public class CollisionDetectionSystem implements IPostEntityProcessingService {
                 gameData.setIsChangingRoom(true);
                 entity.getWorldVelocity().set(0, -1);
                 entity.getWorldPosition().add(entity.getWorldVelocity());
-            }
-            else {
+            } else {
                 entity.getRoomPosition().setY(0 + (entity.getHeight() / 2));
                 entity.getVelocity().setY(0);
             }
-        }
-        else if (entity.getRoomPosition().getY() + (entity.getHeight() / 2) > gameData.getDisplayHeight()) {
+        } else if (entity.getRoomPosition().getY() + (entity.getHeight() / 2) > gameData.getDisplayHeight()) {
             if (entity.getType() == EntityType.PLAYER && world.getCurrentRoom().canExitUp() && !gameData.isChangingRoom()) {
                 gameData.setIsChangingRoom(true);
                 entity.getWorldVelocity().set(0, 1);
                 entity.getWorldPosition().add(entity.getWorldVelocity());
-            }
-            else {
+            } else {
                 entity.getRoomPosition().setY(gameData.getDisplayHeight() - (entity.getHeight() / 2));
                 entity.getVelocity().setY(0);
             }

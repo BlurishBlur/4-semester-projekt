@@ -3,14 +3,12 @@ package rpg.combat;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 import rpg.common.data.GameData;
-import rpg.common.data.GameKeys;
 import rpg.common.world.World;
 import rpg.common.entities.Entity;
 import rpg.common.entities.EntityType;
 import rpg.common.events.Event;
 import rpg.common.events.EventType;
 import rpg.common.services.IEntityProcessingService;
-import rpg.common.util.Vector;
 
 @ServiceProviders(value = {
     @ServiceProvider(service = IEntityProcessingService.class)
