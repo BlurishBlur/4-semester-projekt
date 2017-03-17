@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import java.util.ArrayList;
+import java.util.List;
 import rpg.common.data.GameData;
 import rpg.common.data.GameKeys;
 import rpg.common.world.World;
@@ -20,7 +22,7 @@ public class Hud {
     private TextButton.TextButtonStyle textButtonStyle;
     private GameInputProcessor gameInputProcessor;
     private SpriteBatch hudBatch;
-    private Sprite hudSprite;
+    private Sprite hudBackground;
     private BitmapFont font;
     private GameData gameData;
     private World world;
@@ -33,20 +35,17 @@ public class Hud {
         this.font = new BitmapFont();
         this.gameData = gameData;
         this.world = world;
+        initializeHud();
     }
 
-    public void drawHUD() {
+    public void drawHud() {
         if (gameData.getKeys().isPressed(GameKeys.H)) {
             activeHud = !activeHud;
         }
         if (activeHud) {
-            hudBatch.begin();
             hudBatch.setProjectionMatrix(camera.getProjection());
-            Texture texture = new Texture("rpg/gameengine/hud2.jpg");
-            hudSprite = new Sprite(texture);
-            hudSprite.setSize(200, 400);
-            hudSprite.setPosition(40, gameData.getDisplayHeight() - 440);
-            hudSprite.draw(hudBatch);
+            hudBatch.begin();
+            hudBackground.draw(hudBatch);
 
             font.draw(hudBatch, "Skill points: " + world.getPlayer().getSkillPoints(), 50, gameData.getDisplayHeight() - 60);
             font.draw(hudBatch, "Max health: " + world.getPlayer().getCurrentHealth(), 50, gameData.getDisplayHeight() - 90);
@@ -58,24 +57,29 @@ public class Hud {
                 drawSkillUpButtons();
             }
         }
-        else {
-            //gameInputProcessor.removeListener(listener)
-        }
     }
 
     private void drawSkillUpButtons() {
+        gameInputProcessor.draw();
+    }
+
+    private void initializeHud() {
+        Texture texture = new Texture("rpg/gameengine/hud2.jpg");
+        hudBackground = new Sprite(texture);
+        hudBackground.setSize(200, 400);
+        hudBackground.setPosition(40, gameData.getDisplayHeight() - 440);
+
         textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.font = font;
-        
+
         healthSkillUpButton = new TextButton("+", textButtonStyle);
         healthSkillUpButton.setPosition(155, gameData.getDisplayHeight() - 104);
         healthSkillUpButton.addListener(new ClickListener() {
             @Override
-
-            public void clicked(InputEvent event, float x, float y){
-                if(world.getPlayer().getSkillPoints() > 0){
-                    world.getPlayer().setCurrentHealth(world.getPlayer().getCurrentHealth()+10);
-                    world.getPlayer().setSkillPoints(world.getPlayer().getSkillPoints()-1);
+            public void clicked(InputEvent event, float x, float y) {
+                if (world.getPlayer().getSkillPoints() > 0) {
+                    world.getPlayer().setCurrentHealth(world.getPlayer().getCurrentHealth() + 10);
+                    world.getPlayer().setSkillPoints(world.getPlayer().getSkillPoints() - 1);
                 }
             }
         });
@@ -84,10 +88,10 @@ public class Hud {
         movementSkillUpButton.setPosition(180, gameData.getDisplayHeight() - 124);
         movementSkillUpButton.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y){
-                if(world.getPlayer().getSkillPoints() > 0){
+            public void clicked(InputEvent event, float x, float y) {
+                if (world.getPlayer().getSkillPoints() > 0) {
                     world.getPlayer().setMovementSpeedModifier(world.getPlayer().getMovementSpeedModifier() + 0.10f);
-                    world.getPlayer().setSkillPoints(world.getPlayer().getSkillPoints()-1);
+                    world.getPlayer().setSkillPoints(world.getPlayer().getSkillPoints() - 1);
                 }
             }
         });
@@ -104,7 +108,6 @@ public class Hud {
         gameInputProcessor.addActor(armorSkillUpButton);
         gameInputProcessor.addActor(movementSkillUpButton);
         gameInputProcessor.addActor(healthSkillUpButton);
-        gameInputProcessor.draw();
     }
 
 }

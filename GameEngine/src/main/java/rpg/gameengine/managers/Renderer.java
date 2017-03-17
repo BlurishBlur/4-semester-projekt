@@ -69,7 +69,7 @@ public class Renderer {
         batch.end();
     }
 
-    public void drawHud(GameData gameData, World world, Camera camera, String message) {
+    public void drawDebug(GameData gameData, World world, Camera camera, String message) {
         batch.begin();
         batch.setProjectionMatrix(camera.getProjection());
         font.draw(batch, message, 7.5f, 127.5f);

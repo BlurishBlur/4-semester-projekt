@@ -64,7 +64,7 @@ public class Game implements ApplicationListener {
         renderer.loadSprites(world);
         renderer.draw(gameData, world, playerCamera);
         drawDebug();
-        hud.drawHUD();
+        hud.drawHud();
         gameData.getKeys().update();
         
     }
@@ -89,7 +89,7 @@ public class Game implements ApplicationListener {
     public void drawDebug() {
         if (gameData.getKeys().isPressed(GameKeys.F1)) {
             gameData.setShowDebug(!gameData.showDebug());
-            world.getPlayer().setSkillPoints(world.getPlayer().getSkillPoints()+1);
+            world.getPlayer().setSkillPoints(world.getPlayer().getSkillPoints() + 1);
         }
         if (gameData.showDebug()) {
             Entity player = world.getPlayer();
@@ -102,7 +102,7 @@ public class Game implements ApplicationListener {
                     "DY: " + player.getVelocity().getY() + "\n" +
                     "Rotation: " + player.getVelocity().getAngle()*/ + "Movement speed: " + player.getMovementSpeed() + "\n"
                     + "Movement speed modifier: " + player.getMovementSpeedModifier();
-            renderer.drawHud(gameData, world, hudCamera, message);
+            renderer.drawDebug(gameData, world, hudCamera, message);
         }
     }
 
