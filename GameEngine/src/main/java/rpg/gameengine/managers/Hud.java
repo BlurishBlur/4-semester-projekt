@@ -58,6 +58,9 @@ public class Hud {
                 drawSkillUpButtons();
             }
         }
+        else {
+            //gameInputProcessor.removeListener(listener)
+        }
     }
 
     private void drawSkillUpButtons() {
@@ -68,9 +71,12 @@ public class Hud {
         healthSkillUpButton.setPosition(155, gameData.getDisplayHeight() - 104);
         healthSkillUpButton.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
-                world.getPlayer().setCurrentHealth(world.getPlayer().getCurrentHealth() + 10);
-                world.getPlayer().setSkillPoints(world.getPlayer().getSkillPoints() - 1);
+
+            public void clicked(InputEvent event, float x, float y){
+                if(world.getPlayer().getSkillPoints() > 0){
+                    world.getPlayer().setCurrentHealth(world.getPlayer().getCurrentHealth()+10);
+                    world.getPlayer().setSkillPoints(world.getPlayer().getSkillPoints()-1);
+                }
             }
         });
 
@@ -78,9 +84,11 @@ public class Hud {
         movementSkillUpButton.setPosition(180, gameData.getDisplayHeight() - 124);
         movementSkillUpButton.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
-                world.getPlayer().setMovementSpeedModifier(world.getPlayer().getMovementSpeedModifier() + 0.10f);
-                world.getPlayer().setSkillPoints(world.getPlayer().getSkillPoints() - 1);
+            public void clicked(InputEvent event, float x, float y){
+                if(world.getPlayer().getSkillPoints() > 0){
+                    world.getPlayer().setMovementSpeedModifier(world.getPlayer().getMovementSpeedModifier() + 0.10f);
+                    world.getPlayer().setSkillPoints(world.getPlayer().getSkillPoints()-1);
+                }
             }
         });
 
