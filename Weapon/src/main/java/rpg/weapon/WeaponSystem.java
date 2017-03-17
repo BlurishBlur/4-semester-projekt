@@ -56,7 +56,7 @@ public class WeaponSystem implements IEntityProcessingService {
         weapon.getRoomPosition().set(player.getRoomPosition());
         weapon.setSpritePath("rpg/gameengine/sword.png");
         gameData.addWeapon(player, weapon);
-        world.addEntity(weapon);
+        world.getCurrentRoom().addEntity(weapon);
         System.out.println("Added weapon to player: " + gameData.getWeapon(player).getType().toString());
     }
 

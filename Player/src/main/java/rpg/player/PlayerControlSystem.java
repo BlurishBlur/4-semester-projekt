@@ -21,7 +21,7 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
     @Override
     public void start(GameData gameData, World world) {
         player = createPlayer();
-        world.addEntity(player);
+        world.getCurrentRoom().addEntity(player);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
 
     @Override
     public void stop(GameData gameData, World world) {
-        world.removeEntity(player);
+        world.getCurrentRoom().removeEntity(player);
     }
 
 }

@@ -37,8 +37,6 @@ public class Game implements ApplicationListener {
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
         gameData.setCameraZoom(1.50f);
-        
-
 
         for (IGamePluginService plugin : getGamePluginServices()) {
             plugin.start(gameData, world);
@@ -71,6 +69,7 @@ public class Game implements ApplicationListener {
 
     private void updatePlayerCamera() {
         if (gameData.isChangingRoom() && world.getRoom(playerCamera.getTarget().getWorldPosition()) != world.getCurrentRoom()) {
+            world.getRoom(playerCamera.getTarget().getWorldPosition()).addEntity(playerCamera.getTarget());
             playerCamera.initializeRoomChange(world);
             renderer.loadNewRoomSprite(world);
         }

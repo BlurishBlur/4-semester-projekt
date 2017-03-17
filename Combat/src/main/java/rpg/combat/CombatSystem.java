@@ -19,7 +19,7 @@ public class CombatSystem implements IEntityProcessingService {
     public void process(GameData gameData, World world) {
         for (Event event : gameData.getEvents()) {
             if (event.getType() == EventType.PLAYER_ATTACK) {
-                for (Entity enemy : world.getEntities(EntityType.ENEMY)) {
+                for (Entity enemy : world.getCurrentRoom().getEntities(EntityType.ENEMY)) {
                     if (isHit(gameData.getWeapon(event.getEntity()), enemy)) {
                         System.out.println("enemy hit");
                     }

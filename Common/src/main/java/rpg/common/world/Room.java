@@ -71,10 +71,10 @@ public class Room {
         return entities.get(entityID);
     }
 
-    public Entity getEntity(EntityType entityType) {
+    public Entity getPlayer() {
         return entities.values()
                 .parallelStream()
-                .filter(entity -> entity.getType() == entityType)
+                .filter(entity -> entity.getType() == EntityType.PLAYER)
                 .findFirst()
                 .get();
     }

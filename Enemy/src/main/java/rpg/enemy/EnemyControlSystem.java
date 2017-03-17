@@ -20,12 +20,12 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
     @Override
     public void start(GameData gameData, World world) {
         enemy = createEnemy();
-        world.addEntity(enemy);
+        world.getCurrentRoom().addEntity(enemy);
     }
 
     @Override
     public void process(GameData gameData, World world) {
-        for (Entity enemy : world.getEntities(EntityType.ENEMY)) {
+        for (Entity enemy : world.getCurrentRoom().getEntities(EntityType.ENEMY)) {
             enemy.getVelocity().set(0, 0);
             enemy.reduceActionTimer(gameData.getDeltaTime());
             if (enemy.getActionTimer() < 0) {
@@ -63,7 +63,7 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
 
     @Override
     public void stop(GameData gameData, World world) {
-        world.removeEntity(enemy);
+        world.getCurrentRoom().removeEntity(enemy);
     }
 
 }

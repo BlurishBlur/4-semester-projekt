@@ -30,7 +30,7 @@ public class Renderer {
     }
 
     public void loadSprites(World world) {
-        for (Entity entity : world.getEntities()) {
+        for (Entity entity : world.getCurrentRoom().getEntities()) {
             if (!sprites.containsKey(entity)) {
                 try {
                     Texture texture = new Texture(entity.getSpritePath());
@@ -86,7 +86,7 @@ public class Renderer {
     }
 
     private void drawEntitySprites(World world) {
-        for (Entity entity : world.getEntities(EntityType.PLAYER, EntityType.ENEMY)) {
+        for (Entity entity : world.getCurrentRoom().getEntities(EntityType.PLAYER, EntityType.ENEMY)) {
             try {
                 Sprite sprite = sprites.get(entity);
                 sprite.setRotation(entity.getDirection());
@@ -97,7 +97,7 @@ public class Renderer {
                 Logger.log("No sprite found for entity of type " + entity.getType() + ": " + entity.toString());
             }
         }
-        for (Entity entity : world.getEntities(EntityType.MELEE)) {
+        for (Entity entity : world.getCurrentRoom().getEntities(EntityType.MELEE)) {
             Sprite sprite = sprites.get(entity);
             sprite.setRotation(entity.getDirection());
             sprite.setPosition(entity.getRoomPosition().getX() - entity.getWidth() / 2, entity.getRoomPosition().getY() - entity.getHeight() / 2);
