@@ -21,6 +21,7 @@ public class Entity implements Serializable {
     private int maxHealth;
     private int skillPoints;
     private float actionTimer = 2;
+    private int armor;
     private double verticalMovementChance;
     private double horizontalMovementChance;
     private float direction;
@@ -36,6 +37,14 @@ public class Entity implements Serializable {
         velocity = new Vector();
         worldPosition = new Vector();
         worldVelocity = new Vector();
+    }
+    
+    public int getArmor() {
+        return this.armor;
+    }
+    
+    public void setArmor(int armor) {
+        this.armor = armor;
     }
     
     public int getSkillPoints() {

@@ -50,9 +50,9 @@ public class Hud {
             font.draw(hudBatch, "Skill points: " + world.getPlayer().getSkillPoints(), 50, gameData.getDisplayHeight() - 60);
             font.draw(hudBatch, "Max health: " + world.getPlayer().getCurrentHealth(), 50, gameData.getDisplayHeight() - 90);
             font.draw(hudBatch, "Speed modifier: " + world.getPlayer().getMovementSpeedModifier(), 50, gameData.getDisplayHeight() - 110);
-            font.draw(hudBatch, "Armor: 0", 50, gameData.getDisplayHeight() - 130);
+            font.draw(hudBatch, "Damage reduction: " + world.getPlayer().getArmor() + "%", 50, gameData.getDisplayHeight() - 130);
             hudBatch.end();
-
+            
             if (world.getPlayer().getSkillPoints() > 0) {
                 drawSkillUpButtons();
             }
@@ -97,11 +97,14 @@ public class Hud {
         });
 
         armorSkillUpButton = new TextButton("+", textButtonStyle);
-        armorSkillUpButton.setPosition(110, gameData.getDisplayHeight() - 144);
+        armorSkillUpButton.setPosition(200, gameData.getDisplayHeight() - 144);
         armorSkillUpButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Armor up plox");
+                if (world.getPlayer().getSkillPoints() > 0) {
+                    world.getPlayer().setArmor(world.getPlayer().getArmor() + 2);
+                    world.getPlayer().setSkillPoints(world.getPlayer().getSkillPoints() - 1);
+                }
             }
         });
 
