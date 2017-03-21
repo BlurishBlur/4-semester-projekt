@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import java.util.HashMap;
 import java.util.Map;
 import rpg.common.data.GameData;
@@ -20,11 +21,13 @@ public class Renderer {
     private SpriteBatch batch;
     private BitmapFont font;
     private Map<Entity, Sprite> sprites;
+    private Map<Entity, TextureAtlas> atlas;
     private Sprite currentRoom;
     private Sprite previousRoom;
 
     public Renderer() {
         sprites = new HashMap<>();
+        atlas = new HashMap<>();
         batch = new SpriteBatch();
         font = new BitmapFont();
     }
@@ -33,13 +36,19 @@ public class Renderer {
         for (Entity entity : world.getCurrentRoom().getEntities()) {
             if (!sprites.containsKey(entity)) {
                 try {
-                    Texture texture = new Texture(entity.getSpritePath());
-                    Sprite sprite = new Sprite(texture);
-                    sprite.setSize(entity.getWidth(), entity.getHeight());
-                    sprite.setOriginCenter();
-                    sprites.put(entity, sprite);
-                }
-                catch (NullPointerException e) {
+                    if (entity.getType() == EntityType.PLAYER) {
+                        atlas.put(entity, new TextureAtlas(Gdx.files.internal(world.getPlayer().getSpritePath())));
+                        Sprite sprite = new Sprite(atlas.get(entity).findRegion("0001"));
+                        sprites.put(entity, sprite);
+                    }
+                    else {
+                        Texture texture = new Texture(entity.getSpritePath());
+                        Sprite sprite = new Sprite(texture);
+                        sprite.setSize(entity.getWidth(), entity.getHeight());
+                        sprite.setOriginCenter();
+                        sprites.put(entity, sprite);
+                    }
+                } catch (NullPointerException e) {
                     Logger.log("No spritepath found for entity of type " + entity.getType() + ": " + entity.toString());
                 }
             }
@@ -89,11 +98,13 @@ public class Renderer {
         for (Entity entity : world.getCurrentRoom().getEntities(EntityType.PLAYER, EntityType.ENEMY)) {
             try {
                 Sprite sprite = sprites.get(entity);
+                if(entity.getType() == EntityType.PLAYER) {
+                    sprite.setRegion(atlas.get(entity).findRegion(String.format("%04d", entity.getCurrentFrame())));
+                }
                 sprite.setRotation(entity.getDirection());
                 sprite.setPosition(entity.getRoomPosition().getX() - entity.getWidth() / 2, entity.getRoomPosition().getY() - entity.getHeight() / 2);
                 sprite.draw(batch);
-            }
-            catch (NullPointerException e) {
+            } catch (NullPointerException e) {
                 Logger.log("No sprite found for entity of type " + entity.getType() + ": " + entity.toString());
             }
         }

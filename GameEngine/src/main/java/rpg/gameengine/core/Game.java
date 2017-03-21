@@ -41,6 +41,8 @@ public class Game implements ApplicationListener {
         for (IGamePluginService plugin : getGamePluginServices()) {
             plugin.start(gameData, world);
         }
+        
+        //walk = Gdx.audio.newSound(Gdx.files.internal(world.getEntity(EntityType.PLAYER).getSounds().get("GRASS").toString()));
 
         world.setCurrentRoom(world.getPlayer().getWorldPosition());
         renderer = new Renderer();

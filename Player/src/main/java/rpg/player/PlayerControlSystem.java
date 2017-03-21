@@ -32,15 +32,20 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
         //player.setMovementSpeedModifier(1);
         if (gameData.getKeys().isDown(GameKeys.W)) {
             player.getVelocity().addY(player.getMovementSpeed());
-        }
-        else if (gameData.getKeys().isDown(GameKeys.S)) {
+        } else if (gameData.getKeys().isDown(GameKeys.S)) {
             player.getVelocity().subtractY(player.getMovementSpeed());
         }
         if (gameData.getKeys().isDown(GameKeys.A)) {
             player.getVelocity().subtractX(player.getMovementSpeed());
-        }
-        else if (gameData.getKeys().isDown(GameKeys.D)) {
+        } else if (gameData.getKeys().isDown(GameKeys.D)) {
             player.getVelocity().addX(player.getMovementSpeed());
+            
+        }
+        if(player.getVelocity().isMoving()) {
+            player.increaseFrame(gameData.getDeltaTime());
+        }
+        else {
+            player.setCurrentFrame(1);
         }
         if(gameData.getKeys().isDown(GameKeys.SHIFT)) {
             //player.setMovementSpeedModifier(player.getMovementSpeedModifier() + 0.75f);
@@ -58,9 +63,15 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
         newPlayer.setMaxHealth(100);
         newPlayer.setCurrentHealth(newPlayer.getMaxHealth());
         newPlayer.setMovementSpeedModifier(1);
-        newPlayer.setWidth(30);
-        newPlayer.setHeight(30);
-        newPlayer.setSpritePath("rpg/gameengine/player.png");
+        //newPlayer.setWidth(30);
+        //newPlayer.setHeight(30);
+        //newPlayer.setSpritePath("rpg/gameengine/player.png");
+        newPlayer.setWidth(80);
+        newPlayer.setHeight(80);
+        newPlayer.setSpritePath("rpg/gameengine/testTexture.atlas");
+        newPlayer.setCurrentFrame(1);
+        newPlayer.setMaxFrames(3);
+        //newPlayer.getSounds().put("GRASS", "rpg/gameengine/Footstep Grass 2.wav");
         return newPlayer;
     }
 
