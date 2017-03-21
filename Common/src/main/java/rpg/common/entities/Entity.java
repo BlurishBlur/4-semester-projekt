@@ -10,11 +10,16 @@ public class Entity implements Serializable {
     
     private final UUID ID = UUID.randomUUID();
     private EntityType type;
-    private Vector position;
+    private Vector roomPosition;
     private Vector velocity;
+    private Vector worldPosition;
+    private Vector worldVelocity;
+    private float defaultMovementSpeed;
     private float movementSpeed;
+    private float movementSpeedModifier;
     private int currentHealth;
     private int maxHealth;
+    private int skillPoints;
     private float actionTimer = 2;
     private double verticalMovementChance;
     private double horizontalMovementChance;
@@ -27,8 +32,18 @@ public class Entity implements Serializable {
     private Map<String, String> sounds;
     
     public Entity() {
-        position = new Vector();
+        roomPosition = new Vector();
         velocity = new Vector();
+        worldPosition = new Vector();
+        worldVelocity = new Vector();
+    }
+    
+    public int getSkillPoints() {
+        return skillPoints;
+    }
+    
+    public void setSkillPoints(int amount) {
+        this.skillPoints = amount;
         sounds = new HashMap<>();
     }
     
@@ -43,9 +58,33 @@ public class Entity implements Serializable {
     public Map getSounds() {
         return sounds;
     }
+
+    public float getDefaultMovementSpeed() {
+        return defaultMovementSpeed;
+    }
+
+    public void setDefaultMovementSpeed(float defaultMovementSpeed) {
+        this.defaultMovementSpeed = defaultMovementSpeed;
+    }
+
+    public float getMovementSpeedModifier() {
+        return movementSpeedModifier;
+    }
+
+    public void setMovementSpeedModifier(float movementSpeedModifier) {
+        this.movementSpeedModifier = movementSpeedModifier;
+    }
     
-    public Vector getPosition() {
-        return position;
+    public Vector getWorldVelocity() {
+        return worldVelocity;
+    }
+    
+    public Vector getWorldPosition() {
+        return worldPosition;
+    }
+
+    public Vector getRoomPosition() {
+        return roomPosition;
     }
     
     public Vector getVelocity() {

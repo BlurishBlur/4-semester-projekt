@@ -1,11 +1,11 @@
 package rpg.gameengine.managers;
 
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import rpg.common.data.GameData;
 import rpg.common.data.GameKeys;
 
-public class GameInputProcessor extends InputAdapter {
+public class GameInputProcessor extends Stage {
     
     private final GameData gameData;
     
@@ -48,6 +48,12 @@ public class GameInputProcessor extends InputAdapter {
         if(key == Keys.F1) {
             gameData.getKeys().setKey(GameKeys.F1, true);
         }
+        if(key == Keys.SHIFT_LEFT) {
+            gameData.getKeys().setKey(GameKeys.SHIFT, true);
+        }
+        if(key == Keys.H) {
+            gameData.getKeys().setKey(GameKeys.H, true);
+        }
         return true;
     }
     
@@ -85,6 +91,12 @@ public class GameInputProcessor extends InputAdapter {
         }
         if(key == Keys.F1) {
             gameData.getKeys().setKey(GameKeys.F1, false);
+        }
+        if(key == Keys.SHIFT_LEFT) {
+            gameData.getKeys().setKey(GameKeys.SHIFT, false);
+        }
+        if(key == Keys.H) {
+            gameData.getKeys().setKey(GameKeys.H, false);
         }
         return true;
     }

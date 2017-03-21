@@ -1,7 +1,7 @@
 package rpg.common.services;
 
 import rpg.common.data.GameData;
-import rpg.common.data.World;
+import rpg.common.world.World;
 
 public interface IGamePluginService {
     

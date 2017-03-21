@@ -17,9 +17,22 @@ public class GameData {
     private int displayHeight;
     private float cameraZoom;
     private boolean showDebug;
+    private boolean isChangingRoom;
     private List<Event> events = new CopyOnWriteArrayList<>();
-    private final GameKeys keys = new GameKeys();
     private Map<Entity, Entity> weapons = new ConcurrentHashMap<>();
+    private GameKeys keys = new GameKeys();
+    
+    public void setIsChangingRoom(boolean isChangingRoom) {
+        this.isChangingRoom = isChangingRoom;
+    }
+    
+    public boolean isChangingRoom() {
+        return isChangingRoom;
+    }
+    
+    public GameKeys getKeys() {
+        return keys;
+    }
     
     public Collection<Entity> getWeapons() {
         return weapons.values();
@@ -33,7 +46,7 @@ public class GameData {
         return weapons.get(entity);
     }
 
-    public boolean isShowDebug() {
+    public boolean showDebug() {
         return showDebug;
     }
 
@@ -71,10 +84,6 @@ public class GameData {
 
     public void addEvent(Event event) {
         events.add(event);
-    }
-
-    public GameKeys getKeys() {
-        return keys;
     }
 
     public float getDeltaTime() {

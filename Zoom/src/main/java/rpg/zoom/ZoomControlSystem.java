@@ -4,7 +4,7 @@ import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 import rpg.common.data.GameData;
 import rpg.common.data.GameKeys;
-import rpg.common.data.World;
+import rpg.common.world.World;
 import rpg.common.services.IEntityProcessingService;
 
 @ServiceProviders(value = {
@@ -16,12 +16,12 @@ public class ZoomControlSystem implements IEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
-        if (gameData.getKeys().isDown(GameKeys.PLUS)) {
+        if (gameData.getKeys().isPressed(GameKeys.PLUS)) {
             if (gameData.getCameraZoom() < 1.99f) {
                 gameData.setCameraZoom(gameData.getCameraZoom() + ZOOM_SPEED);
             }
         }
-        if (gameData.getKeys().isDown(GameKeys.MINUS)) {
+        if (gameData.getKeys().isPressed(GameKeys.MINUS)) {
             if (gameData.getCameraZoom() > 1.01f) {
                 gameData.setCameraZoom(gameData.getCameraZoom() - ZOOM_SPEED);
             }

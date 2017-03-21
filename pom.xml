@@ -77,7 +77,7 @@
         <module>Zoom</module>
         <module>Collision</module>
         <module>Combat</module>
-        <module>AcquireWeapon</module>
+        <module>Weapon</module>
     </modules>
 
     <properties>

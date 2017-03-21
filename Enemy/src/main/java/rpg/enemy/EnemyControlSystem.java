@@ -3,11 +3,11 @@ package rpg.enemy;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 import rpg.common.data.GameData;
-import rpg.common.data.World;
 import rpg.common.entities.Entity;
 import rpg.common.entities.EntityType;
 import rpg.common.services.IEntityProcessingService;
 import rpg.common.services.IGamePluginService;
+import rpg.common.world.World;
 
 @ServiceProviders(value = {
     @ServiceProvider(service = IEntityProcessingService.class),
@@ -20,12 +20,12 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
     @Override
     public void start(GameData gameData, World world) {
         enemy = createEnemy();
-        world.addEntity(enemy);
+        world.getCurrentRoom().addEntity(enemy);
     }
 
     @Override
     public void process(GameData gameData, World world) {
-        for (Entity enemy : world.getEntities(EntityType.ENEMY)) {
+        for (Entity enemy : world.getCurrentRoom().getEntities(EntityType.ENEMY)) {
             enemy.getVelocity().set(0, 0);
             enemy.reduceActionTimer(gameData.getDeltaTime());
             if (enemy.getActionTimer() < 0) {
@@ -51,7 +51,7 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
     private Entity createEnemy() {
         Entity newEnemy = new Entity();
         newEnemy.setType(EntityType.ENEMY);
-        newEnemy.getPosition().set(640, 360);
+        newEnemy.getRoomPosition().set(640, 360);
         newEnemy.setMovementSpeed(100);
         newEnemy.setMaxHealth(50);
         newEnemy.setCurrentHealth(newEnemy.getMaxHealth());
@@ -63,7 +63,7 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
 
     @Override
     public void stop(GameData gameData, World world) {
-        world.removeEntity(enemy);
+        world.getCurrentRoom().removeEntity(enemy);
     }
 
 }
