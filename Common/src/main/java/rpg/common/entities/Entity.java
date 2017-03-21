@@ -1,6 +1,8 @@
 package rpg.common.entities;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import rpg.common.util.Vector;
 
@@ -20,18 +22,28 @@ public class Entity implements Serializable {
     private float width;
     private float height;
     private String spritePath;
-    private int currentFrame;
+    private float currentFrame;
     private int maxFrames;
+    private Map<String, String> sounds;
     
     public Entity() {
         position = new Vector();
         velocity = new Vector();
+        sounds = new HashMap<>();
     }
     
-    public void increaseFrame() {
-        currentFrame = (currentFrame % maxFrames) + 1;
+    public void increaseFrame(float deltaTime) {
+        currentFrame += deltaTime * (movementSpeed / (width / 3)); //enten width / 3 eller width / 4
+        if(currentFrame > maxFrames + 1) {
+            currentFrame = 2;
+        }
+        //currentFrame = (currentFrame % maxFrames) + 1;
     }
-
+    
+    public Map getSounds() {
+        return sounds;
+    }
+    
     public Vector getPosition() {
         return position;
     }
@@ -137,7 +149,7 @@ public class Entity implements Serializable {
     }
     
     public int getCurrentFrame(){
-        return currentFrame;
+        return (int) currentFrame;
     }
     
     public void setCurrentFrame(int frame){

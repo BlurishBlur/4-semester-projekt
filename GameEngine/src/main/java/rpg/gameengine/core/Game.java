@@ -2,6 +2,7 @@ package rpg.gameengine.core;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -40,7 +41,8 @@ public class Game implements ApplicationListener {
     private SpriteBatch batch;
     private TextureAtlas atlas;
     private TextureRegion region;
-    private Sprite playerSprite;
+    
+    Sound walk;
 
     private Sprite map; // TODO load den her sprite ordentligt
 
@@ -61,6 +63,8 @@ public class Game implements ApplicationListener {
 
         atlas = new TextureAtlas(Gdx.files.internal(world.getEntities(EntityType.PLAYER).get(0).getSpritePath()));
         region = atlas.findRegion("0001");
+        
+        walk = Gdx.audio.newSound(Gdx.files.internal(world.getEntity(EntityType.PLAYER).getSounds().get("GRASS").toString()));
 
         playerCamera = new OrthographicCamera(gameData.getDisplayWidth() / gameData.getCameraZoom(), gameData.getDisplayHeight() / gameData.getCameraZoom());
         playerCamera.position.set(playerCamera.viewportWidth / 2, playerCamera.viewportHeight / 2, 0);
@@ -117,7 +121,7 @@ public class Game implements ApplicationListener {
             postProcessor.process(gameData, world);
         }
     }
-
+    
     private void loadSprites() {
         for (Entity entity : world.getEntities()) {
             Sprite sprite;
@@ -172,7 +176,7 @@ public class Game implements ApplicationListener {
         for (Entity entity : world.getEntities(EntityType.PLAYER, EntityType.ENEMY)) {
             Sprite sprite = sprites.get(entity);
             if (entity.getType() == EntityType.PLAYER) {
-                sprite.setRegion(atlas.findRegion(String.format("%04d", entity.getCurrentFrame())));   
+                sprite.setRegion(atlas.findRegion(String.format("%04d", entity.getCurrentFrame())));
             }
             sprite.setRotation(entity.getDirection());
             sprite.setPosition(entity.getPosition().getX() - entity.getWidth() / 2, entity.getPosition().getY() - entity.getHeight() / 2);

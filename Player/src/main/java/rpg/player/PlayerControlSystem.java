@@ -40,7 +40,7 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
             
         }
         if(player.getVelocity().isMoving()) {
-            player.increaseFrame();
+            player.increaseFrame(gameData.getDeltaTime());
         }
         else {
             player.setCurrentFrame(1);
@@ -54,11 +54,12 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
         newPlayer.setMovementSpeed(200);
         newPlayer.setMaxHealth(100);
         newPlayer.setCurrentHealth(newPlayer.getMaxHealth());
-        newPlayer.setWidth(100);
-        newPlayer.setHeight(100);
+        newPlayer.setWidth(80);
+        newPlayer.setHeight(80);
         newPlayer.setSpritePath("rpg/gameengine/testTexture.atlas");
         newPlayer.setCurrentFrame(1);
         newPlayer.setMaxFrames(3);
+        newPlayer.getSounds().put("GRASS", "rpg/gameengine/Footstep Grass 2.wav");
         return newPlayer;
     }
 
