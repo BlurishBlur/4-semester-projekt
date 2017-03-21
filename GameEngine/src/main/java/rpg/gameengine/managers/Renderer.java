@@ -39,6 +39,8 @@ public class Renderer {
                     if (entity.getType() == EntityType.PLAYER) {
                         atlas.put(entity, new TextureAtlas(Gdx.files.internal(world.getPlayer().getSpritePath())));
                         Sprite sprite = new Sprite(atlas.get(entity).findRegion("0001"));
+                        sprite.setSize(entity.getWidth(), entity.getHeight());
+                        sprite.setOriginCenter();
                         sprites.put(entity, sprite);
                     }
                     else {
