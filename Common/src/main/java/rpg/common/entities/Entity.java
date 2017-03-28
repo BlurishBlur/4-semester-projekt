@@ -171,6 +171,10 @@ public class Entity implements Serializable {
     public void setCurrentHealth(int currentHealth) {
         this.currentHealth = currentHealth;
     }
+    
+    public void reduceCurrentHealth(int damage) {
+        currentHealth -= damage;
+    }
 
     public int getMaxHealth() {
         return maxHealth;

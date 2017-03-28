@@ -5,6 +5,6 @@ import rpg.common.entities.Entity;
 
 public interface EnemySPI {
     
-    Entity creatyEnemy(GameData gameData);
+    Entity createEnemy(GameData gameData);
     
 }

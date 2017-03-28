@@ -4,28 +4,30 @@ import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 import rpg.common.data.GameData;
 import rpg.common.entities.Entity;
-import rpg.common.entities.EntityType;
 import rpg.common.services.IEntityProcessingService;
 import rpg.common.services.IGamePluginService;
 import rpg.common.world.World;
+import rpg.commonenemy.Enemy;
+import rpg.commonenemy.EnemySPI;
 
 @ServiceProviders(value = {
-    @ServiceProvider(service = IEntityProcessingService.class),
+    @ServiceProvider(service = IEntityProcessingService.class)
+    ,
     @ServiceProvider(service = IGamePluginService.class)
 })
-public class EnemyControlSystem implements IEntityProcessingService, IGamePluginService {
+public class EnemyControlSystem implements IEntityProcessingService, IGamePluginService, EnemySPI {
 
     private Entity enemy;
 
     @Override
     public void start(GameData gameData, World world) {
-        enemy = createEnemy();
+        enemy = createEnemy(gameData);
         world.getCurrentRoom().addEntity(enemy);
     }
 
     @Override
     public void process(GameData gameData, World world) {
-        for (Entity enemy : world.getCurrentRoom().getEntities(EntityType.ENEMY)) {
+        for (Entity enemy : world.getCurrentRoom().getEntities(Enemy.class)) {
             enemy.getVelocity().set(0, 0);
             enemy.reduceActionTimer(gameData.getDeltaTime());
             if (enemy.getActionTimer() < 0) {
@@ -34,25 +36,33 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
                 enemy.setActionTimer((int) (Math.random() * 4) + 1);
             }
             if (enemy.getVerticalMovementChance() < 0.20) { // up
-                enemy.getVelocity().addY(enemy.getMovementSpeed());
+                enemy.getVelocity().addY(enemy.getCurrentMovementSpeed());
             }
             else if (enemy.getVerticalMovementChance() < 0.40) { // down
-                enemy.getVelocity().subtractY(enemy.getMovementSpeed());
+                enemy.getVelocity().subtractY(enemy.getCurrentMovementSpeed());
             }
             if (enemy.getHorizontalMovementChance() < 0.20) { // left
-                enemy.getVelocity().subtractX(enemy.getMovementSpeed());
+                enemy.getVelocity().subtractX(enemy.getCurrentMovementSpeed());
             }
             else if (enemy.getHorizontalMovementChance() < 0.40) { // right
-                enemy.getVelocity().addX(enemy.getMovementSpeed());
+                enemy.getVelocity().addX(enemy.getCurrentMovementSpeed());
             }
+
+            handleEdgeCollision(gameData, world, enemy);
         }
     }
 
-    private Entity createEnemy() {
-        Entity newEnemy = new Entity();
-        newEnemy.setType(EntityType.ENEMY);
+    @Override
+    public void stop(GameData gameData, World world) {
+        world.getCurrentRoom().removeEntity(enemy);
+    }
+
+    @Override
+    public Entity createEnemy(GameData gameData) {
+        Entity newEnemy = new Enemy();
         newEnemy.getRoomPosition().set(640, 360);
-        newEnemy.setMovementSpeed(100);
+        newEnemy.setDefaultMovementSpeed(100);
+        newEnemy.setCurrentMovementSpeed(newEnemy.getDefaultMovementSpeed());
         newEnemy.setMaxHealth(50);
         newEnemy.setCurrentHealth(newEnemy.getMaxHealth());
         newEnemy.setWidth(30);
@@ -61,9 +71,23 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
         return newEnemy;
     }
 
-    @Override
-    public void stop(GameData gameData, World world) {
-        world.getCurrentRoom().removeEntity(enemy);
+    private void handleEdgeCollision(GameData gameData, World world, Entity enemy) {
+        if (enemy.getRoomPosition().getX() - (enemy.getWidth() / 2) < 0) {
+            enemy.getRoomPosition().setX(0 + (enemy.getWidth() / 2));
+            enemy.getVelocity().setX(0);
+        }
+        else if (enemy.getRoomPosition().getX() + (enemy.getWidth() / 2) > gameData.getDisplayWidth()) {
+            enemy.getRoomPosition().setX(gameData.getDisplayWidth() - (enemy.getWidth() / 2));
+            enemy.getVelocity().setX(0);
+        }
+        if (enemy.getRoomPosition().getY() - (enemy.getHeight() / 2) < 0) {
+            enemy.getRoomPosition().setY(0 + (enemy.getHeight() / 2));
+            enemy.getVelocity().setY(0);
+        }
+        else if (enemy.getRoomPosition().getY() + (enemy.getHeight() / 2) > gameData.getDisplayHeight()) {
+            enemy.getRoomPosition().setY(gameData.getDisplayHeight() - (enemy.getHeight() / 2));
+            enemy.getVelocity().setY(0);
+        }
     }
 
 }

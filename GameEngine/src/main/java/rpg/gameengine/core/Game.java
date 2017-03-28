@@ -100,7 +100,7 @@ public class Game implements ApplicationListener {
                     /*+
                     "DX: " + player.getVelocity().getX() + "\n" +
                     "DY: " + player.getVelocity().getY() + "\n" +
-                    "Rotation: " + player.getVelocity().getAngle()*/ + "Movement speed: " + player.getMovementSpeed() + "\n"
+                    "Rotation: " + player.getVelocity().getAngle()*/ + "Movement speed: " + player.getCurrentMovementSpeed() + "\n"
                     + "Movement speed modifier: " + player.getMovementSpeedModifier();
             renderer.drawDebug(gameData, world, hudCamera, message);
         }

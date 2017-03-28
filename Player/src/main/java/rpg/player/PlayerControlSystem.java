@@ -53,6 +53,8 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
             player.setSprintModifier(1.75f);
         }
         player.setCurrentMovementSpeed(player.getDefaultMovementSpeed() * player.getMovementSpeedModifier() * player.getSprintModifier());
+        
+        handleEdgeCollision(gameData, world, player);
     }
 
     private Entity createPlayer() {
@@ -71,6 +73,53 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
         newPlayer.setMaxFrames(3);
         //newPlayer.getSounds().put("GRASS", "rpg/gameengine/Footstep Grass 2.wav");
         return newPlayer;
+    }
+    
+    private void handleEdgeCollision(GameData gameData, World world, Entity player) {
+        if (player.getRoomPosition().getX() - (player.getWidth() / 2) < 0) {
+            if (world.getCurrentRoom().canExitLeft() && !gameData.isChangingRoom()) {
+                gameData.setIsChangingRoom(true);
+                player.getWorldVelocity().set(-1, 0);
+                player.getWorldPosition().add(player.getWorldVelocity());
+            }
+            else {
+                player.getRoomPosition().setX(0 + (player.getWidth() / 2));
+                player.getVelocity().setX(0);
+            }
+        }
+        else if (player.getRoomPosition().getX() + (player.getWidth() / 2) > gameData.getDisplayWidth()) {
+            if (world.getCurrentRoom().canExitRight() && !gameData.isChangingRoom()) {
+                gameData.setIsChangingRoom(true);
+                player.getWorldVelocity().set(1, 0);
+                player.getWorldPosition().add(player.getWorldVelocity());
+            }
+            else {
+                player.getRoomPosition().setX(gameData.getDisplayWidth() - (player.getWidth() / 2));
+                player.getVelocity().setX(0);
+            }
+        }
+        if (player.getRoomPosition().getY() - (player.getHeight() / 2) < 0) {
+            if (world.getCurrentRoom().canExitDown() && !gameData.isChangingRoom()) {
+                gameData.setIsChangingRoom(true);
+                player.getWorldVelocity().set(0, -1);
+                player.getWorldPosition().add(player.getWorldVelocity());
+            }
+            else {
+                player.getRoomPosition().setY(0 + (player.getHeight() / 2));
+                player.getVelocity().setY(0);
+            }
+        }
+        else if (player.getRoomPosition().getY() + (player.getHeight() / 2) > gameData.getDisplayHeight()) {
+            if (world.getCurrentRoom().canExitUp() && !gameData.isChangingRoom()) {
+                gameData.setIsChangingRoom(true);
+                player.getWorldVelocity().set(0, 1);
+                player.getWorldPosition().add(player.getWorldVelocity());
+            }
+            else {
+                player.getRoomPosition().setY(gameData.getDisplayHeight() - (player.getHeight() / 2));
+                player.getVelocity().setY(0);
+            }
+        }
     }
 
     @Override
