@@ -19,7 +19,6 @@ public class GameData {
     private boolean showDebug;
     private boolean isChangingRoom;
     private List<Event> events = new CopyOnWriteArrayList<>();
-    private Map<Entity, Entity> weapons = new ConcurrentHashMap<>();
     private GameKeys keys = new GameKeys();
     
     public void setIsChangingRoom(boolean isChangingRoom) {
@@ -32,18 +31,6 @@ public class GameData {
     
     public GameKeys getKeys() {
         return keys;
-    }
-    
-    public Collection<Entity> getWeapons() {
-        return weapons.values();
-    }
-    
-    public void addWeapon(Entity entity, Entity weapon) {
-        weapons.put(entity, weapon);
-    }
-    
-    public Entity getWeapon(Entity entity) {
-        return weapons.get(entity);
     }
 
     public boolean showDebug() {

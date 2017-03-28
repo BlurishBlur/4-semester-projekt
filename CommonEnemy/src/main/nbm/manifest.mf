@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
 OpenIDE-Module-Localizing-Bundle: rpg/commonenemy/Bundle.properties
-
+OpenIDE-Module-Public-Packages: rpg.commonenemy.*

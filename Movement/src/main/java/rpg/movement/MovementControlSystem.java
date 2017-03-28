@@ -24,8 +24,8 @@ public class MovementControlSystem implements IEntityProcessingService {
                 entity.setDirection(entity.getVelocity().getAngle());
             }
             entity.getRoomPosition().add(entity.getVelocity());
-            if(gameData.getWeapon(entity) != null) {
-                gameData.getWeapon(entity).getRoomPosition().set(entity.getRoomPosition());
+            if(entity.hasWeapon()) {
+                entity.getWeapon().getRoomPosition().set(entity.getRoomPosition());
             }
         }
     }

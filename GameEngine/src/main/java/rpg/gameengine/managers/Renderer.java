@@ -34,23 +34,31 @@ public class Renderer {
     public void loadSprites(World world) {
         for (Entity entity : world.getCurrentRoom().getEntities()) {
             if (!sprites.containsKey(entity)) {
-                try {
-                    Sprite sprite;
-                    if (entity.isAnimatable()) {
-                        atlases.put(entity, new TextureAtlas(Gdx.files.internal(entity.getSpritePath())));
-                        sprite = new Sprite(atlases.get(entity).findRegion("0001"));
-                    }
-                    else {
-                        sprite = new Sprite(new Texture(entity.getSpritePath()));
-                    }
-                    sprite.setSize(entity.getWidth(), entity.getHeight());
-                    sprite.setOriginCenter();
-                    sprites.put(entity, sprite);
-                }
-                catch (NullPointerException e) {
-                    Logger.log("No spritepath found for entity of class " + entity.getClass() + ": " + entity.toString());
-                }
+                loadSprite(entity);
             }
+            if (!sprites.containsKey(entity.getWeapon()) && entity.hasWeapon()) {
+                loadSprite(entity.getWeapon());
+            }
+        }
+    }
+
+    private void loadSprite(Entity entity) {
+        try {
+            Sprite sprite;
+            if (entity.isAnimatable()) {
+                atlases.put(entity, new TextureAtlas(Gdx.files.internal(entity.getSpritePath())));
+                sprite = new Sprite(atlases.get(entity).findRegion("0001"));
+            }
+            else {
+                sprite = new Sprite(new Texture(entity.getSpritePath()));
+            }
+            sprite.setSize(entity.getWidth(), entity.getHeight());
+            sprite.setOriginCenter();
+            sprites.put(entity, sprite);
+            System.out.println("Loaded sprite: " + entity.getSpritePath());
+        }
+        catch (NullPointerException e) {
+            Logger.log("Couldn't load sprite, no spritepath found for entity of class " + entity.getClass() + ": " + entity.toString());
         }
     }
 
@@ -112,7 +120,7 @@ public class Renderer {
                 }
             }
             catch (NullPointerException e) {
-                Logger.log("No sprite found for entity of class " + entity.getClass() + ": " + entity.toString());
+                Logger.log("Couldn't draw sprite, no sprite loaded for entity of class " + entity.getClass() + ": " + entity.toString());
             }
         }
     }

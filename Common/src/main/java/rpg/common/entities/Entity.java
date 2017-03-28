@@ -161,7 +161,6 @@ public class Entity implements Serializable {
     public void setSpritePath(String spritePath) {
         this.spritePath = spritePath;
         isAnimatable = spritePath.substring(spritePath.length() - 6, spritePath.length()).equals(".atlas");
-        System.out.println("SET SPRITE PATH I ENTITY: " + spritePath.substring(spritePath.length() - 6, spritePath.length()));
     }
 
     public int getCurrentHealth() {
