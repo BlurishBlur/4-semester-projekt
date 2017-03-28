@@ -78,6 +78,7 @@
         <module>Collision</module>
         <module>Combat</module>
         <module>Weapon</module>
+        <module>CommonEnemy</module>
     </modules>
 
     <properties>
