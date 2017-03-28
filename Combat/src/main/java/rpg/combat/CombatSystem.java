@@ -76,12 +76,13 @@ public class CombatSystem implements IEntityProcessingService {
     
     private void addTestWeapon(GameData gameData, World world) {
         Entity player = world.getPlayer();
-        Entity weapon = new Weapon();
+        Weapon weapon = new Weapon();
         weapon.setDefaultMovementSpeed(0);
         weapon.setWidth(player.getWidth());
         weapon.setHeight(player.getHeight());
         weapon.getRoomPosition().set(player.getRoomPosition());
         weapon.setSpritePath("rpg/gameengine/sword.png");
+        weapon.setDamage(10);
         player.setWeapon(weapon);
         System.out.println("Added weapon to player");
     }

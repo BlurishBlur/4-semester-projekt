@@ -10,4 +10,8 @@ public class Weapon extends Entity {
         return damage;
     }
     
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+    
 }
