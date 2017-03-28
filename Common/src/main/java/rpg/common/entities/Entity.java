@@ -9,14 +9,14 @@ import rpg.common.util.Vector;
 public class Entity implements Serializable {
     
     private final UUID ID = UUID.randomUUID();
-    private EntityType type;
     private Vector roomPosition;
     private Vector velocity;
     private Vector worldPosition;
     private Vector worldVelocity;
+    private float currentMovementSpeed;
     private float defaultMovementSpeed;
-    private float movementSpeed;
     private float movementSpeedModifier;
+    private float sprintModifier;
     private int currentHealth;
     private int maxHealth;
     private int skillPoints;
@@ -28,15 +28,33 @@ public class Entity implements Serializable {
     private float width;
     private float height;
     private String spritePath;
+    private boolean isAnimatable;
     private float currentFrame;
     private int maxFrames;
     private Map<String, String> sounds;
+    private Entity weapon;
     
     public Entity() {
         roomPosition = new Vector();
         velocity = new Vector();
         worldPosition = new Vector();
         worldVelocity = new Vector();
+    }
+    
+    public boolean hasWeapon() {
+        return weapon != null;
+    }
+    
+    public Entity getWeapon() {
+        return weapon;
+    }
+    
+    public void setWeapon(Entity weapon) {
+        this.weapon = weapon;
+    }
+    
+    public boolean isAnimatable() {
+        return isAnimatable;
     }
     
     public int getArmor() {
@@ -57,7 +75,7 @@ public class Entity implements Serializable {
     }
     
     public void increaseFrame(float deltaTime) {
-        currentFrame += deltaTime * (movementSpeed / (width / 3)); //enten width / 3 eller width / 4
+        currentFrame += deltaTime * (currentMovementSpeed / (width / 3)); //enten width / 3 eller width / 4
         if(currentFrame > maxFrames + 1) {
             currentFrame = 2;
         }
@@ -142,6 +160,8 @@ public class Entity implements Serializable {
 
     public void setSpritePath(String spritePath) {
         this.spritePath = spritePath;
+        isAnimatable = spritePath.substring(spritePath.length() - 6, spritePath.length()).equals(".atlas");
+        System.out.println("SET SPRITE PATH I ENTITY: " + spritePath.substring(spritePath.length() - 6, spritePath.length()));
     }
 
     public int getCurrentHealth() {
@@ -160,20 +180,20 @@ public class Entity implements Serializable {
         this.maxHealth = maxHealth;
     }
 
-    public EntityType getType() {
-        return type;
+    public float getCurrentMovementSpeed() {
+        return currentMovementSpeed;
     }
 
-    public void setType(EntityType type) {
-        this.type = type;
+    public void setCurrentMovementSpeed(float currentMovementSpeed) {
+        this.currentMovementSpeed = currentMovementSpeed;
     }
 
-    public float getMovementSpeed() {
-        return movementSpeed;
+    public float getSprintModifier() {
+        return sprintModifier;
     }
 
-    public void setMovementSpeed(float speed) {
-        this.movementSpeed = speed;
+    public void setSprintModifier(float sprintModifier) {
+        this.sprintModifier = sprintModifier;
     }
 
     public float getWidth() {

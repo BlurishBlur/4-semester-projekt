@@ -3,7 +3,6 @@ package rpg.player;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 import rpg.common.entities.Entity;
-import rpg.common.entities.EntityType;
 import rpg.common.data.GameData;
 import rpg.common.data.GameKeys;
 import rpg.common.world.World;
@@ -11,7 +10,8 @@ import rpg.common.services.IEntityProcessingService;
 import rpg.common.services.IGamePluginService;
 
 @ServiceProviders(value = {
-    @ServiceProvider(service = IEntityProcessingService.class),
+    @ServiceProvider(service = IEntityProcessingService.class)
+    ,
     @ServiceProvider(service = IGamePluginService.class)
 })
 public class PlayerControlSystem implements IEntityProcessingService, IGamePluginService {
@@ -21,42 +21,42 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
     @Override
     public void start(GameData gameData, World world) {
         player = createPlayer();
+        world.setPlayer(player);
         world.getCurrentRoom().addEntity(player);
     }
 
     @Override
     public void process(GameData gameData, World world) {
         Entity player = world.getPlayer();
-        float sprintBoost = 1;
         player.getVelocity().set(0, 0);
-        //player.setMovementSpeedModifier(1);
+        player.setSprintModifier(1);
         if (gameData.getKeys().isDown(GameKeys.W)) {
-            player.getVelocity().addY(player.getMovementSpeed());
-        } else if (gameData.getKeys().isDown(GameKeys.S)) {
-            player.getVelocity().subtractY(player.getMovementSpeed());
+            player.getVelocity().addY(player.getCurrentMovementSpeed());
+        }
+        else if (gameData.getKeys().isDown(GameKeys.S)) {
+            player.getVelocity().subtractY(player.getCurrentMovementSpeed());
         }
         if (gameData.getKeys().isDown(GameKeys.A)) {
-            player.getVelocity().subtractX(player.getMovementSpeed());
-        } else if (gameData.getKeys().isDown(GameKeys.D)) {
-            player.getVelocity().addX(player.getMovementSpeed());
-            
+            player.getVelocity().subtractX(player.getCurrentMovementSpeed());
         }
-        if(player.getVelocity().isMoving()) {
+        else if (gameData.getKeys().isDown(GameKeys.D)) {
+            player.getVelocity().addX(player.getCurrentMovementSpeed());
+
+        }
+        if (player.getVelocity().isMoving()) {
             player.increaseFrame(gameData.getDeltaTime());
         }
         else {
             player.setCurrentFrame(1);
         }
-        if(gameData.getKeys().isDown(GameKeys.SHIFT)) {
-            //player.setMovementSpeedModifier(player.getMovementSpeedModifier() + 0.75f);
-            sprintBoost = 1.75f;
+        if (gameData.getKeys().isDown(GameKeys.SHIFT)) {
+            player.setSprintModifier(1.75f);
         }
-        player.setMovementSpeed(player.getDefaultMovementSpeed() * player.getMovementSpeedModifier() * sprintBoost);
+        player.setCurrentMovementSpeed(player.getDefaultMovementSpeed() * player.getMovementSpeedModifier() * player.getSprintModifier());
     }
 
     private Entity createPlayer() {
-        Entity newPlayer = new Entity();
-        newPlayer.setType(EntityType.PLAYER);
+        Entity newPlayer = new Player();
         newPlayer.getRoomPosition().set(25, 25);
         newPlayer.getWorldPosition().set(0, 0);
         newPlayer.setDefaultMovementSpeed(200);

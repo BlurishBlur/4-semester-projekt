@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 import rpg.common.data.GameData;
 import rpg.common.entities.Entity;
-import rpg.common.entities.EntityType;
 import rpg.common.util.Logger;
 import rpg.common.world.Room;
 import rpg.common.world.World;
@@ -21,13 +20,13 @@ public class Renderer {
     private SpriteBatch batch;
     private BitmapFont font;
     private Map<Entity, Sprite> sprites;
-    private Map<Entity, TextureAtlas> atlas;
+    private Map<Entity, TextureAtlas> atlases;
     private Sprite currentRoom;
     private Sprite previousRoom;
 
     public Renderer() {
         sprites = new HashMap<>();
-        atlas = new HashMap<>();
+        atlases = new HashMap<>();
         batch = new SpriteBatch();
         font = new BitmapFont();
     }
@@ -36,22 +35,20 @@ public class Renderer {
         for (Entity entity : world.getCurrentRoom().getEntities()) {
             if (!sprites.containsKey(entity)) {
                 try {
-                    if (entity.getType() == EntityType.PLAYER) {
-                        atlas.put(entity, new TextureAtlas(Gdx.files.internal(world.getPlayer().getSpritePath())));
-                        Sprite sprite = new Sprite(atlas.get(entity).findRegion("0001"));
-                        sprite.setSize(entity.getWidth(), entity.getHeight());
-                        sprite.setOriginCenter();
-                        sprites.put(entity, sprite);
+                    Sprite sprite;
+                    if (entity.isAnimatable()) {
+                        atlases.put(entity, new TextureAtlas(Gdx.files.internal(entity.getSpritePath())));
+                        sprite = new Sprite(atlases.get(entity).findRegion("0001"));
                     }
                     else {
-                        Texture texture = new Texture(entity.getSpritePath());
-                        Sprite sprite = new Sprite(texture);
-                        sprite.setSize(entity.getWidth(), entity.getHeight());
-                        sprite.setOriginCenter();
-                        sprites.put(entity, sprite);
+                        sprite = new Sprite(new Texture(entity.getSpritePath()));
                     }
-                } catch (NullPointerException e) {
-                    Logger.log("No spritepath found for entity of type " + entity.getType() + ": " + entity.toString());
+                    sprite.setSize(entity.getWidth(), entity.getHeight());
+                    sprite.setOriginCenter();
+                    sprites.put(entity, sprite);
+                }
+                catch (NullPointerException e) {
+                    Logger.log("No spritepath found for entity of class " + entity.getClass() + ": " + entity.toString());
                 }
             }
         }
@@ -97,24 +94,26 @@ public class Renderer {
     }
 
     private void drawEntitySprites(World world) {
-        for (Entity entity : world.getCurrentRoom().getEntities(EntityType.PLAYER, EntityType.ENEMY)) {
+        for (Entity entity : world.getCurrentRoom().getEntities()) {
             try {
-                Sprite sprite = sprites.get(entity);
-                if(entity.getType() == EntityType.PLAYER) {
-                    sprite.setRegion(atlas.get(entity).findRegion(String.format("%04d", entity.getCurrentFrame())));
+                Sprite entitySprite = sprites.get(entity);
+                if (entity.isAnimatable()) {
+                    entitySprite.setRegion(atlases.get(entity).findRegion(String.format("%04d", entity.getCurrentFrame())));
                 }
-                sprite.setRotation(entity.getDirection());
-                sprite.setPosition(entity.getRoomPosition().getX() - entity.getWidth() / 2, entity.getRoomPosition().getY() - entity.getHeight() / 2);
-                sprite.draw(batch);
-            } catch (NullPointerException e) {
-                Logger.log("No sprite found for entity of type " + entity.getType() + ": " + entity.toString());
+                entitySprite.setRotation(entity.getDirection());
+                entitySprite.setPosition(entity.getRoomPosition().getX() - entity.getWidth() / 2, entity.getRoomPosition().getY() - entity.getHeight() / 2);
+                entitySprite.draw(batch);
+
+                if (entity.hasWeapon()) {
+                    Sprite weaponSprite = sprites.get(entity.getWeapon());
+                    weaponSprite.setRotation(entity.getDirection());
+                    weaponSprite.setPosition(entity.getRoomPosition().getX() - entity.getWidth() / 2, entity.getRoomPosition().getY() - entity.getHeight() / 2);
+                    weaponSprite.draw(batch);
+                }
             }
-        }
-        for (Entity entity : world.getCurrentRoom().getEntities(EntityType.MELEE)) {
-            Sprite sprite = sprites.get(entity);
-            sprite.setRotation(entity.getDirection());
-            sprite.setPosition(entity.getRoomPosition().getX() - entity.getWidth() / 2, entity.getRoomPosition().getY() - entity.getHeight() / 2);
-            sprite.draw(batch);
+            catch (NullPointerException e) {
+                Logger.log("No sprite found for entity of class " + entity.getClass() + ": " + entity.toString());
+            }
         }
     }
 

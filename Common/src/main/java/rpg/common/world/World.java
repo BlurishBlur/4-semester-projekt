@@ -9,6 +9,7 @@ public class World {
     private final int WORLD_HEIGHT = 2;
     private Room[][] world;
     private Room currentRoom;
+    private Entity player;
     
     public World() {
         world = new Room[WORLD_WIDTH][WORLD_HEIGHT];
@@ -43,7 +44,11 @@ public class World {
     }
     
     public Entity getPlayer() {
-        return currentRoom.getPlayer();
+        return player;
+    }
+    
+    public void setPlayer(Entity player) {
+        this.player = player;
     }
     
 }

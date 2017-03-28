@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import rpg.common.entities.Entity;
-import rpg.common.entities.EntityType;
 
 public class Room {
     
@@ -71,23 +70,15 @@ public class Room {
         return entities.get(entityID);
     }
 
-    public Entity getPlayer() {
-        return entities.values()
-                .parallelStream()
-                .filter(entity -> entity.getType() == EntityType.PLAYER)
-                .findFirst()
-                .get();
-    }
-
     public Collection<Entity> getEntities() {
         return entities.values();
     }
 
-    public List<Entity> getEntities(EntityType... entityTypes) {
+    public <E extends Entity> List<Entity> getEntities(Class<E>... entityTypes) {
         List<Entity> results = new ArrayList<>();
         for (Entity entity : entities.values()) {
-            for (EntityType entityType : entityTypes) {
-                if (entity.getType() == entityType) {
+            for (Class<E> entityType : entityTypes) {
+                if (entityType.equals(entity.getClass())) {
                     results.add(entity);
                 }
             }
