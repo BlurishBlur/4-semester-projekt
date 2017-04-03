@@ -23,12 +23,14 @@ public class Renderer {
     private Map<Entity, TextureAtlas> atlases;
     private Sprite currentRoom;
     private Sprite previousRoom;
+    private HPBar hpBar;
 
     public Renderer() {
         sprites = new HashMap<>();
         atlases = new HashMap<>();
         batch = new SpriteBatch();
         font = new BitmapFont();
+        hpBar = new HPBar();
     }
 
     public void loadSprites(World world) {
@@ -123,6 +125,7 @@ public class Renderer {
                 Logger.log("Couldn't draw sprite, no sprite loaded for entity of class " + entity.getClass() + ": " + entity.toString());
             }
         }
+        hpBar.draw(batch);
     }
 
 }
