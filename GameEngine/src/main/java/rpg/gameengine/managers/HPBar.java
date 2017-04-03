@@ -8,10 +8,10 @@ import rpg.common.entities.Entity;
 public class HPBar {
     
     private Sprite hpBarFull;
-    private Sprite hpBarEmpty;
-    private Entity owner;
-    private int maxValue;
-    private float factor;
+    private final Sprite hpBarEmpty;
+    private final Entity owner;
+    private final int maxValue;
+    private final float factor;
     
     public HPBar(Entity owner) {
         this.owner = owner;
