@@ -24,15 +24,11 @@ public class Game implements ApplicationListener {
     private Lookup lookup = Lookup.getDefault();
     private final GameData gameData = new GameData();
     private World world = new World();
-    private int fps;
-    private int frames;
-    private long fpsTimer;
     private Hud hud;
     private GameInputProcessor gameInputProcessor;
 
     @Override
     public void create() {
-        fpsTimer = System.currentTimeMillis();
         Gdx.input.setInputProcessor(gameInputProcessor = new GameInputProcessor(gameData));
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
@@ -57,7 +53,6 @@ public class Game implements ApplicationListener {
 
     @Override
     public void render() {
-        calculateFPS();
         gameData.setDeltaTime(Math.min(Gdx.graphics.getDeltaTime(), (float) 60f / 3600f));
         update();
         updatePlayerCamera();
@@ -93,7 +88,7 @@ public class Game implements ApplicationListener {
         }
         if (gameData.showDebug()) {
             Entity player = world.getPlayer();
-            String message = "FPS: " + fps + "\n"
+            String message = "FPS: " + Gdx.graphics.getFramesPerSecond() + "\n"
                     + "Zoom: " + gameData.getCameraZoom() + "\n"
                     + "X: " + player.getRoomPosition().getX() + "\n"
                     + "Y: " + player.getRoomPosition().getY() + "\n"
@@ -103,15 +98,6 @@ public class Game implements ApplicationListener {
                     "Rotation: " + player.getVelocity().getAngle()*/ + "Movement speed: " + player.getCurrentMovementSpeed() + "\n"
                     + "Movement speed modifier: " + player.getMovementSpeedModifier();
             renderer.drawDebug(gameData, world, hudCamera, message);
-        }
-    }
-
-    private void calculateFPS() {
-        frames++;
-        if (System.currentTimeMillis() - fpsTimer > 1000) {
-            fps = frames;
-            frames = 0;
-            fpsTimer = System.currentTimeMillis();
         }
     }
 
