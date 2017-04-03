@@ -11,7 +11,7 @@ import rpg.common.services.IEntityProcessingService;
     @ServiceProvider(service = IEntityProcessingService.class)
 })
 public class MovementControlSystem implements IEntityProcessingService {
-
+    
     @Override
     public void process(GameData gameData, World world) {
         for (Entity entity : world.getCurrentRoom().getEntities()) {

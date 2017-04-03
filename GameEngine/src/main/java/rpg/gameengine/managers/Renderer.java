@@ -41,7 +41,7 @@ public class Renderer {
             }
         }
     }
-
+    
     private void loadSprite(Entity entity) {
         try {
             Sprite sprite;
