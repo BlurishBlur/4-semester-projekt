@@ -25,13 +25,13 @@ public class CombatSystem implements IEntityProcessingService {
         checkPlayerWeaponSwing(gameData, world);
         handleWeaponHit(gameData, world);
     }
-    
+
     private void handleWeaponHit(GameData gameData, World world) {
         for (Event event : gameData.getEvents(EventType.ATTACK)) {
-            for(Entity entity : world.getCurrentRoom().getEntities()) {
-                if(event.getEntity() != entity && !entity.getClass().equals(Weapon.class) && isHit(event.getEntity(), entity)) {
+            for (Entity entity : world.getCurrentRoom().getEntities()) {
+                if (event.getEntity() != entity && !entity.getClass().equals(Weapon.class) && isHit(event.getEntity(), entity)) {
                     entity.reduceCurrentHealth(((Weapon) event.getEntity().getWeapon()).getDamage());
-                    System.out.println("hit");
+                    System.out.println("Attackee health: " + entity.getCurrentHealth());
                 }
             }
             gameData.removeEvent(event);
@@ -52,28 +52,33 @@ public class CombatSystem implements IEntityProcessingService {
 
     private void checkPlayerWeaponSwing(GameData gameData, World world) {
         Entity player = world.getPlayer();
+        Weapon weapon = (Weapon) player.getWeapon();
+        if (player.hasWeapon() && !weapon.canAttack()) {
+            weapon.increaseTimeSinceLastAttack(gameData.getDeltaTime());
+        }
         if (gameData.getKeys().isPressed(GameKeys.UP)) {
-            player.getWeapon().getRoomPosition().set(player.getRoomPosition().plus(new Vector(0, player.getHeight() / 2)));
-            player.getWeapon().setDirection(0);
-            gameData.addEvent(new Event(EventType.ATTACK, player));
+            attack(weapon, player, new Vector(0, player.getHeight() / 2), 0, gameData);
         }
         else if (gameData.getKeys().isPressed(GameKeys.DOWN)) {
-            player.getWeapon().getRoomPosition().set(player.getRoomPosition().plus(new Vector(0, -player.getHeight() / 2)));
-            player.getWeapon().setDirection(180);
-            gameData.addEvent(new Event(EventType.ATTACK, player));
+            attack(weapon, player, new Vector(0, -player.getHeight() / 2), 180, gameData);
         }
         else if (gameData.getKeys().isPressed(GameKeys.LEFT)) {
-            player.getWeapon().getRoomPosition().set(player.getRoomPosition().plus(new Vector(-player.getWidth() / 2, 0)));
-            player.getWeapon().setDirection(90);
-            gameData.addEvent(new Event(EventType.ATTACK, player));
+            attack(weapon, player, new Vector(-player.getWidth() / 2, 0), 90, gameData);
         }
         else if (gameData.getKeys().isPressed(GameKeys.RIGHT)) {
-            player.getWeapon().getRoomPosition().set(player.getRoomPosition().plus(new Vector(player.getWidth() / 2, 0)));
-            player.getWeapon().setDirection(270);
+            attack(weapon, player, new Vector(player.getWidth() / 2, 0), 270, gameData);
+        }
+    }
+
+    private void attack(Weapon weapon, Entity player, Vector vector, int direction, GameData gameData) { //TODO gør den her metode pænere
+        if (weapon.canAttack()) {
+            weapon.getRoomPosition().set(player.getRoomPosition().plus(vector));
+            weapon.setDirection(direction);
+            weapon.resetTimeSinceLastAttack();
             gameData.addEvent(new Event(EventType.ATTACK, player));
         }
     }
-    
+
     private void addTestWeapon(GameData gameData, World world) {
         Entity player = world.getPlayer();
         Weapon weapon = new Weapon();
@@ -83,6 +88,7 @@ public class CombatSystem implements IEntityProcessingService {
         weapon.getRoomPosition().set(player.getRoomPosition());
         weapon.setSpritePath("rpg/gameengine/sword.png");
         weapon.setDamage(10);
+        weapon.setAttackSpeed(2);
         player.setWeapon(weapon);
         System.out.println("Added weapon to player");
     }

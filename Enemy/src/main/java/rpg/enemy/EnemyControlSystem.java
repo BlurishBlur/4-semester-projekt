@@ -34,7 +34,7 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
             }
             
             enemy.getVelocity().set(0, 0);
-            enemy.reduceActionTimer(gameData.getDeltaTime());
+            /*enemy.reduceActionTimer(gameData.getDeltaTime());
             if (enemy.getActionTimer() < 0) {
                 enemy.setVerticalMovementChance(Math.random());
                 enemy.setHorizontalMovementChance(Math.random());
@@ -51,7 +51,7 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
             }
             else if (enemy.getHorizontalMovementChance() < 0.40) { // right
                 enemy.getVelocity().addX(enemy.getCurrentMovementSpeed());
-            }
+            }*/
 
             handleEdgeCollision(gameData, world, enemy);
         }

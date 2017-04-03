@@ -172,7 +172,11 @@ public class Entity implements Serializable {
     }
     
     public void reduceCurrentHealth(int damage) {
-        currentHealth -= damage;
+        float damageReduction = (armor / 10.0f) / 100.0f;
+        if((int) damageReduction == 0) {
+            damageReduction = 1;
+        }
+        currentHealth -= damage * damageReduction;
     }
 
     public int getMaxHealth() {
