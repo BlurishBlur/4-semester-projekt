@@ -1,7 +1,7 @@
 package rpg.gameengine.core;
 
 import rpg.gameengine.managers.Camera;
-import rpg.gameengine.managers.Renderer;
+import rpg.gameengine.managers.SpriteManager;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import java.util.Collection;
@@ -20,7 +20,7 @@ public class Game implements ApplicationListener {
 
     private Camera playerCamera;
     private Camera hudCamera;
-    private Renderer renderer;
+    private SpriteManager renderer;
     private Lookup lookup = Lookup.getDefault();
     private final GameData gameData = new GameData();
     private World world = new World();
@@ -41,7 +41,7 @@ public class Game implements ApplicationListener {
         //walk = Gdx.audio.newSound(Gdx.files.internal(world.getEntity(EntityType.PLAYER).getSounds().get("GRASS").toString()));
 
         world.setCurrentRoom(world.getPlayer().getWorldPosition());
-        renderer = new Renderer();
+        renderer = new SpriteManager();
         renderer.loadRoomSprite(world);
 
         playerCamera = new Camera(gameData.getDisplayWidth() / gameData.getCameraZoom(), gameData.getDisplayHeight() / gameData.getCameraZoom(), world.getPlayer());
