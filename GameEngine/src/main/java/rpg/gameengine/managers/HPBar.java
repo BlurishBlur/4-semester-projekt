@@ -1,30 +1,39 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package rpg.gameengine.managers;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar.ProgressBarStyle;
+import rpg.common.entities.Entity;
 
-/**
- *
- * @author niclasmolby
- */
 public class HPBar {
-    ProgressBar progressBar;
-    ProgressBarStyle progressBarStyle;
     
-    public HPBar() {
-        progressBarStyle = new ProgressBarStyle();
-        progressBar = new ProgressBar(0, 100, 0.1f, false, progressBarStyle);
-        progressBar.setValue(100);
-        progressBar.setPosition(100, 100);
+    private Sprite hpBarFull;
+    private Sprite hpBarEmpty;
+    private Entity owner;
+    private int maxValue;
+    private float factor;
+    
+    public HPBar(Entity owner) {
+        this.owner = owner;
+        hpBarEmpty = new Sprite(new Texture("rpg/gameengine/hpbarempty.png"));
+        hpBarEmpty.setSize(40, 7);
+        hpBarFull = new Sprite(new Texture("rpg/gameengine/hpbarfull.png"));
+        hpBarFull.setSize(40, 7);
+        maxValue = owner.getMaxHealth();
+        factor = maxValue / hpBarFull.getWidth();
     }
     
     public void draw(SpriteBatch batch) {
-        progressBar.draw(batch, 0);
+        update();
+        hpBarEmpty.draw(batch);
+        hpBarFull.draw(batch);
+    }
+    
+    private void update() {
+        hpBarEmpty.setPosition(owner.getRoomPosition().getX() - hpBarEmpty.getWidth() / 2, owner.getRoomPosition().getY() + owner.getHeight() / 2);
+        hpBarFull.setPosition(owner.getRoomPosition().getX() - hpBarEmpty.getWidth() / 2, owner.getRoomPosition().getY() + owner.getHeight() / 2);
+        
+        float currentValue = owner.getCurrentHealth() / factor;
+        hpBarFull.setSize(currentValue, hpBarFull.getHeight());
     }
 }
