@@ -29,6 +29,7 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
     public void process(GameData gameData, World world) {
         Entity player = world.getPlayer();
         player.getVelocity().set(0, 0);
+        handleEdgeCollision(gameData, world, player);
         player.setSprintModifier(1);
         if (gameData.getKeys().isDown(GameKeys.W)) {
             player.getVelocity().addY(player.getCurrentMovementSpeed());
@@ -54,7 +55,6 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
         }
         player.setCurrentMovementSpeed(player.getDefaultMovementSpeed() * player.getMovementSpeedModifier() * player.getSprintModifier());
         
-        handleEdgeCollision(gameData, world, player);
     }
 
     private Entity createPlayer() {

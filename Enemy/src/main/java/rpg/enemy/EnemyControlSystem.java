@@ -32,8 +32,8 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
                 System.out.println("Enemy died");
                 world.getCurrentRoom().removeEntity(enemy);
             }
-            
             enemy.getVelocity().set(0, 0);
+            handleEdgeCollision(gameData, world, enemy);
             enemy.reduceActionTimer(gameData.getDeltaTime());
             if (enemy.getActionTimer() < 0) {
                 enemy.setVerticalMovementChance(Math.random());
@@ -52,8 +52,6 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
             else if (enemy.getHorizontalMovementChance() < 0.40) { // right
                 enemy.getVelocity().addX(enemy.getCurrentMovementSpeed());
             }
-
-            handleEdgeCollision(gameData, world, enemy);
         }
     }
 
