@@ -21,12 +21,14 @@ public class Renderer {
     private BitmapFont font;
     private Map<Entity, Sprite> sprites;
     private Map<Entity, TextureAtlas> atlases;
+    private Map<Entity, HPBar> hpBars;
     private Sprite currentRoom;
     private Sprite previousRoom;
 
     public Renderer() {
         sprites = new HashMap<>();
         atlases = new HashMap<>();
+        hpBars = new HashMap<>();
         batch = new SpriteBatch();
         font = new BitmapFont();
     }
@@ -51,6 +53,9 @@ public class Renderer {
             }
             else {
                 sprite = new Sprite(new Texture(entity.getSpritePath()));
+            }
+            if (entity.hasHpBar()) {
+                hpBars.put(entity, new HPBar(entity));
             }
             sprite.setSize(entity.getWidth(), entity.getHeight());
             sprite.setOriginCenter();
@@ -111,6 +116,10 @@ public class Renderer {
                 entitySprite.setRotation(entity.getDirection());
                 entitySprite.setPosition(entity.getRoomPosition().getX() - entity.getWidth() / 2, entity.getRoomPosition().getY() - entity.getHeight() / 2);
                 entitySprite.draw(batch);
+
+                if (entity.hasHpBar()) {
+                    hpBars.get(entity).draw(batch);
+                }
 
                 if (entity.hasWeapon()) {
                     Sprite weaponSprite = sprites.get(entity.getWeapon());

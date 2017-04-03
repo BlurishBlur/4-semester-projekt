@@ -33,6 +33,7 @@ public class Entity implements Serializable {
     private int maxFrames;
     private Map<String, String> sounds;
     private Entity weapon;
+    private boolean hasHpBar;
     
     public Entity() {
         roomPosition = new Vector();
@@ -55,6 +56,14 @@ public class Entity implements Serializable {
     
     public boolean isAnimatable() {
         return isAnimatable;
+    }
+    
+    public void setHasHpBar(boolean hasHpBar) {
+        this.hasHpBar = hasHpBar;
+    }
+    
+    public boolean hasHpBar() {
+        return hasHpBar;
     }
     
     public int getArmor() {
