@@ -60,10 +60,8 @@ public class HpBar {
             hpBarEmpty.setAlpha(1);
             hpBarFull.setAlpha(hpBarEmpty.getColor().a);
             fadeTimeCounter = fadeTime;
-            System.out.println("changing value");
         }
         else if (fadeTimeCounter < 0) {
-            System.out.println("fading");
             if (hpBarEmpty.getColor().a > 0.70f) {
                 hpBarEmpty.setAlpha(hpBarEmpty.getColor().a - 0.01f * gameData.getDeltaTime());
                 hpBarFull.setAlpha(hpBarEmpty.getColor().a);
@@ -71,7 +69,6 @@ public class HpBar {
         }
         else {
             fadeTimeCounter -= gameData.getDeltaTime();
-            System.out.println("counting down fade");
             System.out.println(fadeTimeCounter);
         }
         
