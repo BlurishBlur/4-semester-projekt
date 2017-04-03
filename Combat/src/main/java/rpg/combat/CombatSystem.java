@@ -57,7 +57,7 @@ public class CombatSystem implements IEntityProcessingService {
             weapon.increaseTimeSinceLastAttack(gameData.getDeltaTime());
         }
         if (gameData.getKeys().isPressed(GameKeys.UP)) {
-            attack(weapon, player, new Vector(0, player.getHeight() / 2), 10, gameData);
+            attack(weapon, player, new Vector(0, player.getHeight() / 2), 0, gameData);
         }
         else if (gameData.getKeys().isPressed(GameKeys.DOWN)) {
             attack(weapon, player, new Vector(0, -player.getHeight() / 2), 180, gameData);
