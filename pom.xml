@@ -79,6 +79,7 @@
         <module>Combat</module>
         <module>CommonWeapon</module>
         <module>CommonEnemy</module>
+        <module>Currency</module>
     </modules>
 
     <properties>
