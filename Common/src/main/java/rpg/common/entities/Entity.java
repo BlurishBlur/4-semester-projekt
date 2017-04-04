@@ -35,6 +35,7 @@ public class Entity implements Serializable {
     private Map<String, String> sounds;
     private Entity weapon;
     private boolean hasHpBar;
+    private int currency;
     
     public Entity() {
         roomPosition = new Vector();
@@ -42,6 +43,14 @@ public class Entity implements Serializable {
         worldPosition = new Vector();
         worldVelocity = new Vector();
         sounds = new ConcurrentHashMap<>();
+    }
+    
+    public void addCurrency(int currency) {
+        this.currency += currency;
+    }
+    
+    public int getCurrency() {
+        return currency;
     }
     
     public boolean hasWeapon() {

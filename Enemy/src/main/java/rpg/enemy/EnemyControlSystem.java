@@ -4,6 +4,8 @@ import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 import rpg.common.data.GameData;
 import rpg.common.entities.Entity;
+import rpg.common.events.Event;
+import rpg.common.events.EventType;
 import rpg.common.services.IEntityProcessingService;
 import rpg.common.services.IGamePluginService;
 import rpg.common.world.World;
@@ -30,6 +32,7 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
         for (Entity enemy : world.getCurrentRoom().getEntities(Enemy.class)) {
             if(enemy.getCurrentHealth() <= 0) {
                 System.out.println("Enemy died");
+                gameData.addEvent(new Event(EventType.ENEMY_DIED, enemy));
                 world.getCurrentRoom().removeEntity(enemy);
             }
             enemy.getVelocity().set(0, 0);
