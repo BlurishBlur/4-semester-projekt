@@ -80,6 +80,7 @@
         <module>CommonWeapon</module>
         <module>CommonEnemy</module>
         <module>Currency</module>
+        <module>CommonPlayer</module>
     </modules>
 
     <properties>

@@ -13,8 +13,9 @@ import rpg.common.world.World;
 import rpg.common.services.IEntityProcessingService;
 import rpg.common.services.IGamePluginService;
 import rpg.common.services.IPostEntityProcessingService;
-import rpg.gameengine.managers.Hud;
+import rpg.gameengine.managers.SkillpointsHud;
 import rpg.gameengine.managers.GameInputProcessor;
+import rpg.gameengine.managers.PlayerInfoHud;
 import rpg.gameengine.managers.SoundManager;
 
 public class Game implements ApplicationListener {
@@ -25,7 +26,8 @@ public class Game implements ApplicationListener {
     private Lookup lookup = Lookup.getDefault();
     private final GameData gameData = new GameData();
     private World world = new World();
-    private Hud hud;
+    private SkillpointsHud skillpointsHud;
+    private PlayerInfoHud playerInfoHud;
     private GameInputProcessor gameInputProcessor;
     private SoundManager soundManager;
 
@@ -53,7 +55,8 @@ public class Game implements ApplicationListener {
         playerCamera.update(gameData, world);
         hudCamera = new Camera(gameData.getDisplayWidth(), gameData.getDisplayHeight());
         hudCamera.update(gameData, world);
-        hud = new Hud(hudCamera, gameInputProcessor, gameData, world);
+        skillpointsHud = new SkillpointsHud(hudCamera, gameInputProcessor, gameData, world);
+        playerInfoHud = new PlayerInfoHud(hudCamera, gameInputProcessor, gameData, world);
     }
 
     @Override
@@ -65,7 +68,8 @@ public class Game implements ApplicationListener {
         renderer.draw(gameData, world, playerCamera);
         soundManager.playSounds(gameData, world);
         drawDebug();
-        hud.drawHud();
+        skillpointsHud.drawSkillPointsHud();
+        playerInfoHud.drawInfoHud();
         gameData.getKeys().update();
     }
 

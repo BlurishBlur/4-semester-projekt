@@ -1,5 +1,6 @@
 package rpg.player;
 
+import rpg.commonplayer.Player;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 import rpg.common.entities.Entity;
@@ -16,7 +17,7 @@ import rpg.common.services.IGamePluginService;
 })
 public class PlayerControlSystem implements IEntityProcessingService, IGamePluginService {
 
-    private Entity player;
+    private Player player;
 
     @Override
     public void start(GameData gameData, World world) {
@@ -27,7 +28,6 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
 
     @Override
     public void process(GameData gameData, World world) {
-        Entity player = world.getPlayer();
         player.getVelocity().set(0, 0);
         handleEdgeCollision(gameData, world, player);
         player.setSprintModifier(1);
@@ -57,11 +57,13 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
 
     }
 
-    private Entity createPlayer() {
-        Entity newPlayer = new Player();
+    private Player createPlayer() {
+        Player newPlayer = new Player();
         newPlayer.getRoomPosition().set(25, 25);
         newPlayer.getWorldPosition().set(0, 0);
         newPlayer.setDefaultMovementSpeed(200);
+        newPlayer.setPlayerLevel(1);
+        newPlayer.setPlayerExperiancePoints(0);
         newPlayer.setMaxHealth(100);
         newPlayer.setCurrentHealth(newPlayer.getMaxHealth());
         newPlayer.setMovementSpeedModifier(1);
