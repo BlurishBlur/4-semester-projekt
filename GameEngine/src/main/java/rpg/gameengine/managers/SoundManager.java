@@ -30,7 +30,7 @@ public class SoundManager {
     private void loadCombatSounds(){
         combatSounds.put("NOHIT", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/woosh.mp3")));
         combatSounds.put("HIT_HAND", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/punch.mp3")));
-        //combatSounds.put("KNIFE_HIT", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/stabsound.wav")));
+        combatSounds.put("KNIFE_HIT", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/stabsound.mp3")));
     }
     
     private void loadMiscSounds() {
@@ -79,15 +79,14 @@ public class SoundManager {
         for (Event event : gameData.getEvents()) {
             if(event.getType() == EventType.PUNCH_NO_HIT){
                 combatSounds.get("NOHIT").play();
-                System.out.println("BURDE SPILLE LYD");
                 gameData.removeEvent(event);
             }
             if(event.getType() == EventType.PUNCH_HIT){
                 combatSounds.get("HIT_HAND").play();
                 gameData.removeEvent(event);
             }
-            if(event.getType() == EventType.ATTACK){
-                //combatSounds.get("KNIFE_HIT").play();
+            if(event.getType() == EventType.KNIFE_HIT){
+                combatSounds.get("KNIFE_HIT").play();
             }
         }
     }
