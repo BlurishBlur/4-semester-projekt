@@ -1,6 +1,7 @@
 package rpg.gameengine.managers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +21,8 @@ public class SoundManager {
         punchingSounds = new HashMap<>();
         punchingSounds.put("NOHIT", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/woosh.mp3")));
         punchingSounds.put("HIT", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/punch.mp3")));
+        Music backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("rpg/gameengine/Concentration.mp3"));
+        backgroundMusic.play();
     }
 
     public void loadSounds(World world) {
