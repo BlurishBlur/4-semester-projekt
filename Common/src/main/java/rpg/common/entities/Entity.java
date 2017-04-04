@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import rpg.common.util.Vector;
 
 public class Entity implements Serializable {
@@ -40,6 +41,7 @@ public class Entity implements Serializable {
         velocity = new Vector();
         worldPosition = new Vector();
         worldVelocity = new Vector();
+        sounds = new ConcurrentHashMap<>();
     }
     
     public boolean hasWeapon() {
@@ -91,7 +93,7 @@ public class Entity implements Serializable {
         //currentFrame = (currentFrame % maxFrames) + 1;
     }
     
-    public Map getSounds() {
+    public Map<String, String> getSounds() {
         return sounds;
     }
 

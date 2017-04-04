@@ -15,6 +15,7 @@ import rpg.common.services.IGamePluginService;
 import rpg.common.services.IPostEntityProcessingService;
 import rpg.gameengine.managers.Hud;
 import rpg.gameengine.managers.GameInputProcessor;
+import rpg.gameengine.managers.SoundManager;
 
 public class Game implements ApplicationListener {
 
@@ -26,6 +27,7 @@ public class Game implements ApplicationListener {
     private World world = new World();
     private Hud hud;
     private GameInputProcessor gameInputProcessor;
+    private SoundManager soundManager;
 
     @Override
     public void create() {
@@ -43,6 +45,9 @@ public class Game implements ApplicationListener {
         world.setCurrentRoom(world.getPlayer().getWorldPosition());
         renderer = new SpriteManager();
         renderer.loadRoomSprite(world);
+        
+        soundManager = new SoundManager();
+        soundManager.loadSounds(world);
 
         playerCamera = new Camera(gameData.getDisplayWidth() / gameData.getCameraZoom(), gameData.getDisplayHeight() / gameData.getCameraZoom(), world.getPlayer());
         playerCamera.update(gameData, world);
