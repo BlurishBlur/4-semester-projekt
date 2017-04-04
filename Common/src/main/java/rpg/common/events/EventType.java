@@ -2,6 +2,5 @@ package rpg.common.events;
 
 public enum EventType {
     
-    ATTACK;
-    
+    ATTACK, ENEMY_DIED;
 }
