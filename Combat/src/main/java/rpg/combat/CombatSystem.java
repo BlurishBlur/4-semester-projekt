@@ -80,7 +80,6 @@ public class CombatSystem implements IEntityProcessingService {
                 weapon.setDirection(direction);
                 weapon.resetTimeSinceLastAttack();
                 gameData.addEvent(new Event(EventType.ATTACK, player));
-                gameData.addEvent(new Event(EventType.KNIFE_HIT, player));
             }
         }
         catch (NullPointerException e) {
