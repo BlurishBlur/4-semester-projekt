@@ -32,6 +32,10 @@ public class Camera {
     public Matrix4 getProjection() {
         return camera.combined;
     }
+    
+    public float getViewportHeight() {
+        return this.camera.viewportHeight;
+    }
 
     public void setPosition(float x, float y) {
         camera.position.set(x, y, 0);

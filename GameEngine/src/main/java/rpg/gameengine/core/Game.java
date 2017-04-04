@@ -35,7 +35,7 @@ public class Game implements ApplicationListener {
     public void create() {
         Gdx.input.setInputProcessor(gameInputProcessor = new GameInputProcessor(gameData));
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
-        gameData.setDisplayHeight(Gdx.graphics.getHeight());
+        gameData.setDisplayHeight(Gdx.graphics.getHeight() - 80);
         gameData.setCameraZoom(1.50f);
 
         for (IGamePluginService plugin : getGamePluginServices()) {
@@ -45,8 +45,7 @@ public class Game implements ApplicationListener {
         //walk = Gdx.audio.newSound(Gdx.files.internal(world.getEntity(EntityType.PLAYER).getSounds().get("GRASS").toString()));
 
         world.setCurrentRoom(world.getPlayer().getWorldPosition());
-        renderer = new SpriteManager();
-        renderer.loadRoomSprite(world);
+        
         
         soundManager = new SoundManager();
         soundManager.loadSounds(world);
@@ -55,6 +54,10 @@ public class Game implements ApplicationListener {
         playerCamera.update(gameData, world);
         hudCamera = new Camera(gameData.getDisplayWidth(), gameData.getDisplayHeight());
         hudCamera.update(gameData, world);
+        
+        renderer = new SpriteManager(gameData);
+        renderer.loadRoomSprite(world, playerCamera);
+        
         skillpointsHud = new SkillpointsHud(hudCamera, gameInputProcessor, gameData, world);
         playerInfoHud = new PlayerInfoHud(hudCamera, gameInputProcessor, gameData, world);
     }
@@ -77,7 +80,7 @@ public class Game implements ApplicationListener {
         if (gameData.isChangingRoom() && world.getRoom(playerCamera.getTarget().getWorldPosition()) != world.getCurrentRoom()) {
             world.getRoom(playerCamera.getTarget().getWorldPosition()).addEntity(playerCamera.getTarget());
             playerCamera.initializeRoomChange(world);
-            renderer.loadNewRoomSprite(world);
+            renderer.loadNewRoomSprite(world, playerCamera);
         }
         playerCamera.update(gameData, world);
     }
