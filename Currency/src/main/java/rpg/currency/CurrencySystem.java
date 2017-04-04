@@ -42,14 +42,14 @@ public class CurrencySystem implements IEntityProcessingService {
     }
     
     private void createRandomCurrency(Entity entity, World world) {
-        for (int i = 0; i < (Math.random() * 3) + 1; i++) {
+        for (int i = 0; i < (Math.random() * 10) + 1; i++) {
             world.getCurrentRoom().addEntity(createCurrency(entity));
         }
     }
     
     private Currency createCurrency(Entity entity) {
         Currency currency = new Currency();
-        currency.getRoomPosition().set(entity.getRoomPosition().getX() + (int) (Math.random() * 10) - 5, entity.getRoomPosition().getY() + (int) (Math.random() * 10) - 5);
+        currency.getRoomPosition().set(entity.getRoomPosition().getX() + (int) (Math.random() * 40) - 20, entity.getRoomPosition().getY() + (int) (Math.random() * 40) - 20);
         currency.getWorldPosition().set(entity.getWorldPosition());
         currency.setWidth(10);
         currency.setHeight(10);
