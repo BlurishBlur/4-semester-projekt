@@ -54,14 +54,6 @@ public class SoundManager {
 
     private float calculatePlayRate(Entity entity) {
         return 40 / entity.getCurrentMovementSpeed();
-        
-        
-        /*if (entity.getCurrentMovementSpeed() == 200) {
-            return 0.20f;
-        }
-        else {
-            return 0.10f;
-        }*/
     }
 
     private void playPunchSounds(World world, GameData gameData) {
