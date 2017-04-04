@@ -3,22 +3,23 @@ package rpg.commonplayer;
 import rpg.common.entities.Entity;
 
 public class Player extends Entity {
-    private int playerLevel;
-    private int playerExperiancePoints;
+    
+    private int level;
+    private int experiencePoints;
 
-    public int getPlayerLevel() {
-        return playerLevel;
+    public int getLevel() {
+        return level;
     }
 
-    public void setPlayerLevel(int playerLevel) {
-        this.playerLevel = playerLevel;
+    public void setLevel(int level) {
+        this.level = level;
     }
 
-    public int getPlayerExperiancePoints() {
-        return playerExperiancePoints;
+    public int getExperiencePoints() {
+        return experiencePoints;
     }
 
-    public void setPlayerExperiancePoints(int playerExperiancePoints) {
-        this.playerExperiancePoints = playerExperiancePoints;
+    public void setExperiencePoints(int experiencePoints) {
+        this.experiencePoints = experiencePoints;
     }
 }
