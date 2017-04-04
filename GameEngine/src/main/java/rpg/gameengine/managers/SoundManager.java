@@ -14,14 +14,29 @@ import rpg.common.world.World;
 public class SoundManager {
 
     private Map<Entity, Sound> walkingSounds;
-    private Map<String, Sound> punchingSounds;
+    private Map<String, Sound> combatSounds;
+    private Map<String, Sound> miscSounds;
     private float timer = 0;
 
     public SoundManager() {
         walkingSounds = new HashMap<>();
-        punchingSounds = new HashMap<>();
-        punchingSounds.put("NOHIT", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/woosh.mp3")));
-        punchingSounds.put("HIT", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/punch.mp3")));
+        combatSounds = new HashMap<>();
+        miscSounds = new HashMap<>();
+        loadCombatSounds();
+        loadMiscSounds();
+        playMusic();
+    }
+    
+    private void loadCombatSounds(){
+        combatSounds.put("NOHIT", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/woosh.mp3")));
+        combatSounds.put("HIT", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/punch.mp3")));
+    }
+    
+    private void loadMiscSounds() {
+        miscSounds.put("COIN_PICKUP", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/coinsound.wav")));
+    }
+    
+    private void playMusic(){
         Music backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("rpg/gameengine/Concentration.mp3"));
         backgroundMusic.setVolume(0.5f);
         backgroundMusic.play();
@@ -61,11 +76,15 @@ public class SoundManager {
     private void playPunchSounds(World world, GameData gameData) {
         for (Event event : gameData.getEvents()) {
             if(event.getType() == EventType.ATTACK){
-                punchingSounds.get("NOHIT").play();
+                combatSounds.get("NOHIT").play();
                 gameData.removeEvent(event);
             }
             if(event.getType() == EventType.PUNCH_HIT){
-                punchingSounds.get("HIT").play();
+                combatSounds.get("HIT").play();
+                gameData.removeEvent(event);
+            }
+            if(event.getType() == EventType.COIN_PICKUP){
+                miscSounds.get("COIN_PICKUP").play();
                 gameData.removeEvent(event);
             }
         }
