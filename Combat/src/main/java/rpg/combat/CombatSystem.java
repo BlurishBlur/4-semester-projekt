@@ -9,6 +9,7 @@ import rpg.common.entities.Entity;
 import rpg.common.events.Event;
 import rpg.common.events.EventType;
 import rpg.common.services.IEntityProcessingService;
+import rpg.common.util.Logger;
 import rpg.common.util.Vector;
 import rpg.commonweapon.Weapon;
 
@@ -71,11 +72,16 @@ public class CombatSystem implements IEntityProcessingService {
     }
 
     private void attack(Weapon weapon, Entity player, Vector vector, int direction, GameData gameData) { //TODO gør den her metode pænere
-        if (weapon.canAttack()) {
-            weapon.getRoomPosition().set(player.getRoomPosition().plus(vector));
-            weapon.setDirection(direction);
-            weapon.resetTimeSinceLastAttack();
-            gameData.addEvent(new Event(EventType.ATTACK, player));
+        try {
+            if (weapon.canAttack()) {
+                weapon.getRoomPosition().set(player.getRoomPosition().plus(vector));
+                weapon.setDirection(direction);
+                weapon.resetTimeSinceLastAttack();
+                gameData.addEvent(new Event(EventType.ATTACK, player));
+            }
+        }
+        catch (NullPointerException e) {
+            Logger.log("No weapon equipped.");
         }
     }
 
