@@ -54,7 +54,7 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
             player.setSprintModifier(1.75f);
         }
         player.setCurrentMovementSpeed(player.getDefaultMovementSpeed() * player.getMovementSpeedModifier() * player.getSprintModifier());
-        
+
     }
 
     private Entity createPlayer() {
@@ -75,7 +75,7 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
         //newPlayer.getSounds().put("GRASS", "rpg/gameengine/Footstep Grass 2.wav");
         return newPlayer;
     }
-    
+
     private void handleEdgeCollision(GameData gameData, World world, Entity player) {
         if (player.getRoomPosition().getX() - (player.getWidth() / 2) < 0) {
             if (world.getCurrentRoom().canExitLeft() && !gameData.isChangingRoom()) {
