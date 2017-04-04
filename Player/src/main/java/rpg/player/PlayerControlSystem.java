@@ -72,7 +72,7 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
         newPlayer.setCurrentFrame(1);
         newPlayer.setMaxFrames(3);
         newPlayer.setHasHpBar(true);
-        //newPlayer.getSounds().put("GRASS", "rpg/gameengine/Footstep Grass 2.wav");
+        newPlayer.getSounds().put("GRASS", "rpg/gameengine/Footstep Grass 2.wav");
         return newPlayer;
     }
 
