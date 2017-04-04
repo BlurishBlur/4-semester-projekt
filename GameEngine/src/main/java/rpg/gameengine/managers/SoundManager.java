@@ -75,8 +75,9 @@ public class SoundManager {
 
     private void playPunchSounds(World world, GameData gameData) {
         for (Event event : gameData.getEvents()) {
-            if(event.getType() == EventType.ATTACK){
+            if(event.getType() == EventType.PUNCH_NO_HIT){
                 combatSounds.get("NOHIT").play();
+                System.out.println("BURDE SPILLE LYD");
                 gameData.removeEvent(event);
             }
             if(event.getType() == EventType.PUNCH_HIT){

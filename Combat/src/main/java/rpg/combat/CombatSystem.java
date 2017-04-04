@@ -73,6 +73,7 @@ public class CombatSystem implements IEntityProcessingService {
     }
 
     private void attack(Weapon weapon, Entity player, Vector vector, int direction, GameData gameData) { //TODO gør den her metode pænere
+        gameData.addEvent(new Event(EventType.PUNCH_NO_HIT, player));
         try {
             if (weapon.canAttack()) {
                 weapon.getRoomPosition().set(player.getRoomPosition().plus(vector));
