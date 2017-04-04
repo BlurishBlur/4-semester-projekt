@@ -29,7 +29,8 @@ public class SoundManager {
     
     private void loadCombatSounds(){
         combatSounds.put("NOHIT", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/woosh.mp3")));
-        combatSounds.put("HIT", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/punch.mp3")));
+        combatSounds.put("HIT_HAND", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/punch.mp3")));
+        //combatSounds.put("KNIFE_HIT", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/stabsound.wav")));
     }
     
     private void loadMiscSounds() {
@@ -82,8 +83,11 @@ public class SoundManager {
                 gameData.removeEvent(event);
             }
             if(event.getType() == EventType.PUNCH_HIT){
-                combatSounds.get("HIT").play();
+                combatSounds.get("HIT_HAND").play();
                 gameData.removeEvent(event);
+            }
+            if(event.getType() == EventType.ATTACK){
+                //combatSounds.get("KNIFE_HIT").play();
             }
         }
     }
