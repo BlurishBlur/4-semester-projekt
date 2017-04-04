@@ -72,4 +72,5 @@ public class HpBar {
             fadeTimeCounter -= gameData.getDeltaTime();
         }
     }
+    
 }
