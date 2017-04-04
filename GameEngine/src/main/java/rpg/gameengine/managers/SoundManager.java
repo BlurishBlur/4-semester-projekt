@@ -8,6 +8,7 @@ import java.util.Map;
 import rpg.common.data.GameData;
 import rpg.common.entities.Entity;
 import rpg.common.events.Event;
+import rpg.common.events.EventType;
 import rpg.common.world.World;
 
 public class SoundManager {
@@ -22,6 +23,7 @@ public class SoundManager {
         punchingSounds.put("NOHIT", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/woosh.mp3")));
         punchingSounds.put("HIT", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/punch.mp3")));
         Music backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("rpg/gameengine/Concentration.mp3"));
+        backgroundMusic.setVolume(0.5f);
         backgroundMusic.play();
     }
 
@@ -58,7 +60,14 @@ public class SoundManager {
 
     private void playPunchSounds(World world, GameData gameData) {
         for (Event event : gameData.getEvents()) {
-            punchingSounds.get("NOHIT").play();
+            if(event.getType() == EventType.ATTACK){
+                punchingSounds.get("NOHIT").play();
+                gameData.getEvents(EventType.ATTACK).remove(EventType.ATTACK);
+            }
+            if(event.getType() == EventType.PUNCH_HIT){
+                punchingSounds.get("HIT").play();
+                gameData.getEvents(EventType.PUNCH_HIT).remove(EventType.PUNCH_HIT);
+            }
         }
     }
 }
