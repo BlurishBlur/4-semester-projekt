@@ -26,6 +26,7 @@ public class HpBar {
         hpBarEmpty = new Sprite(new Texture("rpg/gameengine/hpbarempty.png"));
         hpBarEmpty.setSize(hpBarWidth, hpBarHeight);
         hpBarFull = new Sprite(new Texture("rpg/gameengine/hpbarfull.png"));
+        hpBarFull.setSize(hpBarWidth, hpBarHeight);
         maxValue = owner.getMaxHealth();
         scaleFactor = maxValue / hpBarFull.getWidth();
         visibleValue = hpBarWidth;
@@ -70,6 +71,5 @@ public class HpBar {
         else {
             fadeTimeCounter -= gameData.getDeltaTime();
         }
-        
     }
 }
