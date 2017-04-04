@@ -62,11 +62,11 @@ public class SoundManager {
         for (Event event : gameData.getEvents()) {
             if(event.getType() == EventType.ATTACK){
                 punchingSounds.get("NOHIT").play();
-                gameData.getEvents(EventType.ATTACK).remove(EventType.ATTACK);
+                gameData.removeEvent(event);
             }
             if(event.getType() == EventType.PUNCH_HIT){
                 punchingSounds.get("HIT").play();
-                gameData.getEvents(EventType.PUNCH_HIT).remove(EventType.PUNCH_HIT);
+                gameData.removeEvent(event);
             }
         }
     }
