@@ -54,6 +54,7 @@ public class SoundManager {
     public void playSounds(GameData gameData, World world) {
         playWalkingSounds(world, gameData);
         playPunchSounds(world, gameData);
+        playMiscSounds(world, gameData);
     }
 
     private void playWalkingSounds(World world, GameData gameData) {
@@ -84,6 +85,11 @@ public class SoundManager {
                 combatSounds.get("HIT").play();
                 gameData.removeEvent(event);
             }
+        }
+    }
+    
+    private void playMiscSounds(World world, GameData gameData){
+        for (Event event : gameData.getEvents()) {
             if(event.getType() == EventType.COIN_PICKUP){
                 miscSounds.get("COIN_PICKUP").play();
                 gameData.removeEvent(event);
