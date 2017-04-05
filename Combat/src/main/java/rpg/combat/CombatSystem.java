@@ -33,7 +33,7 @@ public class CombatSystem implements IEntityProcessingService {
                 if (event.getEntity() != entity && !entity.getClass().equals(Weapon.class) && isHit(event.getEntity(), entity)) {
                     entity.reduceCurrentHealth(((Weapon) event.getEntity().getWeapon()).getDamage());
                     System.out.println("Attackee health: " + entity.getCurrentHealth());
-                    gameData.addEvent(new Event(EventType.WEAPON_USE, entity.getWeapon()));
+                    gameData.addEvent(new Event(EventType.WEAPON_HIT, event.getEntity().getWeapon()));
                 }
             }
             gameData.removeEvent(event);
@@ -73,13 +73,13 @@ public class CombatSystem implements IEntityProcessingService {
     }
 
     private void attack(Weapon weapon, Entity player, Vector vector, int direction, GameData gameData) { //TODO gør den her metode pænere
-        gameData.addEvent(new Event(EventType.PUNCH_NO_HIT, player));
         try {
             if (weapon.canAttack()) {
                 weapon.getRoomPosition().set(player.getRoomPosition().plus(vector));
                 weapon.setDirection(direction);
                 weapon.resetTimeSinceLastAttack();
                 gameData.addEvent(new Event(EventType.ATTACK, player));
+                gameData.addEvent(new Event(EventType.WEAPON_USE, weapon));
             }
         }
         catch (NullPointerException e) {
@@ -97,8 +97,9 @@ public class CombatSystem implements IEntityProcessingService {
         weapon.setSpritePath("rpg/gameengine/sword.png");
         weapon.setDamage(10);
         weapon.setAttackSpeed(2);
+        //weapon.getSounds().put("HIT", "rpg/gameengine/stabsound.wav");
+        weapon.getSounds().put("MISS", "rpg/gameengine/woosh.mp3");
         player.setWeapon(weapon);
-        weapon.getSounds().put("USE", "rpg/gameengine/stabsound.mp3");
         System.out.println("Added weapon to player");
     }
 
