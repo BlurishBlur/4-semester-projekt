@@ -32,10 +32,6 @@ public class Camera {
     public Matrix4 getProjection() {
         return camera.combined;
     }
-    
-    public float getViewportHeight() {
-        return this.camera.viewportHeight;
-    }
 
     public void setPosition(float x, float y) {
         camera.position.set(x, y, 0);
@@ -100,7 +96,6 @@ public class Camera {
     private void followTarget(GameData gameData, World world) {
         camera.position.lerp(new Vector3(target.getRoomPosition().getX(), target.getRoomPosition().getY(), 0), 2.5f * gameData.getDeltaTime());
         handleEdgeCollision(world);
-
     }
 
     private void handleEdgeCollision(World world) {

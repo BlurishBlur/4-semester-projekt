@@ -22,7 +22,7 @@ public class Game implements ApplicationListener {
 
     private Camera playerCamera;
     private Camera hudCamera;
-    private SpriteManager renderer;
+    private SpriteManager spriteManager;
     private Lookup lookup = Lookup.getDefault();
     private final GameData gameData = new GameData();
     private World world = new World();
@@ -35,7 +35,7 @@ public class Game implements ApplicationListener {
     public void create() {
         Gdx.input.setInputProcessor(gameInputProcessor = new GameInputProcessor(gameData));
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
-        gameData.setDisplayHeight(Gdx.graphics.getHeight() - 80);
+        gameData.setDisplayHeight(Gdx.graphics.getHeight());
         gameData.setCameraZoom(1.50f);
 
         for (IGamePluginService plugin : getGamePluginServices()) {
@@ -55,11 +55,11 @@ public class Game implements ApplicationListener {
         hudCamera = new Camera(gameData.getDisplayWidth(), gameData.getDisplayHeight());
         hudCamera.update(gameData, world);
         
-        renderer = new SpriteManager(gameData);
-        renderer.loadRoomSprite(world, playerCamera);
+        spriteManager = new SpriteManager(gameData);
+        spriteManager.loadRoomSprite(world, playerCamera);
         
         skillpointsHud = new SkillpointsHud(hudCamera, gameInputProcessor, gameData, world);
-        playerInfoHud = new PlayerInfoHud(hudCamera, gameInputProcessor, gameData, world);
+        playerInfoHud = new PlayerInfoHud(hudCamera, world);
     }
 
     @Override
@@ -67,12 +67,12 @@ public class Game implements ApplicationListener {
         gameData.setDeltaTime(Math.min(Gdx.graphics.getDeltaTime(), (float) 60f / 3600f));
         update();
         updatePlayerCamera();
-        renderer.loadSprites(world);
-        renderer.draw(gameData, world, playerCamera);
+        spriteManager.loadSprites(world);
+        spriteManager.draw(gameData, world, playerCamera);
         soundManager.playSounds(gameData, world);
         drawDebug();
         skillpointsHud.drawSkillPointsHud();
-        playerInfoHud.drawInfoHud();
+        playerInfoHud.draw();
         gameData.getKeys().update();
     }
 
@@ -80,7 +80,7 @@ public class Game implements ApplicationListener {
         if (gameData.isChangingRoom() && world.getRoom(playerCamera.getTarget().getWorldPosition()) != world.getCurrentRoom()) {
             world.getRoom(playerCamera.getTarget().getWorldPosition()).addEntity(playerCamera.getTarget());
             playerCamera.initializeRoomChange(world);
-            renderer.loadNewRoomSprite(world, playerCamera);
+            spriteManager.loadNewRoomSprite(world, playerCamera);
         }
         playerCamera.update(gameData, world);
     }
@@ -110,7 +110,7 @@ public class Game implements ApplicationListener {
                     "DY: " + player.getVelocity().getY() + "\n" +
                     "Rotation: " + player.getVelocity().getAngle()*/ + "Movement speed: " + player.getCurrentMovementSpeed() + "\n"
                     + "Movement speed modifier: " + player.getMovementSpeedModifier();
-            renderer.drawDebug(gameData, world, hudCamera, message);
+            spriteManager.drawDebug(gameData, world, hudCamera, message);
         }
     }
 

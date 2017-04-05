@@ -83,16 +83,16 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
             enemy.getRoomPosition().setX(0 + (enemy.getWidth() / 2));
             enemy.getVelocity().setX(0);
         }
-        else if (enemy.getRoomPosition().getX() + (enemy.getWidth() / 2) > gameData.getDisplayWidth()) {
-            enemy.getRoomPosition().setX(gameData.getDisplayWidth() - (enemy.getWidth() / 2));
+        else if (enemy.getRoomPosition().getX() + (enemy.getWidth() / 2) > world.getCurrentRoom().getWidth()) {
+            enemy.getRoomPosition().setX(world.getCurrentRoom().getWidth() - (enemy.getWidth() / 2));
             enemy.getVelocity().setX(0);
         }
         if (enemy.getRoomPosition().getY() - (enemy.getHeight() / 2) < 0) {
             enemy.getRoomPosition().setY(0 + (enemy.getHeight() / 2));
             enemy.getVelocity().setY(0);
         }
-        else if (enemy.getRoomPosition().getY() + (enemy.getHeight() / 2) > gameData.getDisplayHeight()) {
-            enemy.getRoomPosition().setY(gameData.getDisplayHeight() - (enemy.getHeight() / 2));
+        else if (enemy.getRoomPosition().getY() + (enemy.getHeight() / 2) > world.getCurrentRoom().getHeight()) {
+            enemy.getRoomPosition().setY(world.getCurrentRoom().getHeight() - (enemy.getHeight() / 2));
             enemy.getVelocity().setY(0);
         }
     }

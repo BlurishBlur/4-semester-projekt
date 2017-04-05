@@ -90,14 +90,14 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
                 player.getVelocity().setX(0);
             }
         }
-        else if (player.getRoomPosition().getX() + (player.getWidth() / 2) > gameData.getDisplayWidth()) {
+        else if (player.getRoomPosition().getX() + (player.getWidth() / 2) > world.getCurrentRoom().getWidth()) {
             if (world.getCurrentRoom().canExitRight() && !gameData.isChangingRoom()) {
                 gameData.setIsChangingRoom(true);
                 player.getWorldVelocity().set(1, 0);
                 player.getWorldPosition().add(player.getWorldVelocity());
             }
             else {
-                player.getRoomPosition().setX(gameData.getDisplayWidth() - (player.getWidth() / 2));
+                player.getRoomPosition().setX(world.getCurrentRoom().getWidth() - (player.getWidth() / 2));
                 player.getVelocity().setX(0);
             }
         }
@@ -112,14 +112,14 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
                 player.getVelocity().setY(0);
             }
         }
-        else if (player.getRoomPosition().getY() + (player.getHeight() / 2) > gameData.getDisplayHeight()) {
+        else if (player.getRoomPosition().getY() + (player.getHeight() / 2) > world.getCurrentRoom().getHeight()) {
             if (world.getCurrentRoom().canExitUp() && !gameData.isChangingRoom()) {
                 gameData.setIsChangingRoom(true);
                 player.getWorldVelocity().set(0, 1);
                 player.getWorldPosition().add(player.getWorldVelocity());
             }
             else {
-                player.getRoomPosition().setY(gameData.getDisplayHeight() - (player.getHeight() / 2));
+                player.getRoomPosition().setY(world.getCurrentRoom().getHeight() - (player.getHeight() / 2));
                 player.getVelocity().setY(0);
             }
         }

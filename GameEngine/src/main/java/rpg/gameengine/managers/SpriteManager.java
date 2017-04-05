@@ -80,8 +80,7 @@ public class SpriteManager {
         Room newRoom = world.getCurrentRoom();
         currentRoom = new Sprite(new Texture(newRoom.getSpritePath()));
         currentRoom.setPosition(0, 0);
-        float scale = camera.getViewportHeight() / gameData.getDisplayHeight();
-        currentRoom.setSize(newRoom.getWidth(), newRoom.getHeight() - 80);
+        currentRoom.setSize(newRoom.getWidth(), newRoom.getHeight());
     }
 
     public void draw(GameData gameData, World world, Camera camera) {
