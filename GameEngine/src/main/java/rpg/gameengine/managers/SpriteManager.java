@@ -34,14 +34,14 @@ public class SpriteManager {
     }
 
     public void loadSprites(World world) {
-        for (Entity entity : world.getCurrentRoom().getEntities()) {
+        world.getCurrentRoom().getEntities().stream().map((entity) -> {
             if (!sprites.containsKey(entity)) {
                 loadSprite(entity);
             }
-            if (entity.hasWeapon() && !sprites.containsKey(entity.getWeapon())) {
-                loadSprite(entity.getWeapon());
-            }
-        }
+            return entity;
+        }).filter((entity) -> (entity.hasWeapon() && !sprites.containsKey(entity.getWeapon()))).forEachOrdered((entity) -> {
+            loadSprite(entity.getWeapon());
+        });
     }
 
     private void loadSprite(Entity entity) {
@@ -107,7 +107,7 @@ public class SpriteManager {
     }
 
     private void drawEntitySprites(GameData gameData, World world) {
-        for (Entity entity : world.getCurrentRoom().getEntities()) {
+        world.getCurrentRoom().getEntities().forEach((entity) -> {
             try {
                 Sprite entitySprite = sprites.get(entity);
                 if (entity.isAnimatable()) {
@@ -129,7 +129,7 @@ public class SpriteManager {
             catch (NullPointerException e) {
                 Logger.log("Couldn't draw sprite, no sprite loaded for entity of class " + entity.getClass() + ": " + entity.toString());
             }
-        }
+        });
     }
 
 }

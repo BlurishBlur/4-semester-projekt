@@ -71,9 +71,7 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
         newEnemy.setCurrentMovementSpeed(newEnemy.getDefaultMovementSpeed());
         newEnemy.setMaxHealth(50);
         newEnemy.setCurrentHealth(newEnemy.getMaxHealth());
-        newEnemy.setWidth(30);
-        newEnemy.setHeight(30);
-        newEnemy.setHasHpBar(true);
+        newEnemy.setSize(30, 30);
         newEnemy.setSpritePath("rpg/gameengine/enemy.png");
         return newEnemy;
     }

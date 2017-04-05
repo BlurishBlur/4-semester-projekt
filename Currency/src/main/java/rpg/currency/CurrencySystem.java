@@ -51,8 +51,7 @@ public class CurrencySystem implements IEntityProcessingService {
         Currency currency = new Currency();
         currency.getRoomPosition().set(entity.getRoomPosition().getX() + (int) (Math.random() * 50) - 25, entity.getRoomPosition().getY() + (int) (Math.random() * 50) - 25);
         currency.getWorldPosition().set(entity.getWorldPosition());
-        currency.setWidth(10);
-        currency.setHeight(10);
+        currency.setSize(10, 10);
         currency.setSpritePath("rpg/gameengine/currency.png");
         currency.setValue(1);
         //currency.setCurrentFrame(1);

@@ -69,10 +69,6 @@ public class Entity implements Serializable {
         return isAnimatable;
     }
     
-    public void setHasHpBar(boolean hasHpBar) {
-        this.hasHpBar = hasHpBar;
-    }
-    
     public boolean hasHpBar() {
         return hasHpBar;
     }
@@ -205,6 +201,9 @@ public class Entity implements Serializable {
 
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
+        if(maxHealth > 1) {
+            hasHpBar = true;
+        }
     }
 
     public float getCurrentMovementSpeed() {
@@ -221,6 +220,11 @@ public class Entity implements Serializable {
 
     public void setSprintModifier(float sprintModifier) {
         this.sprintModifier = sprintModifier;
+    }
+    
+    public void setSize(float width, float height) {
+        this.width = width;
+        this.height = height;
     }
 
     public float getWidth() {
