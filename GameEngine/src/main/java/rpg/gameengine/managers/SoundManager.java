@@ -14,7 +14,7 @@ import rpg.common.world.World;
 public class SoundManager {
 
     private Map<Entity, Sound> walkingSounds;
-    private Map<String, Sound> combatSounds;
+    private Map<Entity, Sound> combatSounds;
     private Map<String, Sound> miscSounds;
     private float timer = 0;
 
@@ -22,19 +22,14 @@ public class SoundManager {
         walkingSounds = new HashMap<>();
         combatSounds = new HashMap<>();
         miscSounds = new HashMap<>();
-        loadCombatSounds();
         loadMiscSounds();
         playMusic();
     }
     
-    private void loadCombatSounds(){
-        combatSounds.put("NOHIT", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/woosh.mp3")));
-        combatSounds.put("HIT_HAND", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/punch.mp3")));
-        combatSounds.put("KNIFE_HIT", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/stabsound.mp3")));
-    }
-    
     private void loadMiscSounds() {
         miscSounds.put("COIN_PICKUP", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/coinsound.wav")));
+        miscSounds.put("NOHIT", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/woosh.mp3")));
+        miscSounds.put("HIT_HAND", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/punch.mp3")));
     }
     
     private void playMusic(){
@@ -48,6 +43,10 @@ public class SoundManager {
             if (!entity.getSounds().isEmpty() && !walkingSounds.containsKey(entity)) {
                 Sound toLoad = Gdx.audio.newSound(Gdx.files.internal(entity.getSounds().get("GRASS")));
                 walkingSounds.put(entity, toLoad);
+            }
+            if (entity.hasWeapon() && !combatSounds.containsKey(entity)) {
+                Sound toLoad = Gdx.audio.newSound(Gdx.files.internal(entity.getSounds().get("USE")));
+                combatSounds.put(entity, toLoad);
             }
         }
     }
@@ -78,15 +77,15 @@ public class SoundManager {
     private void playPunchSounds(World world, GameData gameData) {
         for (Event event : gameData.getEvents()) {
             if(event.getType() == EventType.PUNCH_NO_HIT){
-                combatSounds.get("NOHIT").play();
+                miscSounds.get("NOHIT").play();
                 gameData.removeEvent(event);
             }
             if(event.getType() == EventType.PUNCH_HIT){
-                combatSounds.get("HIT_HAND").play();
+                miscSounds.get("HIT_HAND").play();
                 gameData.removeEvent(event);
             }
             if(event.getType() == EventType.KNIFE_HIT){
-                combatSounds.get("KNIFE_HIT").play();
+                combatSounds.get(event.getEntity()).play();
             }
         }
     }
