@@ -22,7 +22,7 @@ public class HpBar {
     public HpBar(Entity owner) {
         this.owner = owner;
         hpBarWidth = (int) (owner.getWidth() + owner.getWidth() / 3);
-        hpBarHeight = (int) (owner.getHeight() / 5);
+        hpBarHeight = (int) (owner.getHeight() / 6);
         hpBarEmpty = new Sprite(new Texture("rpg/gameengine/hpbarempty.png"));
         hpBarEmpty.setSize(hpBarWidth, hpBarHeight);
         hpBarFull = new Sprite(new Texture("rpg/gameengine/hpbarfull.png"));

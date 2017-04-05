@@ -24,7 +24,7 @@ public class Camera {
         this(viewportWidth, viewportHeight);
         this.target = target;
     }
-    
+
     public Entity getTarget() {
         return target;
     }
@@ -38,9 +38,9 @@ public class Camera {
     }
 
     public void update(GameData gameData, World world) {
+        camera.viewportWidth = gameData.getDisplayWidth() / gameData.getCameraZoom();
+        camera.viewportHeight = gameData.getDisplayHeight() / gameData.getCameraZoom();
         if (target != null) {
-            camera.viewportWidth = gameData.getDisplayWidth() / gameData.getCameraZoom();
-            camera.viewportHeight = gameData.getDisplayHeight() / gameData.getCameraZoom();
             if (gameData.isChangingRoom()) {
                 changeRoom(gameData, world);
             }
