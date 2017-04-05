@@ -49,12 +49,12 @@ public class CurrencySystem implements IEntityProcessingService {
     
     private Currency createCurrency(Entity entity) {
         Currency currency = new Currency();
-        currency.getRoomPosition().set(entity.getRoomPosition().getX() + (int) (Math.random() * 40) - 20, entity.getRoomPosition().getY() + (int) (Math.random() * 40) - 20);
+        currency.getRoomPosition().set(entity.getRoomPosition().getX() + (int) (Math.random() * 50) - 25, entity.getRoomPosition().getY() + (int) (Math.random() * 50) - 25);
         currency.getWorldPosition().set(entity.getWorldPosition());
         currency.setWidth(10);
         currency.setHeight(10);
         currency.setSpritePath("rpg/gameengine/currency.png");
-        currency.setValue((int) (Math.random() * 5) + 1);
+        currency.setValue(1);
         //currency.setCurrentFrame(1);
         //currency.setMaxFrames(3);
         //currency.setHasHpBar(true);
