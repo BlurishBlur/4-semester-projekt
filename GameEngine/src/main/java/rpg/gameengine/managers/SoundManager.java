@@ -80,11 +80,7 @@ public class SoundManager {
                 miscSounds.get("NOHIT").play();
                 gameData.removeEvent(event);
             }
-            if(event.getType() == EventType.PUNCH_HIT){
-                miscSounds.get("HIT_HAND").play();
-                gameData.removeEvent(event);
-            }
-            if(event.getType() == EventType.KNIFE_HIT){
+            if(event.getType() == EventType.WEAPON_USE){
                 combatSounds.get(event.getEntity()).play();
             }
         }
