@@ -97,7 +97,7 @@ public class CombatSystem implements IEntityProcessingService {
         weapon.setSpritePath("rpg/gameengine/sword.png");
         weapon.setDamage(10);
         weapon.setAttackSpeed(2);
-        //weapon.getSounds().put("HIT", "rpg/gameengine/stabsound.wav");
+        weapon.getSounds().put("HIT", "rpg/gameengine/stabsound.wav");
         weapon.getSounds().put("MISS", "rpg/gameengine/woosh.mp3");
         player.setWeapon(weapon);
         System.out.println("Added weapon to player");

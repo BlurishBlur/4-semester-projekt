@@ -51,6 +51,8 @@ public class SoundManager {
     private void loadMiscSounds() {
         miscSounds.put("COIN_PICKUP", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/coinsound.wav")));
         miscSounds.put("HIT_HAND", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/punch.mp3")));
+        miscSounds.put("MAN_HIT", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/man_hit.wav")));
+        miscSounds.put("MAN_DYING", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/man_dying.wav")));
     }
     
     private void loadCombatSounds(World world) {
@@ -72,8 +74,8 @@ public class SoundManager {
 
     public void playSounds(GameData gameData, World world) {
         playWalkingSounds(world, gameData);
-        playCombatSounds(world, gameData);
-        playMiscSounds(world, gameData);
+        playCombatSounds(gameData);
+        playMiscSounds(gameData);
     }
 
     private void playWalkingSounds(World world, GameData gameData) {
@@ -93,23 +95,28 @@ public class SoundManager {
         return 40 / entity.getCurrentMovementSpeed();
     }
 
-    private void playCombatSounds(World world, GameData gameData) {
+    private void playCombatSounds(GameData gameData) {
         for (Event event : gameData.getEvents()) {
-            if(event.getType() == EventType.WEAPON_USE && weaponMissSounds.containsKey(event.getEntity().getWeapon())){
+            if(event.getType() == EventType.WEAPON_USE && weaponMissSounds.containsKey(event.getEntity())){
                 weaponMissSounds.get(event.getEntity()).play();
                 gameData.removeEvent(event);
             }
-            if(event.getType() == EventType.WEAPON_HIT && weaponHitSounds.containsKey(event.getEntity().getWeapon())){
+            if(event.getType() == EventType.WEAPON_HIT && weaponHitSounds.containsKey(event.getEntity())){
                 weaponHitSounds.get(event.getEntity()).play();
+                miscSounds.get("MAN_HIT").play();
                 gameData.removeEvent(event);
             }
         }
     }
     
-    private void playMiscSounds(World world, GameData gameData){
+    private void playMiscSounds(GameData gameData){
         for (Event event : gameData.getEvents()) {
             if(event.getType() == EventType.COIN_PICKUP){
                 miscSounds.get("COIN_PICKUP").play();
+                gameData.removeEvent(event);
+            }
+            if(event.getType() == EventType.PLAY_DIE_SOUND){
+                miscSounds.get("MAN_DYING").play();
                 gameData.removeEvent(event);
             }
         }

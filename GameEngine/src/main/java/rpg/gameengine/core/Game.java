@@ -47,7 +47,6 @@ public class Game implements ApplicationListener {
         renderer.loadRoomSprite(world);
         
         soundManager = new SoundManager();
-        soundManager.loadSounds(world);
 
         playerCamera = new Camera(gameData.getDisplayWidth() / gameData.getCameraZoom(), gameData.getDisplayHeight() / gameData.getCameraZoom(), world.getPlayer());
         playerCamera.update(gameData, world);
@@ -63,6 +62,7 @@ public class Game implements ApplicationListener {
         updatePlayerCamera();
         renderer.loadSprites(world);
         renderer.draw(gameData, world, playerCamera);
+        soundManager.loadSounds(world);
         soundManager.playSounds(gameData, world);
         drawDebug();
         hud.drawHud();
