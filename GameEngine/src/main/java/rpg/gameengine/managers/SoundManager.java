@@ -53,7 +53,7 @@ public class SoundManager {
 
     public void playSounds(GameData gameData, World world) {
         playWalkingSounds(world, gameData);
-        playPunchSounds(world, gameData);
+        playCombatSounds(world, gameData);
         playMiscSounds(world, gameData);
     }
 
@@ -74,7 +74,7 @@ public class SoundManager {
         return 40 / entity.getCurrentMovementSpeed();
     }
 
-    private void playPunchSounds(World world, GameData gameData) {
+    private void playCombatSounds(World world, GameData gameData) {
         for (Event event : gameData.getEvents()) {
             if(event.getType() == EventType.PUNCH_NO_HIT){
                 miscSounds.get("NOHIT").play();
@@ -82,6 +82,7 @@ public class SoundManager {
             }
             if(event.getType() == EventType.WEAPON_USE){
                 combatSounds.get(event.getEntity()).play();
+                gameData.removeEvent(event);
             }
         }
     }
