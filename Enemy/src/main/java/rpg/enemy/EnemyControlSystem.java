@@ -33,7 +33,6 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
             if(enemy.getCurrentHealth() <= 0) {
                 System.out.println("Enemy died");
                 gameData.addEvent(new Event(EventType.ENEMY_DIED, enemy));
-                gameData.addEvent(new Event(EventType.PLAY_DIE_SOUND, enemy));
                 world.getCurrentRoom().removeEntity(enemy);
             }
             enemy.getVelocity().set(0, 0);

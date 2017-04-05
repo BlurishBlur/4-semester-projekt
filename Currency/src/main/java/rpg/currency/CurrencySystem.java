@@ -18,7 +18,6 @@ public class CurrencySystem implements IEntityProcessingService {
     public void process(GameData gameData, World world) {
         for(Event event : gameData.getEvents(EventType.ENEMY_DIED)) {
             createRandomCurrency(event.getEntity(), world);
-            gameData.removeEvent(event);
             System.out.println("creating currency");
         }
         for(Entity currency : world.getCurrentRoom().getEntities(Currency.class)) {

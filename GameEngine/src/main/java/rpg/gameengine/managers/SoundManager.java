@@ -102,8 +102,8 @@ public class SoundManager {
                 gameData.removeEvent(event);
             }
             if(event.getType() == EventType.WEAPON_HIT && weaponHitSounds.containsKey(event.getEntity())){
-                weaponHitSounds.get(event.getEntity()).play();
-                miscSounds.get("MAN_HIT").play();
+                weaponHitSounds.get(event.getEntity()).play(0.7f);
+                miscSounds.get("MAN_HIT").play(0.3f);
                 gameData.removeEvent(event);
             }
         }
@@ -115,8 +115,8 @@ public class SoundManager {
                 miscSounds.get("COIN_PICKUP").play();
                 gameData.removeEvent(event);
             }
-            if(event.getType() == EventType.PLAY_DIE_SOUND){
-                miscSounds.get("MAN_DYING").play();
+            if(event.getType() == EventType.ENEMY_DIED){
+                miscSounds.get("MAN_DYING").play(0.5f);
                 gameData.removeEvent(event);
             }
         }
