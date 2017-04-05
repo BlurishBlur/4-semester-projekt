@@ -24,13 +24,7 @@ public class SoundManager {
         weaponMissSounds = new HashMap<>();
         weaponHitSounds = new HashMap<>();
         miscSounds = new HashMap<>();
-        loadMiscSounds();
         playMusic();
-    }
-    
-    private void loadMiscSounds() {
-        miscSounds.put("COIN_PICKUP", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/coinsound.wav")));
-        miscSounds.put("HIT_HAND", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/punch.mp3")));
     }
     
     private void playMusic(){
@@ -40,33 +34,26 @@ public class SoundManager {
     }
 
     public void loadSounds(World world) {
+        loadWalkingSounds(world);
+        loadMiscSounds();
+        loadCombatSounds(world);
+    }
+    
+    private void loadWalkingSounds(World world) {
         for (Entity entity : world.getCurrentRoom().getEntities()) {
             if (!entity.getSounds().isEmpty() && !walkingSounds.containsKey(entity)) {
                 Sound toLoad = Gdx.audio.newSound(Gdx.files.internal(entity.getSounds().get("GRASS")));
                 walkingSounds.put(entity, toLoad);
-            }/*
-            if (entity.hasWeapon() && !entity.getWeapon().getSounds().isEmpty() && !weaponMissSounds.containsKey(entity.getWeapon())) {
-                Entity weapon = entity.getWeapon();
-                if (entity.getSounds().containsKey("MISS")) {
-                    Sound toLoad = Gdx.audio.newSound(Gdx.files.internal(weapon.getSounds().get("MISS")));
-                    weaponMissSounds.put(weapon, toLoad);
-                }
-                if (entity.getSounds().containsKey("HIT")) {
-                    Sound toLoad = Gdx.audio.newSound(Gdx.files.internal(weapon.getSounds().get("HIT")));
-                    weaponHitSounds.put(weapon, toLoad);
-                }
-            }*/
+            }
         }
     }
-
-    public void playSounds(GameData gameData, World world) {
-        loadCombatSounds(gameData, world);
-        playWalkingSounds(world, gameData);
-        playCombatSounds(world, gameData);
-        playMiscSounds(world, gameData);
+    
+    private void loadMiscSounds() {
+        miscSounds.put("COIN_PICKUP", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/coinsound.wav")));
+        miscSounds.put("HIT_HAND", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/punch.mp3")));
     }
     
-    private void loadCombatSounds(GameData gameData, World world) {
+    private void loadCombatSounds(World world) {
         for (Entity entity : world.getCurrentRoom().getEntities()) {
             if (entity.hasWeapon() && !entity.getWeapon().getSounds().isEmpty() && !weaponMissSounds.containsKey(entity.getWeapon())) {
                 Entity weapon = entity.getWeapon();
@@ -81,6 +68,12 @@ public class SoundManager {
             }
         }
         
+    }
+
+    public void playSounds(GameData gameData, World world) {
+        playWalkingSounds(world, gameData);
+        playCombatSounds(world, gameData);
+        playMiscSounds(world, gameData);
     }
 
     private void playWalkingSounds(World world, GameData gameData) {
