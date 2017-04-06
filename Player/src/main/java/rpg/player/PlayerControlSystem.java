@@ -68,8 +68,8 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
         newPlayer.setCurrentHealth(newPlayer.getMaxHealth());
         newPlayer.setMovementSpeedModifier(1);
         //newPlayer.setSpritePath("rpg/gameengine/player.png");
-        newPlayer.setWidth(30);
-        newPlayer.setHeight(30);
+        newPlayer.setWidth(50);
+        newPlayer.setHeight(50);
         newPlayer.setSpritePath("rpg/gameengine/testTexture.atlas");
         newPlayer.setCurrentFrame(1);
         newPlayer.setMaxFrames(3);
