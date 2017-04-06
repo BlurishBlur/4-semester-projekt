@@ -55,11 +55,11 @@ public class Game implements ApplicationListener {
         hudCamera = new Camera(gameData.getDisplayWidth(), gameData.getDisplayHeight());
         hudCamera.update(gameData, world);
         
-        spriteManager = new SpriteManager(gameData);
+        spriteManager = new SpriteManager();
         spriteManager.loadRoomSprite(world, playerCamera);
         
         skillpointsHud = new SkillpointsHud(hudCamera, gameInputProcessor, gameData, world);
-        playerInfoHud = new PlayerInfoHud(hudCamera, world);
+        playerInfoHud = new PlayerInfoHud(hudCamera);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class Game implements ApplicationListener {
         soundManager.playSounds(gameData, world);
         drawDebug();
         skillpointsHud.drawSkillPointsHud();
-        playerInfoHud.draw();
+        playerInfoHud.draw(world);
         gameData.getKeys().update();
     }
 

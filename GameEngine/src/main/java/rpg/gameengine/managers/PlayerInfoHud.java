@@ -10,16 +10,14 @@ public class PlayerInfoHud {
     private Camera camera;
     private SpriteBatch batch;
     private BitmapFont font;
-    private World world;
 
-    public PlayerInfoHud(Camera camera, World world) {
+    public PlayerInfoHud(Camera camera) {
         this.camera = camera;
-        this.world = world;
         this.batch = new SpriteBatch();
         this.font = new BitmapFont();
     }
 
-    public void draw() {
+    public void draw(World world) {
         batch.setProjectionMatrix(camera.getProjection());
         batch.begin();
         font.draw(batch, "Health: " + world.getPlayer().getCurrentHealth(), 50, world.getCurrentRoom().getHeight() - 40);

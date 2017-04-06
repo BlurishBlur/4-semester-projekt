@@ -24,15 +24,13 @@ public class SpriteManager {
     private Map<Entity, HpBar> hpBars;
     private Sprite currentRoom;
     private Sprite previousRoom;
-    private GameData gameData;
 
-    public SpriteManager(GameData gameData) {
+    public SpriteManager() {
         sprites = new ConcurrentHashMap<>();
         atlases = new ConcurrentHashMap<>();
         hpBars = new ConcurrentHashMap<>();
         batch = new SpriteBatch();
         font = new BitmapFont();
-        this.gameData = gameData;
     }
 
     public void loadSprites(World world) {
