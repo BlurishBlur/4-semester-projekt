@@ -30,7 +30,7 @@ public class CombatSystem implements IEntityProcessingService {
     private void handleWeaponHit(GameData gameData, World world) {
         for (Event event : gameData.getEvents(EventType.ATTACK)) {
             for (Entity entity : world.getCurrentRoom().getEntities()) {
-                if (event.getEntity() != entity && !entity.getClass().equals(Weapon.class) && isHit(event.getEntity(), entity)) {
+                if (event.getEntity() != entity && !entity.hasHpBar() && isHit(event.getEntity(), entity)) {
                     entity.reduceCurrentHealth(((Weapon) event.getEntity().getWeapon()).getDamage());
                     System.out.println("Attackee health: " + entity.getCurrentHealth());
                     gameData.addEvent(new Event(EventType.WEAPON_HIT, event.getEntity().getWeapon()));

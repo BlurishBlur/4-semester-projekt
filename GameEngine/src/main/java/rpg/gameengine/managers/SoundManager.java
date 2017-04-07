@@ -30,6 +30,7 @@ public class SoundManager {
     private void playMusic(){
         Music backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("rpg/gameengine/Concentration.mp3"));
         backgroundMusic.setVolume(0.5f);
+        backgroundMusic.setLooping(true);
         backgroundMusic.play();
     }
 
