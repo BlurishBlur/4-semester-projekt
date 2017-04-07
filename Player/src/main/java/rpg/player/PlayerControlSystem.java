@@ -1,5 +1,6 @@
 package rpg.player;
 
+import rpg.commonplayer.Player;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 import rpg.common.entities.Entity;
@@ -16,7 +17,7 @@ import rpg.common.services.IGamePluginService;
 })
 public class PlayerControlSystem implements IEntityProcessingService, IGamePluginService {
 
-    private Entity player;
+    private Player player;
 
     @Override
     public void start(GameData gameData, World world) {
@@ -27,7 +28,6 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
 
     @Override
     public void process(GameData gameData, World world) {
-        Entity player = world.getPlayer();
         player.getVelocity().set(0, 0);
         handleEdgeCollision(gameData, world, player);
         player.setSprintModifier(1);
@@ -57,16 +57,23 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
 
     }
 
-    private Entity createPlayer() {
-        Entity newPlayer = new Player();
+    private Player createPlayer() {
+        Player newPlayer = new Player();
         newPlayer.getRoomPosition().set(25, 25);
         newPlayer.getWorldPosition().set(0, 0);
         newPlayer.setDefaultMovementSpeed(200);
+        newPlayer.setLevel(1);
+        newPlayer.setExperiencePoints(0);
         newPlayer.setMaxHealth(100);
         newPlayer.setCurrentHealth(newPlayer.getMaxHealth());
         newPlayer.setMovementSpeedModifier(1);
         //newPlayer.setSpritePath("rpg/gameengine/player.png");
+<<<<<<< HEAD
         newPlayer.setSize(30, 30);
+=======
+        newPlayer.setWidth(50);
+        newPlayer.setHeight(50);
+>>>>>>> hud
         newPlayer.setSpritePath("rpg/gameengine/testTexture.atlas");
         newPlayer.setCurrentFrame(1);
         newPlayer.setMaxFrames(3);
@@ -86,14 +93,14 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
                 player.getVelocity().setX(0);
             }
         }
-        else if (player.getRoomPosition().getX() + (player.getWidth() / 2) > gameData.getDisplayWidth()) {
+        else if (player.getRoomPosition().getX() + (player.getWidth() / 2) > world.getCurrentRoom().getWidth()) {
             if (world.getCurrentRoom().canExitRight() && !gameData.isChangingRoom()) {
                 gameData.setIsChangingRoom(true);
                 player.getWorldVelocity().set(1, 0);
                 player.getWorldPosition().add(player.getWorldVelocity());
             }
             else {
-                player.getRoomPosition().setX(gameData.getDisplayWidth() - (player.getWidth() / 2));
+                player.getRoomPosition().setX(world.getCurrentRoom().getWidth() - (player.getWidth() / 2));
                 player.getVelocity().setX(0);
             }
         }
@@ -108,14 +115,14 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
                 player.getVelocity().setY(0);
             }
         }
-        else if (player.getRoomPosition().getY() + (player.getHeight() / 2) > gameData.getDisplayHeight()) {
+        else if (player.getRoomPosition().getY() + (player.getHeight() / 2) > world.getCurrentRoom().getHeight()) {
             if (world.getCurrentRoom().canExitUp() && !gameData.isChangingRoom()) {
                 gameData.setIsChangingRoom(true);
                 player.getWorldVelocity().set(0, 1);
                 player.getWorldPosition().add(player.getWorldVelocity());
             }
             else {
-                player.getRoomPosition().setY(gameData.getDisplayHeight() - (player.getHeight() / 2));
+                player.getRoomPosition().setY(world.getCurrentRoom().getHeight() - (player.getHeight() / 2));
                 player.getVelocity().setY(0);
             }
         }

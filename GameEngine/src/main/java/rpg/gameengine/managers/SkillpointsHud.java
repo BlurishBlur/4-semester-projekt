@@ -11,7 +11,7 @@ import rpg.common.data.GameData;
 import rpg.common.data.GameKeys;
 import rpg.common.world.World;
 
-public class Hud {
+public class SkillpointsHud {
 
     private Camera camera;
     private TextButton healthSkillUpButton;
@@ -26,7 +26,7 @@ public class Hud {
     private World world;
     private boolean activeHud;
 
-    public Hud(Camera camera, GameInputProcessor gameInputProcessor, GameData gameData, World world) {
+    public SkillpointsHud(Camera camera, GameInputProcessor gameInputProcessor, GameData gameData, World world) {
         this.camera = camera;
         this.gameInputProcessor = gameInputProcessor;
         this.hudBatch = new SpriteBatch();
@@ -36,7 +36,7 @@ public class Hud {
         initializeHud();
     }
 
-    public void drawHud() {
+    public void drawSkillPointsHud() {
         if (gameData.getKeys().isPressed(GameKeys.H)) {
             activeHud = !activeHud;
         }

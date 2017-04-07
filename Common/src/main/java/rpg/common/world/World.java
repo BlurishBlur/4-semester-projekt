@@ -13,14 +13,14 @@ public class World {
     
     public World() {
         world = new Room[WORLD_WIDTH][WORLD_HEIGHT];
-        Room r1 = new Room("rpg/gameengine/grass.png");
+        Room r1 = new Room("rpg/gameengine/Map4.png");
         r1.canExitRight(true);
         r1.canExitUp(true);
         world[0][0] = r1;
-        Room r2 = new Room("rpg/gameengine/player.png");
+        Room r2 = new Room("rpg/gameengine/grass.png");
         r2.canExitLeft(true);
         world[1][0] = r2;
-        Room r3 = new Room("rpg/gameengine/enemy.png");
+        Room r3 = new Room("rpg/gameengine/Map1.png");
         r3.canExitDown(true);
         world[0][1] = r3;
         

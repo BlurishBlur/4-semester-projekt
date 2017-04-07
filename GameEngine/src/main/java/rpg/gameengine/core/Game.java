@@ -13,19 +13,21 @@ import rpg.common.world.World;
 import rpg.common.services.IEntityProcessingService;
 import rpg.common.services.IGamePluginService;
 import rpg.common.services.IPostEntityProcessingService;
-import rpg.gameengine.managers.Hud;
+import rpg.gameengine.managers.SkillpointsHud;
 import rpg.gameengine.managers.GameInputProcessor;
+import rpg.gameengine.managers.PlayerInfoHud;
 import rpg.gameengine.managers.SoundManager;
 
 public class Game implements ApplicationListener {
 
     private Camera playerCamera;
     private Camera hudCamera;
-    private SpriteManager renderer;
+    private SpriteManager spriteManager;
     private Lookup lookup = Lookup.getDefault();
     private final GameData gameData = new GameData();
     private World world = new World();
-    private Hud hud;
+    private SkillpointsHud skillpointsHud;
+    private PlayerInfoHud playerInfoHud;
     private GameInputProcessor gameInputProcessor;
     private SoundManager soundManager;
 
@@ -43,8 +45,7 @@ public class Game implements ApplicationListener {
         //walk = Gdx.audio.newSound(Gdx.files.internal(world.getEntity(EntityType.PLAYER).getSounds().get("GRASS").toString()));
 
         world.setCurrentRoom(world.getPlayer().getWorldPosition());
-        renderer = new SpriteManager();
-        renderer.loadRoomSprite(world);
+        
         
         soundManager = new SoundManager();
 
@@ -52,7 +53,12 @@ public class Game implements ApplicationListener {
         playerCamera.update(gameData, world);
         hudCamera = new Camera(gameData.getDisplayWidth(), gameData.getDisplayHeight());
         hudCamera.update(gameData, world);
-        hud = new Hud(hudCamera, gameInputProcessor, gameData, world);
+        
+        spriteManager = new SpriteManager();
+        spriteManager.loadRoomSprite(world, playerCamera);
+        
+        skillpointsHud = new SkillpointsHud(hudCamera, gameInputProcessor, gameData, world);
+        playerInfoHud = new PlayerInfoHud(hudCamera);
     }
 
     @Override
@@ -60,12 +66,18 @@ public class Game implements ApplicationListener {
         gameData.setDeltaTime(Math.min(Gdx.graphics.getDeltaTime(), (float) 60f / 3600f));
         update();
         updatePlayerCamera();
+<<<<<<< HEAD
         renderer.loadSprites(world);
         renderer.draw(gameData, world, playerCamera);
         soundManager.loadSounds(world);
+=======
+        spriteManager.loadSprites(world);
+        spriteManager.draw(gameData, world, playerCamera);
+>>>>>>> hud
         soundManager.playSounds(gameData, world);
         drawDebug();
-        hud.drawHud();
+        skillpointsHud.drawSkillPointsHud();
+        playerInfoHud.draw(world);
         gameData.getKeys().update();
     }
 
@@ -73,7 +85,7 @@ public class Game implements ApplicationListener {
         if (gameData.isChangingRoom() && world.getRoom(playerCamera.getTarget().getWorldPosition()) != world.getCurrentRoom()) {
             world.getRoom(playerCamera.getTarget().getWorldPosition()).addEntity(playerCamera.getTarget());
             playerCamera.initializeRoomChange(world);
-            renderer.loadNewRoomSprite(world);
+            spriteManager.loadNewRoomSprite(world, playerCamera);
         }
         playerCamera.update(gameData, world);
     }
@@ -103,7 +115,7 @@ public class Game implements ApplicationListener {
                     "DY: " + player.getVelocity().getY() + "\n" +
                     "Rotation: " + player.getVelocity().getAngle()*/ + "Movement speed: " + player.getCurrentMovementSpeed() + "\n"
                     + "Movement speed modifier: " + player.getMovementSpeedModifier();
-            renderer.drawDebug(gameData, world, hudCamera, message);
+            spriteManager.drawDebug(gameData, world, hudCamera, message);
         }
     }
 

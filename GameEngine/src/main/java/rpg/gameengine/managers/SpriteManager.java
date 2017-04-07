@@ -67,14 +67,14 @@ public class SpriteManager {
         }
     }
 
-    public void loadNewRoomSprite(World world) {
+    public void loadNewRoomSprite(World world, Camera camera) {
         Entity player = world.getPlayer();
         previousRoom = currentRoom;
         previousRoom.setPosition(previousRoom.getWidth() * (player.getWorldVelocity().getX() * -1), previousRoom.getHeight() * (player.getWorldVelocity().getY() * -1));
-        loadRoomSprite(world);
+        loadRoomSprite(world, camera);
     }
 
-    public void loadRoomSprite(World world) {
+    public void loadRoomSprite(World world, Camera camera) {
         Room newRoom = world.getCurrentRoom();
         currentRoom = new Sprite(new Texture(newRoom.getSpritePath()));
         currentRoom.setPosition(0, 0);
