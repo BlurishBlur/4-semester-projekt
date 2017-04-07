@@ -66,14 +66,10 @@ public class Game implements ApplicationListener {
         gameData.setDeltaTime(Math.min(Gdx.graphics.getDeltaTime(), (float) 60f / 3600f));
         update();
         updatePlayerCamera();
-<<<<<<< HEAD
-        renderer.loadSprites(world);
-        renderer.draw(gameData, world, playerCamera);
+
         soundManager.loadSounds(world);
-=======
         spriteManager.loadSprites(world);
         spriteManager.draw(gameData, world, playerCamera);
->>>>>>> hud
         soundManager.playSounds(gameData, world);
         drawDebug();
         skillpointsHud.drawSkillPointsHud();
