@@ -61,12 +61,12 @@ public class SoundManager {
             if (entity.hasWeapon() && !entity.getWeapon().getSounds().isEmpty() && !weaponMissSounds.containsKey(entity.getWeapon())) {
                 Entity weapon = entity.getWeapon();
                 if (weapon.getSounds().containsKey("MISS")) {
-                    Sound toLoad = Gdx.audio.newSound(Gdx.files.internal(weapon.getSounds().get("MISS")));
-                    weaponMissSounds.put(weapon, toLoad);
+                    Sound soundToLoad = Gdx.audio.newSound(Gdx.files.internal(weapon.getSounds().get("MISS")));
+                    weaponMissSounds.put(weapon, soundToLoad);
                 }
                 if (weapon.getSounds().containsKey("HIT")) {
-                    Sound toLoad = Gdx.audio.newSound(Gdx.files.internal(weapon.getSounds().get("HIT")));
-                    weaponHitSounds.put(weapon, toLoad);
+                    Sound soundToLoad = Gdx.audio.newSound(Gdx.files.internal(weapon.getSounds().get("HIT")));
+                    weaponHitSounds.put(weapon, soundToLoad);
                 }
             }
         }
