@@ -1,0 +1,47 @@
+
+xp.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+0001
+  rotate: false
+  xy: 1, 670
+  size: 346, 340
+  orig: 454, 340
+  offset: 48, 0
+  index: -1
+0002
+  rotate: false
+  xy: 1, 670
+  size: 346, 340
+  orig: 454, 340
+  offset: 48, 0
+  index: -1
+0005
+  rotate: false
+  xy: 1, 328
+  size: 332, 340
+  orig: 454, 340
+  offset: 55, 0
+  index: -1
+0003
+  rotate: false
+  xy: 349, 670
+  size: 331, 340
+  orig: 454, 340
+  offset: 56, 0
+  index: -1
+0004
+  rotate: false
+  xy: 1, 1
+  size: 307, 325
+  orig: 454, 340
+  offset: 67, 9
+  index: -1
+0006
+  rotate: false
+  xy: 335, 352
+  size: 308, 316
+  orig: 454, 340
+  offset: 67, 14
+  index: -1

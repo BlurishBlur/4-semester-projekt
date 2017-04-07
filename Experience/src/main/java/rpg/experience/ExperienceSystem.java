@@ -53,12 +53,12 @@ public class ExperienceSystem implements IEntityProcessingService {
         experience.getRoomPosition().set(entity.getRoomPosition().getX() + (int) (Math.random() * 50) - 25, entity.getRoomPosition().getY() + (int) (Math.random() * 50) - 25);
         experience.getWorldPosition().set(entity.getWorldPosition());
         experience.setSize(10, 10);
-        experience.setSpritePath("rpg/gameengine/experience.png");
+        experience.setSpritePath("rpg/gameengine/xp.atlas");
         experience.setValue(1);
-        //experience.setCurrentFrame(1);
-        //experience.setMaxFrames(3);
-        //experience.setHasHpBar(true);
-        //experience.getSounds().put("GRASS", "rpg/gameengine/Footstep Grass 2.wav");
+        experience.setCurrentFrame(1);
+        experience.setMaxFrames(5);
+        
+        experience.getSounds().put("GRASS", "rpg/gameengine/Footstep Grass 2.wav");
         return experience;
     }
     
