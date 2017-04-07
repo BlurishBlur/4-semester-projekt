@@ -63,7 +63,7 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
         newPlayer.getWorldPosition().set(0, 0);
         newPlayer.setDefaultMovementSpeed(200);
         newPlayer.setLevel(1);
-        newPlayer.setExperiencePoints(0);
+        newPlayer.setExperience(0);
         newPlayer.setMaxHealth(100);
         newPlayer.setCurrentHealth(newPlayer.getMaxHealth());
         newPlayer.setMovementSpeedModifier(1);

@@ -97,6 +97,11 @@
             <artifactId>Currency</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>Experience</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

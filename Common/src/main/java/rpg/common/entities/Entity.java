@@ -36,6 +36,8 @@ public class Entity implements Serializable {
     private Entity weapon;
     private boolean hasHpBar;
     private int currency;
+    private int level;
+    private int experience;
     
     public Entity() {
         roomPosition = new Vector();
@@ -43,6 +45,30 @@ public class Entity implements Serializable {
         worldPosition = new Vector();
         worldVelocity = new Vector();
         sounds = new ConcurrentHashMap<>();
+    }
+    
+    public void setLevel(int level) {
+        this.level = level;
+    }
+    
+    public void setExperience(int experience) {
+        this.experience = experience;
+    }
+    
+    public int getLevel() {
+        return level;
+    }
+
+    public void advanceLevel() {
+        level++;
+    }
+
+    public int getExperience() {
+        return experience;
+    }
+
+    public void addExperience(int experience) {
+        this.experience += experience;
     }
     
     public void addCurrency(int currency) {
