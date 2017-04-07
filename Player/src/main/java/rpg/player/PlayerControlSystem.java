@@ -9,6 +9,8 @@ import rpg.common.data.GameKeys;
 import rpg.common.world.World;
 import rpg.common.services.IEntityProcessingService;
 import rpg.common.services.IGamePluginService;
+import rpg.common.util.Message;
+import rpg.common.util.MessageHandler;
 
 @ServiceProviders(value = {
     @ServiceProvider(service = IEntityProcessingService.class)
@@ -42,7 +44,6 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
         }
         else if (gameData.getKeys().isDown(GameKeys.D)) {
             player.getVelocity().addX(player.getCurrentMovementSpeed());
-
         }
         if (player.getVelocity().isMoving()) {
             player.increaseFrame(gameData.getDeltaTime() * (player.getCurrentMovementSpeed() / (player.getWidth() / 3))); //enten width / 3 eller width / 4
@@ -54,7 +55,14 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
             player.setSprintModifier(1.75f);
         }
         player.setCurrentMovementSpeed(player.getDefaultMovementSpeed() * player.getMovementSpeedModifier() * player.getSprintModifier());
-
+        sendMessages(world, player);
+    }
+    
+    private void sendMessages(World world, Player player) {
+        MessageHandler.addMessage(new Message("Health: " + player.getCurrentHealth() + "/" + player.getMaxHealth(),
+                0, 50, world.getCurrentRoom().getHeight() - 40));
+        MessageHandler.addMessage(new Message("Currency: " + player.getCurrency(),
+                0, 600, world.getCurrentRoom().getHeight() - 40));
     }
 
     private Player createPlayer() {

@@ -94,8 +94,8 @@ public class CombatSystem implements IEntityProcessingService {
         Entity player = world.getPlayer();
         Weapon weapon = new Weapon();
         weapon.setDefaultMovementSpeed(0);
-        weapon.setWidth(player.getWidth());
-        weapon.setHeight(player.getHeight());
+        weapon.setWidth(20);
+        weapon.setHeight(20);
         weapon.getRoomPosition().set(player.getRoomPosition());
         weapon.setSpritePath("rpg/gameengine/hand.png");
         weapon.setDamage(2);
