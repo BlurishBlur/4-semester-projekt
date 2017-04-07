@@ -1,5 +1,7 @@
 package rpg.common.util;
 
+import rpg.common.entities.Entity;
+
 public class Message {
 
     private final String message;
@@ -8,6 +10,7 @@ public class Message {
     private float x;
     private float y;
     private float alpha;
+    private Entity anchor;
 
     public Message(String message, float duration, float x, float y) {
         this.message = message;
@@ -16,6 +19,10 @@ public class Message {
         this.x = x;
         this.y = y;
         alpha = 0;
+    }
+    
+    public Message(String message, float duration, Entity anchor) {
+        this(message, duration, anchor.getRoomPosition().getX(), anchor.getRoomPosition().getY());
     }
 
     public String getMessage() {
@@ -31,7 +38,11 @@ public class Message {
     }
 
     public float getY() {
-        return y;
+        float yOffset = 0;
+        if(anchor != null) {
+            yOffset = (alpha * anchor.getHeight()) - anchor.getHeight();
+        }
+        return y + yOffset;
     }
 
     public void reduceDuration(float deltaTime) {

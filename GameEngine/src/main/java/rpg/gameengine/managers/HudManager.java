@@ -38,12 +38,10 @@ public class HudManager {
                 if (message.getStartDuration() - 1 < message.getDuration()) {
                     float alpha = message.getAndIncreaseAlpha(gameData.getDeltaTime());
                     font.setColor(font.getColor().r, font.getColor().b, font.getColor().g, alpha);
-                    yOffset = (alpha * 40) - 40;
                 }
                 if (message.getDuration() < 1) {
                     float alpha = message.getAndDecreaseAlpha(gameData.getDeltaTime());
                     font.setColor(font.getColor().r, font.getColor().b, font.getColor().g, alpha);
-                    yOffset = (alpha * 40) - 40;
                 }
             }
             font.draw(batch, message.getMessage(), message.getX(), message.getY() + yOffset);

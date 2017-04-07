@@ -1,5 +1,7 @@
 package rpg.currency;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 import rpg.common.data.GameData;
@@ -42,8 +44,11 @@ public class CurrencySystem implements IEntityProcessingService {
     }
     
     private void createRandomCurrency(Entity entity, World world) {
+        ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         for (int i = 0; i < (Math.random() * 10) + 1; i++) {
-            world.getCurrentRoom().addEntity(createCurrency(entity));
+            pool.execute(() -> {
+                world.getCurrentRoom().addEntity(createCurrency(entity));
+            });
         }
     }
     

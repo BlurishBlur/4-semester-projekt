@@ -1,5 +1,7 @@
 package rpg.experience;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 import rpg.common.data.GameData;
@@ -66,8 +68,11 @@ public class ExperienceSystem implements IEntityProcessingService {
     }
     
     private void createRandomExperienceOrbs(Entity entity, World world) {
+        ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         for (int i = 0; i < (Math.random() * 10) + 10; i++) {
-            world.getCurrentRoom().addEntity(createExperienceOrb(entity));
+            pool.execute(() -> {
+                world.getCurrentRoom().addEntity(createExperienceOrb(entity));
+            });
         }
     }
     
