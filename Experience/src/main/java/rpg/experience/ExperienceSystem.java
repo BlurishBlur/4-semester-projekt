@@ -39,7 +39,8 @@ public class ExperienceSystem implements IEntityProcessingService {
     private void checkExperience(World world) {
         if(world.getPlayer().getExperience() > experienceToNextLevel) {
             world.getPlayer().levelUp();
-            MessageHandler.addMessage(new Message("Level up!", 4, 400, 400));
+            MessageHandler.addMessage(new Message("Level up!", 4, 
+                    world.getPlayer().getRoomPosition().getX() - world.getPlayer().getWidth() / 2, world.getPlayer().getRoomPosition().getY() + world.getPlayer().getHeight()));
             experienceToNextLevel += world.getPlayer().getLevel() * 100;
         }
         sendMessages(world);

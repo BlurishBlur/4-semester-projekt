@@ -29,17 +29,26 @@ public class HudManager {
         drawMessages(gameData);
         batch.end();
     }
-    
+
     private void drawMessages(GameData gameData) {
-        for(Message message : MessageHandler.getMessages()) {
+        for (Message message : MessageHandler.getMessages()) {
+            font.setColor(font.getColor().r, font.getColor().b, font.getColor().g, 1);
+            if (message.getDuration() > 0) {
+                if (message.getStartDuration() - 1 < message.getDuration()) {
+                    font.setColor(font.getColor().r, font.getColor().b, font.getColor().g, message.getAndIncreaseAlpha(gameData.getDeltaTime()));
+                }
+                if (message.getDuration() < 1) {
+                    font.setColor(font.getColor().r, font.getColor().b, font.getColor().g, message.getAndDecreaseAlpha(gameData.getDeltaTime()));
+                }
+            }
             font.draw(batch, message.getMessage(), message.getX(), message.getY());
             message.reduceDuration(gameData.getDeltaTime());
-            if(message.getDuration() < 0) {
+            if (message.getDuration() < 0) {
                 MessageHandler.getMessages().remove(message);
             }
         }
     }
-    
+
     private void drawDebug(GameData gameData, World world) {
         if (gameData.getKeys().isPressed(GameKeys.F1)) {
             gameData.setShowDebug(!gameData.showDebug());
