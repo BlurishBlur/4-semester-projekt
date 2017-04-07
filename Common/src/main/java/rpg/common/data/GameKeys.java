@@ -4,7 +4,7 @@ public class GameKeys {
     
     private static boolean[] keys;
     private static boolean[] pressedKeys;
-    private static final int NUMBER_OF_KEYS = 13;
+    private static final int NUMBER_OF_KEYS = 14;
     public static final int W = 0;
     public static final int A = 1;
     public static final int S = 2;
@@ -18,6 +18,7 @@ public class GameKeys {
     public static final int F1 = 10;
     public static final int SHIFT = 11;
     public static final int H = 12;
+    public static final int K = 13;
     
     public GameKeys() {
         keys = new boolean[NUMBER_OF_KEYS];
