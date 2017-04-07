@@ -51,6 +51,7 @@ public class SoundManager {
     
     private void loadMiscSounds() {
         miscSounds.put("COIN_PICKUP", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/coinsound.wav")));
+        miscSounds.put("XP_PICKUP", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/xp_lyd.mp3")));
         miscSounds.put("HIT_HAND", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/punch.mp3")));
         miscSounds.put("MAN_HIT", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/man_hit.wav")));
         miscSounds.put("MAN_DYING", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/man_dying.wav")));
@@ -114,6 +115,10 @@ public class SoundManager {
         for (Event event : gameData.getEvents()) {
             if(event.getType() == EventType.COIN_PICKUP){
                 miscSounds.get("COIN_PICKUP").play();
+                gameData.removeEvent(event);
+            }
+            if(event.getType() == EventType.XP_PICKUP){
+                miscSounds.get("XP_PICKUP").play();
                 gameData.removeEvent(event);
             }
             if(event.getType() == EventType.ENEMY_DIED){

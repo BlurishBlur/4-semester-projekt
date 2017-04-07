@@ -30,7 +30,7 @@ public class ExperienceSystem implements IEntityProcessingService {
                 world.getPlayer().addExperience(((Experience) experience).getValue());
                 System.out.println("picked up: " + ((Experience) experience).getValue() + " experience");
                 world.getCurrentRoom().removeEntity(experience);
-                gameData.addEvent(new Event(EventType.COIN_PICKUP, experience));
+                gameData.addEvent(new Event(EventType.XP_PICKUP, experience));
             }
         }
         checkExperience(world);
@@ -74,13 +74,13 @@ public class ExperienceSystem implements IEntityProcessingService {
         Experience experience = new Experience();
         experience.getRoomPosition().set(entity.getRoomPosition().getX() + (int) (Math.random() * 50) - 25, entity.getRoomPosition().getY() + (int) (Math.random() * 50) - 25);
         experience.getWorldPosition().set(entity.getWorldPosition());
-        experience.setSize(10, 10);
+        experience.setSize(15, 15);
         experience.setSpritePath("rpg/gameengine/xp.atlas");
         experience.setValue(10);
         experience.setCurrentFrame(1);
         experience.setMaxFrames(12);
         
-        experience.getSounds().put("GRASS", "rpg/gameengine/Footstep Grass 2.wav");
+        //experience.getSounds().put("GRASS", "rpg/gameengine/Footstep Grass 2.wav");
         return experience;
     }
     
