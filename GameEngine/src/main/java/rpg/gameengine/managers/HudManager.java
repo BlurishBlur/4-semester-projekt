@@ -33,18 +33,15 @@ public class HudManager {
     private void drawMessages(GameData gameData) {
         for (Message message : MessageHandler.getMessages()) {
             font.setColor(font.getColor().r, font.getColor().b, font.getColor().g, 1);
-            float yOffset = 0;
             if (message.getDuration() > 0) {
                 if (message.getStartDuration() - 1 < message.getDuration()) {
-                    float alpha = message.getAndIncreaseAlpha(gameData.getDeltaTime());
-                    font.setColor(font.getColor().r, font.getColor().b, font.getColor().g, alpha);
+                    font.setColor(font.getColor().r, font.getColor().b, font.getColor().g, message.getAndIncreaseAlpha(gameData.getDeltaTime()));
                 }
                 if (message.getDuration() < 1) {
-                    float alpha = message.getAndDecreaseAlpha(gameData.getDeltaTime());
-                    font.setColor(font.getColor().r, font.getColor().b, font.getColor().g, alpha);
+                    font.setColor(font.getColor().r, font.getColor().b, font.getColor().g, message.getAndDecreaseAlpha(gameData.getDeltaTime()));
                 }
             }
-            font.draw(batch, message.getMessage(), message.getX(), message.getY() + yOffset);
+            font.draw(batch, message.getMessage(), message.getX(), message.getY());
             message.reduceDuration(gameData.getDeltaTime());
             if (message.getDuration() < 0) {
                 MessageHandler.getMessages().remove(message);

@@ -5,6 +5,7 @@ import java.util.concurrent.Executors;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 import rpg.common.data.GameData;
+import rpg.common.data.GameKeys;
 import rpg.common.entities.Entity;
 import rpg.common.events.Event;
 import rpg.common.events.EventType;
@@ -22,6 +23,9 @@ public class ExperienceSystem implements IEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
+        if(gameData.getKeys().isPressed(GameKeys.K)) {
+            world.getPlayer().addExperience(500);
+        }
         for(Event event : gameData.getEvents(EventType.ENEMY_DIED)) {
             createRandomExperienceOrbs(event.getEntity(), world);
             System.out.println("creating xp");
@@ -41,8 +45,7 @@ public class ExperienceSystem implements IEntityProcessingService {
     private void checkExperience(World world) {
         if(world.getPlayer().getExperience() >= experienceToNextLevel) {
             world.getPlayer().levelUp();
-            MessageHandler.addMessage(new Message("Level up!", 4, 
-                    world.getPlayer().getRoomPosition().getX() - world.getPlayer().getWidth() / 2, world.getPlayer().getRoomPosition().getY() + world.getPlayer().getHeight()));
+            MessageHandler.addMessage(new Message("Level up!", 4, world.getPlayer()));
             experienceToNextLevel += world.getPlayer().getLevel() * 100;
         }
         sendMessages(world);

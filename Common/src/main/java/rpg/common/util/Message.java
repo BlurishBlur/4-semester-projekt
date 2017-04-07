@@ -23,6 +23,7 @@ public class Message {
     
     public Message(String message, float duration, Entity anchor) {
         this(message, duration, anchor.getRoomPosition().getX(), anchor.getRoomPosition().getY());
+        this.anchor = anchor;
     }
 
     public String getMessage() {
@@ -34,13 +35,17 @@ public class Message {
     }
 
     public float getX() {
-        return x;
+        float xOffset = 0;
+        if(anchor != null) {
+            xOffset = -anchor.getWidth() / 2;
+        }
+        return x + xOffset;
     }
 
     public float getY() {
         float yOffset = 0;
         if(anchor != null) {
-            yOffset = (alpha * anchor.getHeight()) - anchor.getHeight();
+            yOffset = (alpha * anchor.getHeight());
         }
         return y + yOffset;
     }
@@ -59,6 +64,10 @@ public class Message {
     
     public float getAndDecreaseAlpha(float deltaTime) {
         return alpha -= deltaTime;
+    }
+    
+    public boolean hasAnchor() {
+        return anchor != null;
     }
 
 }

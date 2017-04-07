@@ -122,7 +122,9 @@ public class SoundManager {
                 gameData.removeEvent(event);
             }
             if(event.getType() == EventType.ENEMY_DIED){
-                miscSounds.get("MAN_DYING").play(0.5f);
+                new Thread(() -> {
+                    miscSounds.get("MAN_DYING").play(0.5f);
+                }).start();
                 gameData.removeEvent(event);
             }
         }
