@@ -116,8 +116,8 @@ public class Entity implements Serializable {
         sounds = new HashMap<>();
     }
     
-    public void increaseFrame(float deltaTime) {
-        currentFrame += deltaTime * (currentMovementSpeed / (width / 3)); //enten width / 3 eller width / 4
+    public void increaseFrame(float delta) {
+        currentFrame += delta;
         if(currentFrame > maxFrames + 1) {
             currentFrame = 2;
         }

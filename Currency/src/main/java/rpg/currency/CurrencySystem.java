@@ -23,7 +23,7 @@ public class CurrencySystem implements IEntityProcessingService {
         for(Entity currency : world.getCurrentRoom().getEntities(Currency.class)) {
             if(pickup(currency, world.getPlayer())) {
                 world.getPlayer().addCurrency(((Currency) currency).getValue());
-                System.out.println("picked up: " + ((Currency) currency).getValue());
+                System.out.println("picked up: " + ((Currency) currency).getValue() + " currency");
                 world.getCurrentRoom().removeEntity(currency);
                 gameData.addEvent(new Event(EventType.COIN_PICKUP, currency));
             }

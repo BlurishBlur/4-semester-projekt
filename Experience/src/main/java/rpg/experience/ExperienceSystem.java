@@ -21,9 +21,10 @@ public class ExperienceSystem implements IEntityProcessingService {
             System.out.println("creating xp");
         }
         for(Entity experience : world.getCurrentRoom().getEntities(Experience.class)) {
+            experience.increaseFrame(gameData.getDeltaTime());
             if(pickup(experience, world.getPlayer())) {
                 world.getPlayer().addExperience(((Experience) experience).getValue());
-                System.out.println("picked up: " + ((Experience) experience).getValue());
+                System.out.println("picked up: " + ((Experience) experience).getValue() + " experience");
                 world.getCurrentRoom().removeEntity(experience);
                 gameData.addEvent(new Event(EventType.COIN_PICKUP, experience));
             }

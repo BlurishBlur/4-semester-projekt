@@ -45,7 +45,7 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
 
         }
         if (player.getVelocity().isMoving()) {
-            player.increaseFrame(gameData.getDeltaTime());
+            player.increaseFrame(gameData.getDeltaTime() * (player.getCurrentMovementSpeed() / (player.getWidth() / 3))); //enten width / 3 eller width / 4
         }
         else {
             player.setCurrentFrame(1);
