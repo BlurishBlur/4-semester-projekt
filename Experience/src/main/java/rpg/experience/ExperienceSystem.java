@@ -56,7 +56,7 @@ public class ExperienceSystem implements IEntityProcessingService {
         Experience experience = new Experience();
         experience.getRoomPosition().set(entity.getRoomPosition().getX() + (int) (Math.random() * 50) - 25, entity.getRoomPosition().getY() + (int) (Math.random() * 50) - 25);
         experience.getWorldPosition().set(entity.getWorldPosition());
-        experience.setSize(50, 50);
+        experience.setSize(15, 15);
         experience.setSpritePath("rpg/gameengine/xp.atlas");
         experience.setValue(1);
         experience.setCurrentFrame(1);

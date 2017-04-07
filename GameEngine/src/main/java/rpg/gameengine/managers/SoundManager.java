@@ -117,7 +117,7 @@ public class SoundManager {
                 miscSounds.get("COIN_PICKUP").play();
                 gameData.removeEvent(event);
             }
-            if(event.getType() == EventType.COIN_PICKUP){
+            if(event.getType() == EventType.XP_PICKUP){
                 miscSounds.get("XP_PICKUP").play();
                 gameData.removeEvent(event);
             }
