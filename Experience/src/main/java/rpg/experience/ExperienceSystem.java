@@ -30,7 +30,7 @@ public class ExperienceSystem implements IEntityProcessingService {
             }
         }
         if(world.getPlayer().getExperience() > world.getPlayer().getLevel() * 100) {
-            world.getPlayer().advanceLevel();
+            world.getPlayer().levelUp();
             System.out.println("Level up!");
             gameData.addEvent(new Event(EventType.LEVEL_UP, world.getPlayer()));
         }
