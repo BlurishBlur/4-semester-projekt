@@ -3,10 +3,13 @@ package rpg.experience;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 import rpg.common.data.GameData;
+import rpg.common.data.GameKeys;
 import rpg.common.entities.Entity;
 import rpg.common.events.Event;
 import rpg.common.events.EventType;
 import rpg.common.services.IEntityProcessingService;
+import rpg.common.util.Message;
+import rpg.common.util.MessageHandler;
 import rpg.common.world.World;
 
 @ServiceProviders(value = {
@@ -14,28 +17,46 @@ import rpg.common.world.World;
 })
 public class ExperienceSystem implements IEntityProcessingService {
 
+    private int experienceToNextLevel = 100;
+
     @Override
     public void process(GameData gameData, World world) {
-        for(Event event : gameData.getEvents(EventType.ENEMY_DIED)) {
+        if (gameData.getKeys().isPressed(GameKeys.K)) {
+            world.getPlayer().addExperience(world.getPlayer().getLevel() * 110);
+        }
+        for (Event event : gameData.getEvents(EventType.ENEMY_DIED)) {
             createRandomExperienceOrbs(event.getEntity(), world);
             System.out.println("creating xp");
         }
-        for(Entity experience : world.getCurrentRoom().getEntities(Experience.class)) {
+        for (Entity experience : world.getCurrentRoom().getEntities(Experience.class)) {
             experience.increaseFrame(gameData.getDeltaTime() * 5);
-            if(pickup(experience, world.getPlayer())) {
+            if (pickup(experience, world.getPlayer())) {
                 world.getPlayer().addExperience(((Experience) experience).getValue());
                 System.out.println("picked up: " + ((Experience) experience).getValue() + " experience");
                 world.getCurrentRoom().removeEntity(experience);
                 gameData.addEvent(new Event(EventType.XP_PICKUP, experience));
             }
         }
-        if(world.getPlayer().getExperience() > world.getPlayer().getLevel() * 100) {
+        checkExperience(world);
+        sendMessages(world);
+    }
+
+    private void checkExperience(World world) {
+        if (world.getPlayer().getExperience() >= experienceToNextLevel) {
             world.getPlayer().levelUp();
-            System.out.println("Level up!");
-            gameData.addEvent(new Event(EventType.LEVEL_UP, world.getPlayer()));
+            MessageHandler.addMessage(new Message("Level up!", 4, world.getPlayer()));
+            experienceToNextLevel += world.getPlayer().getLevel() * 100;
         }
     }
     
+    private void sendMessages(World world) {
+         Entity player = world.getPlayer();
+         MessageHandler.addMessage(new Message("Level: " + player.getLevel(), 
+                 0, 1150, world.getCurrentRoom().getHeight() - 25));
+         MessageHandler.addMessage(new Message("Exp: " + player.getExperience() + "/" + experienceToNextLevel, 
+                 0, 1150, world.getCurrentRoom().getHeight() - 65));
+     }
+
     private boolean pickup(Entity experience, Entity player) {
         float a = experience.getRoomPosition().getX() - player.getRoomPosition().getX();
         float b = experience.getRoomPosition().getY() - player.getRoomPosition().getY();
@@ -46,13 +67,13 @@ public class ExperienceSystem implements IEntityProcessingService {
 
         //return Math.sqrt(Math.pow(entity1.getX() - entity2.getX(), 2) + Math.pow(entity1.getY() - entity2.getY(), 2)) < entity1.getRadius() + entity2.getRadius();
     }
-    
+
     private void createRandomExperienceOrbs(Entity entity, World world) {
         for (int i = 0; i < (Math.random() * 10) + 1; i++) {
             world.getCurrentRoom().addEntity(createExperienceOrb(entity));
         }
     }
-    
+
     private Experience createExperienceOrb(Entity entity) {
         Experience experience = new Experience();
         experience.getRoomPosition().set(entity.getRoomPosition().getX() + (int) (Math.random() * 50) - 25, entity.getRoomPosition().getY() + (int) (Math.random() * 50) - 25);
@@ -62,9 +83,9 @@ public class ExperienceSystem implements IEntityProcessingService {
         experience.setValue(1);
         experience.setCurrentFrame(1);
         experience.setMaxFrames(5);
-        
+
         //experience.getSounds().put("GRASS", "rpg/gameengine/Footstep Grass 2.wav");
         return experience;
     }
-    
+
 }
