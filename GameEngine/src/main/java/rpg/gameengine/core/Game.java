@@ -15,7 +15,7 @@ import rpg.common.services.IGamePluginService;
 import rpg.common.services.IPostEntityProcessingService;
 import rpg.gameengine.managers.SkillpointsHud;
 import rpg.gameengine.managers.GameInputProcessor;
-import rpg.gameengine.managers.PlayerInfoHud;
+import rpg.gameengine.managers.HudManager;
 import rpg.gameengine.managers.SoundManager;
 
 public class Game implements ApplicationListener {
@@ -27,7 +27,7 @@ public class Game implements ApplicationListener {
     private final GameData gameData = new GameData();
     private World world = new World();
     private SkillpointsHud skillpointsHud;
-    private PlayerInfoHud playerInfoHud;
+    private HudManager hudManager;
     private GameInputProcessor gameInputProcessor;
     private SoundManager soundManager;
 
@@ -58,7 +58,7 @@ public class Game implements ApplicationListener {
         spriteManager.loadRoomSprite(world, playerCamera);
         
         skillpointsHud = new SkillpointsHud(hudCamera, gameInputProcessor, gameData, world);
-        playerInfoHud = new PlayerInfoHud(hudCamera);
+        hudManager = new HudManager(hudCamera);
     }
 
     @Override
@@ -66,14 +66,12 @@ public class Game implements ApplicationListener {
         gameData.setDeltaTime(Math.min(Gdx.graphics.getDeltaTime(), (float) 60f / 3600f));
         update();
         updatePlayerCamera();
-
         soundManager.loadSounds(world);
         spriteManager.loadSprites(world);
         spriteManager.draw(gameData, world, playerCamera);
         soundManager.playSounds(gameData, world);
-        drawDebug();
         skillpointsHud.drawSkillPointsHud();
-        playerInfoHud.draw(world);
+        hudManager.draw(gameData, world);
         gameData.getKeys().update();
     }
 
@@ -95,25 +93,7 @@ public class Game implements ApplicationListener {
         }
     }
 
-    public void drawDebug() {
-        if (gameData.getKeys().isPressed(GameKeys.F1)) {
-            gameData.setShowDebug(!gameData.showDebug());
-            world.getPlayer().setSkillPoints(world.getPlayer().getSkillPoints() + 1);
-        }
-        if (gameData.showDebug()) {
-            Entity player = world.getPlayer();
-            String message = "FPS: " + Gdx.graphics.getFramesPerSecond() + "\n"
-                    + "Zoom: " + gameData.getCameraZoom() + "\n"
-                    + "X: " + player.getRoomPosition().getX() + "\n"
-                    + "Y: " + player.getRoomPosition().getY() + "\n"
-                    /*+
-                    "DX: " + player.getVelocity().getX() + "\n" +
-                    "DY: " + player.getVelocity().getY() + "\n" +
-                    "Rotation: " + player.getVelocity().getAngle()*/ + "Movement speed: " + player.getCurrentMovementSpeed() + "\n"
-                    + "Movement speed modifier: " + player.getMovementSpeedModifier();
-            spriteManager.drawDebug(gameData, world, hudCamera, message);
-        }
-    }
+    
 
     private Collection<? extends IEntityProcessingService> getEntityProcessingServices() {
         return lookup.lookupAll(IEntityProcessingService.class);

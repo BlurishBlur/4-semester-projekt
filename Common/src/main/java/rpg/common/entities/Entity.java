@@ -59,7 +59,7 @@ public class Entity implements Serializable {
         return level;
     }
 
-    public void advanceLevel() {
+    public void levelUp() {
         level++;
     }
 

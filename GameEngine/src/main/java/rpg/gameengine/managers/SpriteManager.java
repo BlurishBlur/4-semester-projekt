@@ -90,13 +90,6 @@ public class SpriteManager {
         batch.end();
     }
 
-    public void drawDebug(GameData gameData, World world, Camera camera, String message) {
-        batch.begin();
-        batch.setProjectionMatrix(camera.getProjection());
-        font.draw(batch, message, 7.5f, 127.5f);
-        batch.end();
-    }
-
     private void drawMap() {
         batch.disableBlending();
         if (previousRoom != null) {
@@ -117,9 +110,10 @@ public class SpriteManager {
                 entitySprite.setPosition(entity.getRoomPosition().getX() - entity.getWidth() / 2, entity.getRoomPosition().getY() - entity.getHeight() / 2);
                 entitySprite.draw(batch);
                 if (entity.hasWeapon()) {
-                    Sprite weaponSprite = sprites.get(entity.getWeapon());
+                    Entity weapon = entity.getWeapon();
+                    Sprite weaponSprite = sprites.get(weapon);
                     weaponSprite.setRotation(entity.getDirection());
-                    weaponSprite.setPosition(entity.getRoomPosition().getX() - entity.getWidth() / 2, entity.getRoomPosition().getY() - entity.getHeight() / 2);
+                    weaponSprite.setPosition(entity.getRoomPosition().getX() - weapon.getWidth() / 2, entity.getRoomPosition().getY() - weapon.getHeight() / 2);
                     weaponSprite.draw(batch);
                 }
                 if (entity.hasHpBar()) {
