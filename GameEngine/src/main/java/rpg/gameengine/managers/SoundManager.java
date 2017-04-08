@@ -55,6 +55,7 @@ public class SoundManager {
         miscSounds.put("HIT_HAND", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/punch.mp3")));
         miscSounds.put("MAN_HIT", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/man_hit.wav")));
         miscSounds.put("MAN_DYING", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/man_dying.wav")));
+        miscSounds.put("LEVEL_UP", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/level_up_sound.wav")));
     }
     
     private void loadCombatSounds(World world) {
@@ -123,6 +124,10 @@ public class SoundManager {
             }
             if(event.getType() == EventType.ENEMY_DIED){
                 miscSounds.get("MAN_DYING").play(0.5f);
+                gameData.removeEvent(event);
+            }
+            if(event.getType() == EventType.LEVEL_UP){
+                miscSounds.get("LEVEL_UP").play(0.5f);
                 gameData.removeEvent(event);
             }
         }
