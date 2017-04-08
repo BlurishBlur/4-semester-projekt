@@ -32,7 +32,7 @@ public class ExperienceSystem implements IEntityProcessingService {
             experience.increaseFrame(gameData.getDeltaTime() * 5);
             if (pickup(experience, world.getPlayer())) {
                 world.getPlayer().addExperience(((Experience) experience).getValue());
-                System.out.println("picked up: " + ((Experience) experience).getValue() + " experience");
+                sendPickupMessage((Experience) experience);
                 world.getCurrentRoom().removeEntity(experience);
                 gameData.addEvent(new Event(EventType.XP_PICKUP, experience));
             }
@@ -40,11 +40,15 @@ public class ExperienceSystem implements IEntityProcessingService {
         checkExperience(world);
         sendMessages(world);
     }
+    
+    private void sendPickupMessage(Experience experience) {
+        MessageHandler.addMessage(new Message("+" + experience.getValue() + " exp", 3, experience));
+    }
 
     private void checkExperience(World world) {
         if (world.getPlayer().getExperience() >= experienceToNextLevel) {
             world.getPlayer().levelUp();
-            MessageHandler.addMessage(new Message("Level up!", 4, world.getPlayer()));
+            MessageHandler.addMessage(new Message("Level up!", 5, world.getPlayer()));
             experienceToNextLevel += world.getPlayer().getLevel() * 100;
         }
     }

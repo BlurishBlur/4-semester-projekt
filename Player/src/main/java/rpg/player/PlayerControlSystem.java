@@ -61,8 +61,6 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
     private void sendMessages(World world, Player player) {
         MessageHandler.addMessage(new Message("Health: " + player.getCurrentHealth() + "/" + player.getMaxHealth(),
                 0, 50, world.getCurrentRoom().getHeight() - 40));
-        MessageHandler.addMessage(new Message("Currency: " + player.getCurrency(),
-                0, 600, world.getCurrentRoom().getHeight() - 40));
     }
 
     private Player createPlayer() {

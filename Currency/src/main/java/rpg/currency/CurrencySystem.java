@@ -9,6 +9,8 @@ import rpg.common.entities.Entity;
 import rpg.common.events.Event;
 import rpg.common.events.EventType;
 import rpg.common.services.IEntityProcessingService;
+import rpg.common.util.Message;
+import rpg.common.util.MessageHandler;
 import rpg.common.world.World;
 
 @ServiceProviders(value = {
@@ -25,11 +27,21 @@ public class CurrencySystem implements IEntityProcessingService {
         for(Entity currency : world.getCurrentRoom().getEntities(Currency.class)) {
             if(pickup(currency, world.getPlayer())) {
                 world.getPlayer().addCurrency(((Currency) currency).getValue());
-                System.out.println("picked up: " + ((Currency) currency).getValue() + " currency");
+                sendPickupMessage((Currency) currency);
                 world.getCurrentRoom().removeEntity(currency);
                 gameData.addEvent(new Event(EventType.COIN_PICKUP, currency));
             }
         }
+        sendMessage(world);
+    }
+    
+    private void sendPickupMessage(Currency currency) {
+        MessageHandler.addMessage(new Message("+" + currency.getValue() + " gold", 3, currency));
+    }
+    
+    private void sendMessage(World world) {
+        MessageHandler.addMessage(new Message("Currency: " + world.getPlayer().getCurrency(),
+                0, 600, world.getCurrentRoom().getHeight() - 40));
     }
     
     private boolean pickup(Entity currency, Entity player) {
