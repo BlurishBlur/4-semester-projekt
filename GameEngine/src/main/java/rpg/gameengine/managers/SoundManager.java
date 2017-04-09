@@ -25,6 +25,7 @@ public class SoundManager {
         weaponHitSounds = new HashMap<>();
         miscSounds = new HashMap<>();
         playMusic();
+        loadMiscSounds();
     }
     
     private void playMusic(){
@@ -36,7 +37,6 @@ public class SoundManager {
 
     public void loadSounds(World world) {
         loadWalkingSounds(world);
-        loadMiscSounds();
         loadCombatSounds(world);
     }
     
@@ -50,12 +50,12 @@ public class SoundManager {
     }
     
     private void loadMiscSounds() {
-        miscSounds.put("COIN_PICKUP", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/coinsound.wav")));
-        miscSounds.put("XP_PICKUP", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/xp_lyd.mp3")));
-        miscSounds.put("HIT_HAND", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/punch.mp3")));
-        miscSounds.put("MAN_HIT", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/man_hit.wav")));
-        miscSounds.put("MAN_DYING", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/man_dying.wav")));
-        miscSounds.put("LEVEL_UP", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/level_up_sound.wav")));
+        miscSounds.putIfAbsent("COIN_PICKUP", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/coinsound.wav")));
+        miscSounds.putIfAbsent("XP_PICKUP", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/xp_lyd.mp3")));
+        miscSounds.putIfAbsent("HIT_HAND", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/punch.mp3")));
+        miscSounds.putIfAbsent("MAN_HIT", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/man_hit.wav")));
+        miscSounds.putIfAbsent("MAN_DYING", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/man_dying.wav")));
+        miscSounds.putIfAbsent("LEVEL_UP", Gdx.audio.newSound(Gdx.files.internal("rpg/gameengine/level_up_sound.wav")));
     }
     
     private void loadCombatSounds(World world) {

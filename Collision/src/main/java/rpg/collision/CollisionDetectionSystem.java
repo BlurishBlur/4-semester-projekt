@@ -17,7 +17,7 @@ public class CollisionDetectionSystem implements IPostEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
-        Vector a = new Vector(25, 25);
+        /*Vector a = new Vector(25, 25);
         Vector b = new Vector(25, 150);
         Vector c = new Vector(150, 150);
         Vector d = new Vector(150, 25);
@@ -29,7 +29,7 @@ public class CollisionDetectionSystem implements IPostEntityProcessingService {
         
         Vector point = world.getPlayer().getRoomPosition();
         
-        System.out.println(isPointInPolygon(p, point));
+        System.out.println(isPointInPolygon(p, point));*/
         
         
         for (Entity entity : world.getCurrentRoom().getEntities()) {
