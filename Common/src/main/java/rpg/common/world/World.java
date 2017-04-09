@@ -6,25 +6,25 @@ import rpg.common.util.Vector;
 public class World {
 
     private final int WORLD_WIDTH = 2;
-    private final int WORLD_HEIGHT = 2;
+    private final int WORLD_HEIGHT = 3;
     private Room[][] world;
     private Room currentRoom;
     private Entity player;
     
     public World() {
         world = new Room[WORLD_WIDTH][WORLD_HEIGHT];
-        Room r1 = new Room("rpg/gameengine/Map4.png");
+        Room r1 = new Room("rpg/gameengine/SafeHouse.png");
         r1.canExitRight(true);
-        r1.canExitUp(true);
-        world[0][0] = r1;
-        Room r2 = new Room("rpg/gameengine/grass.png");
+        world[0][1] = r1;
+        Room r2 = new Room("rpg/gameengine/Map4.png");
         r2.canExitLeft(true);
-        world[1][0] = r2;
+        r2.canExitUp(true);
+        world[1][1] = r2;
         Room r3 = new Room("rpg/gameengine/Map1.png");
         r3.canExitDown(true);
-        world[0][1] = r3;
+        world[1][2] = r3;
         
-        currentRoom = world[0][0];
+        currentRoom = world[0][1];
     }
     
     public void setCurrentRoom(Vector worldPosition) {
