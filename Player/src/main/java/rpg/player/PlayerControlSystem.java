@@ -65,7 +65,7 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
 
     private Player createPlayer() {
         Player newPlayer = new Player();
-        newPlayer.getRoomPosition().set(25, 25);
+        newPlayer.getRoomPosition().set(500, 250);
         newPlayer.getWorldPosition().set(0, 1);
         newPlayer.setDefaultMovementSpeed(200);
         newPlayer.setLevel(1);
