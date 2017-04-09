@@ -3,6 +3,7 @@ package rpg.gameengine.managers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import java.text.NumberFormat;
 import rpg.common.data.GameData;
 import rpg.common.data.GameKeys;
 import rpg.common.entities.Entity;
@@ -56,6 +57,24 @@ public class HudManager {
         }
         if (gameData.showDebug()) {
             Entity player = world.getPlayer();
+            /*Runtime runtime = Runtime.getRuntime();
+
+            NumberFormat format = NumberFormat.getInstance();
+
+            StringBuilder sb = new StringBuilder();
+            long maxMemory = runtime.maxMemory();
+            long allocatedMemory = runtime.totalMemory();
+            long freeMemory = runtime.freeMemory();
+
+            sb.append("free memory: " + format.format(freeMemory / 1024) + "<br/>");
+            sb.append("allocated memory: " + format.format(allocatedMemory / 1024) + "<br/>");
+            sb.append("max memory: " + format.format(maxMemory / 1024) + "<br/>");
+            sb.append("total free memory: " + format.format((freeMemory + (maxMemory - allocatedMemory)) / 1024) + "<br/>");
+            System.out.println(sb.toString());
+            
+            System.out.println("Java heap: " + Gdx.app.getJavaHeap());
+            System.out.println("Native heap: " + Gdx.app.getNativeHeap());*/
+            
             String message = "FPS: " + Gdx.graphics.getFramesPerSecond() + "\n"
                     + "Zoom: " + gameData.getCameraZoom() + "\n"
                     + "X: " + player.getRoomPosition().getX() + "\n"
@@ -65,7 +84,7 @@ public class HudManager {
                     "DY: " + player.getVelocity().getY() + "\n" +
                     "Rotation: " + player.getVelocity().getAngle()*/ + "Movement speed: " + player.getCurrentMovementSpeed() + "\n"
                     + "Movement speed modifier: " + player.getMovementSpeedModifier();
-            font.draw(batch, message, 7.5f, 127.5f);
+            font.draw(batch, message, 7.5f, 127.5f); // y += 20 for hver linje
         }
     }
 
