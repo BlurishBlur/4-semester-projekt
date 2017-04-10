@@ -37,7 +37,7 @@ public class ExperienceSystem implements IEntityProcessingService {
                 gameData.addEvent(new Event(EventType.XP_PICKUP, experience));
             }
         }
-        checkExperience(world);
+        checkExperience(world, gameData);
         sendMessages(world);
     }
     
@@ -45,11 +45,12 @@ public class ExperienceSystem implements IEntityProcessingService {
         MessageHandler.addMessage(new Message("+" + experience.getValue() + " exp", 3, experience));
     }
 
-    private void checkExperience(World world) {
+    private void checkExperience(World world, GameData gameData) {
         if (world.getPlayer().getExperience() >= experienceToNextLevel) {
             world.getPlayer().levelUp();
             MessageHandler.addMessage(new Message("Level up!", 5, world.getPlayer()));
             experienceToNextLevel += world.getPlayer().getLevel() * 100;
+            gameData.addEvent(new Event(EventType.LEVEL_UP, world.getPlayer()));
         }
     }
     
