@@ -72,7 +72,6 @@ public class SoundManager {
                 }
             }
         }
-        
     }
 
     public void playSounds(GameData gameData, World world) {
