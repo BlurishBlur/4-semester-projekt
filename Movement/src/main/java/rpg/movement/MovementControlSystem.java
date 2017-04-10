@@ -28,26 +28,34 @@ public class MovementControlSystem implements IEntityProcessingService {
         p.add(c);
         p.add(d);*/
 
-        List<Vector> p = asList(new Vector(239, 104), 
-                                new Vector(289, 65), 
-                                new Vector(349, 35),
-                                new Vector(466, 0),
-                                new Vector(590, 25), 
-                                new Vector(701, 93), 
-                                new Vector(767, 174), 
-                                new Vector(809, 307),
-                                new Vector(793, 441), 
-                                new Vector(751, 533), 
-                                new Vector(663, 610), 
-                                new Vector(502, 666),
-                                new Vector(364, 637),
-                                new Vector(284, 606),
-                                new Vector(202, 518),
-                                new Vector(158, 434),
-                                new Vector(150, 335),
-                                new Vector(164, 235),
-                                new Vector(195, 165)
+        List<Vector> a = asList(new Vector(0, 0), 
+                                new Vector(1280, 0), 
+                                new Vector(1280, 325),
+                                new Vector(814, 325),
+                                new Vector(787, 212), 
+                                new Vector(722, 117), 
+                                new Vector(636, 41), 
+                                new Vector(588, 24),
+                                new Vector(488, 5), 
+                                new Vector(346, 25), 
+                                new Vector(245, 92), 
+                                new Vector(178, 203),
+                                new Vector(148, 315),
+                                new Vector(117, 476),
+                                new Vector(245, 576),
+                                new Vector(363, 642),
+                                new Vector(493, 663),
+                                new Vector(662, 616),
+                                new Vector(752, 530),
+                                new Vector(805, 403),
+                                new Vector(1280, 404),
+                                new Vector(1280, 720),
+                                new Vector(0, 720),
+                                new Vector(0, 0)
         );
+        
+        
+        List<List<Vector>> p = asList(a);
         
         
         
@@ -60,17 +68,17 @@ public class MovementControlSystem implements IEntityProcessingService {
             if (entity.getVelocity().isMoving()) {
                 entity.setDirection(entity.getVelocity().getAngle());
                 
-                if (entity.getVelocity().getX() < 0 && !isPointInPolygon(p, new Vector(entity.getRoomPosition().getX() - entity.getWidth() / 2, entity.getRoomPosition().getY()))) {
+                if (entity.getVelocity().getX() < 0 && isPointInPolygons(p, new Vector(entity.getRoomPosition().getX() - entity.getWidth() / 2, entity.getRoomPosition().getY()))) {
                     entity.getVelocity().setX(0);
                     //entity.getRoomPosition().setX(entity.getRoomPosition().getX() + 1);
                 }
-                else if (entity.getVelocity().getX() > 0 && !isPointInPolygon(p, new Vector(entity.getRoomPosition().getX() + entity.getWidth() / 2, entity.getRoomPosition().getY()))) {
+                else if (entity.getVelocity().getX() > 0 && isPointInPolygons(p, new Vector(entity.getRoomPosition().getX() + entity.getWidth() / 2, entity.getRoomPosition().getY()))) {
                     entity.getVelocity().setX(0);
                 }
-                if (entity.getVelocity().getY() < 0 && !isPointInPolygon(p, new Vector(entity.getRoomPosition().getX(), entity.getRoomPosition().getY() - entity.getHeight() / 2))) {
+                if (entity.getVelocity().getY() < 0 && isPointInPolygons(p, new Vector(entity.getRoomPosition().getX(), entity.getRoomPosition().getY() - entity.getHeight() / 2))) {
                     entity.getVelocity().setY(0);
                 }
-                else if (entity.getVelocity().getY() > 0 && !isPointInPolygon(p, new Vector(entity.getRoomPosition().getX(), entity.getRoomPosition().getY() + entity.getHeight() / 2))) {
+                else if (entity.getVelocity().getY() > 0 && isPointInPolygons(p, new Vector(entity.getRoomPosition().getX(), entity.getRoomPosition().getY() + entity.getHeight() / 2))) {
                     entity.getVelocity().setY(0);
                 }
 
@@ -82,6 +90,15 @@ public class MovementControlSystem implements IEntityProcessingService {
                 entity.getWeapon().getRoomPosition().set(entity.getRoomPosition());
             }
         }
+    }
+    
+    private boolean isPointInPolygons(List<List<Vector>> polygons, Vector point) {
+        for(List<Vector> polygon : polygons) {
+            if(isPointInPolygon(polygon, point)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isPointInPolygon(List<Vector> polygon, Vector point) {
