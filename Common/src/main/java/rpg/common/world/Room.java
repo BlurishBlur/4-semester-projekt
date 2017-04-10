@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import rpg.common.entities.Entity;
+import rpg.common.util.Vector;
 
 public class Room {
     
@@ -17,9 +18,18 @@ public class Room {
     private boolean canExitLeft;
     private boolean canExitRight;
     private String spritePath;
+    private List<List<Vector>> collidables;
     
     public Room(String spritePath) {
         this.spritePath = spritePath;
+    }
+    
+    public List<List<Vector>> getCollidables() {
+        return collidables;
+    }
+    
+    public void setCollidables(List<List<Vector>> collidables) {
+        this.collidables = collidables;
     }
     
     public void canExitUp(boolean canExitUp) {

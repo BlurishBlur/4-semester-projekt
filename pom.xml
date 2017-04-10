@@ -75,7 +75,6 @@
         <module>Enemy</module>
         <module>Movement</module>
         <module>Zoom</module>
-        <module>Collision</module>
         <module>Combat</module>
         <module>CommonWeapon</module>
         <module>CommonEnemy</module>
