@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import rpg.common.entities.Entity;
 import rpg.common.util.Vector;
@@ -13,22 +14,44 @@ public class Room {
     private final Map<String, Entity> entities = new ConcurrentHashMap<>();
     private int width = 1280;
     private int height = 720;
+    private int x;
+    private int y;
     private boolean canExitUp;
     private boolean canExitDown;
     private boolean canExitLeft;
     private boolean canExitRight;
     private String spritePath;
-    private List<List<Vector>> collidables;
+    private Stack<List<Vector>> collidables;
     
     public Room(String spritePath) {
         this.spritePath = spritePath;
     }
     
-    public List<List<Vector>> getCollidables() {
+    public Room() {
+        collidables = new Stack();
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+    
+    public Stack<List<Vector>> getCollidables() {
         return collidables;
     }
     
-    public void setCollidables(List<List<Vector>> collidables) {
+    public void setCollidables(Stack<List<Vector>> collidables) {
         this.collidables = collidables;
     }
     

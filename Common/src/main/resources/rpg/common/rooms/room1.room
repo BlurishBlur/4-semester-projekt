@@ -1,0 +1,37 @@
+spritePath = rpg/gameengine/SafeHouse.png
+width = 1280
+height = 720
+worldPositionX = 0
+worldPositionY = 1
+canExitUp = false
+canExitDown = false
+canExitLeft = false
+canExitRight = true
+
+collidables = 1
+{
+	(0, 0)
+	(1280, 0)
+	(1280, 325)
+	(814, 325)
+	(787, 212)
+	(722, 117)
+	(636, 41)
+	(588, 24)
+	(488, 5)
+	(346, 25)
+	(245, 92)
+	(178, 203)
+	(148, 315)
+	(117, 476)
+	(245, 576)
+	(363, 642)
+	(493, 663)
+	(662, 616)
+	(752, 530)
+	(805, 403)
+	(1280, 404)
+	(1280, 720)
+	(0, 720)
+	(0, 0)
+}

@@ -3,6 +3,7 @@ package rpg.movement;
 import java.util.ArrayList;
 import static java.util.Arrays.asList;
 import java.util.List;
+import java.util.Stack;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 import rpg.common.data.GameData;
@@ -51,7 +52,7 @@ public class MovementControlSystem implements IEntityProcessingService {
         }
     }
 
-    private boolean isPointInPolygons(List<List<Vector>> polygons, Vector point) {
+    private boolean isPointInPolygons(Stack<List<Vector>> polygons, Vector point) {
         if (polygons != null) {
             for (List<Vector> polygon : polygons) {
                 if (isPointInPolygon(polygon, point)) {
