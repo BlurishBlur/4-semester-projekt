@@ -7,7 +7,8 @@ public class Logger {
     }
     
     public static void log(String message, Exception exception) {
-        log(message + "\n" + exception);
+        log(message + "\n");
+        exception.printStackTrace();
     }
     
 }

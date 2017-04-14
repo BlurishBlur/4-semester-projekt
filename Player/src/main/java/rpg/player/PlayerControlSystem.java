@@ -23,7 +23,7 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
 
     @Override
     public void start(GameData gameData, World world) {
-        player = createPlayer();
+        player = createPlayer(world);
         world.setPlayer(player);
         world.getCurrentRoom().addEntity(player);
     }
@@ -63,10 +63,10 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
                 0, 50, world.getCurrentRoom().getHeight() - 40));
     }
 
-    private Player createPlayer() {
+    private Player createPlayer(World world) {
         Player newPlayer = new Player();
         newPlayer.getRoomPosition().set(500, 250);
-        newPlayer.getWorldPosition().set(0, 1);
+        newPlayer.getWorldPosition().set(world.getCurrentRoom().getX(), world.getCurrentRoom().getY());
         newPlayer.setDefaultMovementSpeed(200);
         newPlayer.setLevel(1);
         newPlayer.setExperience(0);

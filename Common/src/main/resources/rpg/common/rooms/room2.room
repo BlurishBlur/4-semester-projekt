@@ -7,7 +7,6 @@ canExitUp = true
 canExitDown = false
 canExitLeft = true
 canExitRight = false
-
 {
 	(0, 380)
 	(76, 380)

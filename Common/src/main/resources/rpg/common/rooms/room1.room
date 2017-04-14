@@ -7,8 +7,6 @@ canExitUp = false
 canExitDown = false
 canExitLeft = false
 canExitRight = true
-
-collidables = 1
 {
 	(0, 0)
 	(1280, 0)

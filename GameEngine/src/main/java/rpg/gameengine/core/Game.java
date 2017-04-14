@@ -13,6 +13,7 @@ import rpg.common.world.World;
 import rpg.common.services.IEntityProcessingService;
 import rpg.common.services.IGamePluginService;
 import rpg.common.services.IPostEntityProcessingService;
+import rpg.common.util.Vector;
 import rpg.gameengine.managers.SkillpointsHud;
 import rpg.gameengine.managers.GameInputProcessor;
 import rpg.gameengine.managers.HudManager;
@@ -43,9 +44,6 @@ public class Game implements ApplicationListener {
         }
         
         //walk = Gdx.audio.newSound(Gdx.files.internal(world.getEntity(EntityType.PLAYER).getSounds().get("GRASS").toString()));
-
-        world.setCurrentRoom(world.getPlayer().getWorldPosition());
-        
         
         soundManager = new SoundManager();
 
