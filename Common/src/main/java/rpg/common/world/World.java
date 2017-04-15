@@ -103,10 +103,7 @@ public class World {
             String[] point = line.replace("(", "").replace(")", "").split(",");
             room.getCollidables().peek().add(new Vector(Integer.parseInt(point[0].trim()), Integer.parseInt(point[1].trim())));
         }
-        else if(line.startsWith("}")) {
-            
-        }
-        else {
+        else if(!line.startsWith("}") && !line.startsWith("#")) {
             throw new FileFormatException();
         }
     }

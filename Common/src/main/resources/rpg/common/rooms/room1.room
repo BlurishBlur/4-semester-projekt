@@ -8,6 +8,7 @@ canExitDown = false
 canExitLeft = false
 canExitRight = true
 {
+#polygon der dækker alt vandet rundt om øen, samt broen
 	(0, 0)
 	(1280, 0)
 	(1280, 325)
@@ -32,4 +33,17 @@ canExitRight = true
 	(1280, 720)
 	(0, 720)
 	(0, 0)
+}
+{
+#polygon der dækker tønden
+	(409, 557)
+	(428, 550)
+	(450, 557)
+	(455, 578)
+	(449, 604)
+	(431, 611)
+	(410, 604)
+	(404, 584)
+	(405, 569)
+	(409, 557)
 }

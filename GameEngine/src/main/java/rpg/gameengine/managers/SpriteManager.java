@@ -3,7 +3,6 @@ package rpg.gameengine.managers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -18,7 +17,6 @@ import rpg.common.world.World;
 public class SpriteManager {
 
     private SpriteBatch batch;
-    private BitmapFont font;
     private Map<Entity, Sprite> sprites;
     private Map<Entity, TextureAtlas> atlases;
     private Map<Entity, HpBar> hpBars;
@@ -30,7 +28,6 @@ public class SpriteManager {
         atlases = new ConcurrentHashMap<>();
         hpBars = new ConcurrentHashMap<>();
         batch = new SpriteBatch();
-        font = new BitmapFont();
     }
 
     public void loadSprites(World world) {
