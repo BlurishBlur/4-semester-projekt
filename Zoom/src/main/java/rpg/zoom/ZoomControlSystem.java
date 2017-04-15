@@ -17,7 +17,7 @@ public class ZoomControlSystem implements IEntityProcessingService {
     @Override
     public void process(GameData gameData, World world) {
         if (gameData.getKeys().isPressed(GameKeys.PLUS)) {
-            if (gameData.getCameraZoom() < 1.99f) {
+            if (gameData.getCameraZoom() < 10.99f) {
                 gameData.setCameraZoom(gameData.getCameraZoom() + ZOOM_SPEED);
             }
         }

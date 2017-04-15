@@ -64,6 +64,21 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
     }
 
     private Player createPlayer(World world) {
+        //test-kode, ignorér
+        int degree = 356;
+        boolean run = true;
+        while(run) {
+            double x = (Math.cos(Math.toRadians(degree)) * 328.5) + 478.5;
+            double y = (Math.sin(Math.toRadians(degree)) * 328.5) + 334.5;
+            System.out.println("(" + Math.round(x) + ", " + Math.round(y) + ")");
+            degree -= 7;
+            if(degree < 13) {
+                run = false;
+            }
+        }
+        
+        
+        
         Player newPlayer = new Player();
         newPlayer.getRoomPosition().set(500, 250);
         newPlayer.getWorldPosition().set(world.getCurrentRoom().getX(), world.getCurrentRoom().getY());
