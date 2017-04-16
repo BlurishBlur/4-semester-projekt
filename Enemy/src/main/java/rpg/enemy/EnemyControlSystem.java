@@ -39,7 +39,7 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
             enemy.getVelocity().set(0, 0);
             handleEdgeCollision(gameData, world, enemy);
             enemy.reduceActionTimer(gameData.getDeltaTime());
-            /*if (enemy.getActionTimer() < 0) {
+            if (enemy.getActionTimer() < 0) {
                 enemy.setVerticalMovementChance(Math.random());
                 enemy.setHorizontalMovementChance(Math.random());
                 enemy.setActionTimer((int) (Math.random() * 4) + 1);
@@ -55,7 +55,7 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
             }
             else if (enemy.getHorizontalMovementChance() < 0.40) { // right
                 enemy.getVelocity().addX(enemy.getCurrentMovementSpeed());
-            }*/
+            }
             
             if(gameData.getKeys().isPressed(GameKeys.K)) {
                 enemy.setCurrentHealth(0);

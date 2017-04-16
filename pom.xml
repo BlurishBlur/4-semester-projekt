@@ -81,6 +81,7 @@
         <module>Currency</module>
         <module>CommonPlayer</module>
         <module>Experience</module>
+        <module>SilentUpdate</module>
     </modules>
 
     <properties>

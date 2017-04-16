@@ -4,17 +4,17 @@ import rpg.gameengine.managers.Camera;
 import rpg.gameengine.managers.SpriteManager;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import java.io.File;
 import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import org.openide.util.Lookup;
-import rpg.common.entities.Entity;
+import org.openide.util.LookupEvent;
+import org.openide.util.LookupListener;
 import rpg.common.data.GameData;
-import rpg.common.data.GameKeys;
 import rpg.common.world.World;
 import rpg.common.services.IEntityProcessingService;
 import rpg.common.services.IGamePluginService;
 import rpg.common.services.IPostEntityProcessingService;
-import rpg.common.util.Vector;
 import rpg.gameengine.managers.SkillpointsHud;
 import rpg.gameengine.managers.GameInputProcessor;
 import rpg.gameengine.managers.HudManager;
@@ -26,6 +26,8 @@ public class Game implements ApplicationListener {
     private Camera hudCamera;
     private SpriteManager spriteManager;
     private Lookup lookup = Lookup.getDefault();
+    private List<IGamePluginService> plugins = new CopyOnWriteArrayList<>();
+    private Lookup.Result<IGamePluginService> result;
     private final GameData gameData = new GameData();
     private World world = new World();
     private SkillpointsHud skillpointsHud;
@@ -41,8 +43,13 @@ public class Game implements ApplicationListener {
         gameData.setCameraZoom(1.50f);
         world.loadRooms();
 
-        for (IGamePluginService plugin : getGamePluginServices()) {
+        
+        result = lookup.lookupResult(IGamePluginService.class);
+        result.addLookupListener(lookupListener);
+        result.allItems();
+        for (IGamePluginService plugin : result.allInstances()) {
             plugin.start(gameData, world);
+            plugins.add(plugin);
         }
         
         //walk = Gdx.audio.newSound(Gdx.files.internal(world.getEntity(EntityType.PLAYER).getSounds().get("GRASS").toString()));
@@ -93,8 +100,6 @@ public class Game implements ApplicationListener {
         }
     }
 
-    
-
     private Collection<? extends IEntityProcessingService> getEntityProcessingServices() {
         return lookup.lookupAll(IEntityProcessingService.class);
     }
@@ -106,6 +111,25 @@ public class Game implements ApplicationListener {
     private Collection<? extends IPostEntityProcessingService> getPostEntityProcessingServices() {
         return lookup.lookupAll(IPostEntityProcessingService.class);
     }
+    
+    private final LookupListener lookupListener = new LookupListener() {
+        @Override
+        public void resultChanged(LookupEvent lookupEvent) {
+            Collection<? extends IGamePluginService> updated = result.allInstances();
+            for(IGamePluginService updatedService : updated) {
+                if(!plugins.contains(updatedService)) {
+                    updatedService.start(gameData, world);
+                    plugins.add(updatedService);
+                }
+            }
+            for(IGamePluginService gameService : plugins) {
+                if(!updated.contains(gameService)) {
+                    gameService.stop(gameData, world);
+                    plugins.remove(gameService);
+                }
+            }
+        }
+    };
 
     @Override
     public void resize(int width, int height) {
