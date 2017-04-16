@@ -46,8 +46,11 @@ public final class UpdateHandler {
         }
     }
 
-    public static void checkAndHandleUpdates() {
+    public static Collection<UpdateElement> getLocallyInstalled() {
+        return locallyInstalled;
+    }
 
+    public static void checkAndHandleUpdates() {
         locallyInstalled = findLocalInstalled();
 
         // refresh silent update center first
@@ -69,7 +72,8 @@ public final class UpdateHandler {
             try {
                 handleInstall(containerForInstall);
                 LOGGER.info("Install new modules done.");
-            } catch (UpdateHandlerException ex) {
+            }
+            catch (UpdateHandlerException ex) {
                 LOGGER.log(Level.INFO, ex.getLocalizedMessage(), ex.getCause());
                 return;
             }
@@ -81,7 +85,8 @@ public final class UpdateHandler {
             try {
                 handleInstall(containerForUpdate);
                 LOGGER.info("Update done.");
-            } catch (UpdateHandlerException ex) {
+            }
+            catch (UpdateHandlerException ex) {
                 LOGGER.log(Level.INFO, ex.getLocalizedMessage(), ex.getCause());
                 return;
             }
@@ -93,7 +98,8 @@ public final class UpdateHandler {
             try {
                 handleUninstall(containerForUninstall);
                 LOGGER.info("Unstall modules done.");
-            } catch (UpdateHandlerException ex) {
+            }
+            catch (UpdateHandlerException ex) {
                 LOGGER.log(Level.INFO, ex.getLocalizedMessage(), ex.getCause());
                 return;
             }
@@ -118,7 +124,8 @@ public final class UpdateHandler {
         Validator v = null;
         try {
             v = doDownload(support);
-        } catch (OperationException ex) {
+        }
+        catch (OperationException ex) {
             // caught a exception
             throw new UpdateHandlerException("A problem caught while downloading, cause: ", ex);
         }
@@ -131,7 +138,8 @@ public final class UpdateHandler {
         Installer i = null;
         try {
             i = doVerify(support, v);
-        } catch (OperationException ex) {
+        }
+        catch (OperationException ex) {
             // caught a exception
             throw new UpdateHandlerException("A problem caught while verification of updates, cause: ", ex);
         }
@@ -144,7 +152,8 @@ public final class UpdateHandler {
         Restarter r = null;
         try {
             r = doInstall(support, i);
-        } catch (OperationException ex) {
+        }
+        catch (OperationException ex) {
             // caught a exception
             throw new UpdateHandlerException("A problem caught while installation of updates, cause: ", ex);
         }
@@ -162,7 +171,8 @@ public final class UpdateHandler {
                 if (rs != null) {
                     cont.getSupport().doRestart(rs, null);
                 }
-            } catch (OperationException ex) {
+            }
+            catch (OperationException ex) {
                 throw new UpdateHandlerException("A problem caught while uninstall, cause: ", ex);
             }
         }
@@ -234,7 +244,8 @@ public final class UpdateHandler {
 
         try {
             silentUpdateProvider.refresh(null, true);
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
             // caught a exception
             LOGGER.log(Level.INFO, "A problem caught while refreshing Update Centers, cause: ", ex);
         }
@@ -284,7 +295,8 @@ public final class UpdateHandler {
         OperationContainer<InstallSupport> container;
         if (update) {
             container = OperationContainer.createForUpdate();
-        } else {
+        }
+        else {
             container = OperationContainer.createForInstall();
         }
 

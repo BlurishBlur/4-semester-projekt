@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Region?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.netbeans.modules.autoupdate.silentupdate.gui.FXMLDocumentController">
+   <children>
+      <Region layoutX="86.0" prefHeight="60.0" prefWidth="640.0" AnchorPane.bottomAnchor="340.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <ScrollPane layoutX="14.0" layoutY="60.0" prefHeight="333.0" prefWidth="613.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="60.0">
+        <content>
+          <AnchorPane fx:id="elementPane" minHeight="0.0" minWidth="0.0" />
+        </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>
