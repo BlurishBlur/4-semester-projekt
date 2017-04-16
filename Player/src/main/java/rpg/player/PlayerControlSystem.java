@@ -65,7 +65,7 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
 
     private Player createPlayer(World world) {
         //test-kode, ignorér
-        int degree = 356;
+        /*int degree = 356;
         boolean run = true;
         while(run) {
             double x = (Math.cos(Math.toRadians(degree)) * 328.5) + 478.5;
@@ -75,7 +75,7 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
             if(degree < 13) {
                 run = false;
             }
-        }
+        }*/
         
         
         

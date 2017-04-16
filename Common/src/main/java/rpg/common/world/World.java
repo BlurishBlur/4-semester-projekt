@@ -1,7 +1,9 @@
 package rpg.common.world;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import rpg.common.entities.Entity;
@@ -19,8 +21,6 @@ public class World {
 
     public World() {
         world = new Room[WORLD_WIDTH][WORLD_HEIGHT];
-        loadRooms();
-        currentRoom = world[0][1];
     }
 
     public void loadRooms() {
@@ -30,6 +30,7 @@ public class World {
                 loadRoom(file);
             }
         }
+        currentRoom = world[0][1];
     }
 
     private void loadRoom(File file) {
@@ -103,7 +104,7 @@ public class World {
             String[] point = line.replace("(", "").replace(")", "").split(",");
             room.getCollidables().peek().add(new Vector(Integer.parseInt(point[0].trim()), Integer.parseInt(point[1].trim())));
         }
-        else if(!line.startsWith("}") && !line.startsWith("#")) {
+        else if (!line.startsWith("}") && !line.startsWith("#")) {
             throw new FileFormatException();
         }
     }

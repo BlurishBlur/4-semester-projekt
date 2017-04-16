@@ -4,6 +4,7 @@ import rpg.gameengine.managers.Camera;
 import rpg.gameengine.managers.SpriteManager;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import java.io.File;
 import java.util.Collection;
 import org.openide.util.Lookup;
 import rpg.common.entities.Entity;
@@ -38,6 +39,7 @@ public class Game implements ApplicationListener {
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
         gameData.setCameraZoom(1.50f);
+        world.loadRooms();
 
         for (IGamePluginService plugin : getGamePluginServices()) {
             plugin.start(gameData, world);
