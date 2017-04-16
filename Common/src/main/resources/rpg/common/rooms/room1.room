@@ -67,6 +67,15 @@ canExitRight = true
 	(787, 447)
 	(799, 408)
 	#færdig med cirkel, mangler resten af broen og resten af rummet rundt om
+	(799, 405)
+	(757, 405)
+	(757, 438)
+	(749, 441)
+	(743, 439)
+	(743, 397)
+	(1280, 397)
+	(1280, 720)
+	(0, 720)
 }
 {
 #polygon der dækker tønden
