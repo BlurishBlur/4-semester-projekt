@@ -15,6 +15,7 @@ public class World {
 
     private final int WORLD_WIDTH = 2;
     private final int WORLD_HEIGHT = 3;
+    private final int WORLD_SIZE = 3;
     private Room[][] world;
     private Room currentRoom;
     private Entity player;
@@ -22,62 +23,17 @@ public class World {
     public World() {
         world = new Room[WORLD_WIDTH][WORLD_HEIGHT];
     }
-
-    /*public void loadRooms() {
-        try {
-            File[] listOfFiles = new File(getClass().getClassLoader().getResource("rpg/common/rooms/").toURI()).listFiles();
-            for (File file : listOfFiles) {
-                if (file.getName().endsWith(".room")) {
-                    loadRoom(file);
-                }
-            }
-            currentRoom = world[0][1];
-        }
-        catch (URISyntaxException e) {
-            Logger.log("Exception getting URI to rooms", e);
-        }
-    }*/
     
     public void loadRooms() {
-        InputStream[] inputStreamArray = new InputStream[3];
-        inputStreamArray[0] = getClass().getClassLoader().getResourceAsStream("rpg/common/rooms/room1.room");
-        inputStreamArray[1] = getClass().getClassLoader().getResourceAsStream("rpg/common/rooms/room2.room");
-        inputStreamArray[2] = getClass().getClassLoader().getResourceAsStream("rpg/common/rooms/room3.room");
-        for (InputStream file : inputStreamArray) {           
-                loadRoom(file);
+        //File[] listOfFiles = new File(getClass().getClassLoader().getResource("rpg/common/rooms/").toURI()).listFiles();
+        for (int i = 0; i < WORLD_SIZE; i++) {
+            loadRoom(getClass().getClassLoader().getResourceAsStream("rpg/common/rooms/room" + (i + 1) + ".room"));
         }
         currentRoom = world[0][1];
 
     }
-    
-    private void loadRoom(InputStream file) {
-        Scanner i = new Scanner(file);
-        try (Scanner in = new Scanner(file)) {
-            Room room = new Room();
-            String line;
-            int spot;
-            String identifier;
-            String value;
-            while (in.hasNextLine()) {
-                line = in.nextLine();
-                spot = line.indexOf("=");
-                if (spot > -1) {
-                    identifier = line.substring(0, spot).trim();
-                    value = line.substring(spot + 1).trim();
-                    loadRoomData(room, identifier, value);
-                }
-                else {
-                    loadCollidables(room, line.trim());
-                }
-            }
-            world[room.getX()][room.getY()] = room;
-        }
-        catch (FileFormatException e) {
-            //Logger.log("File at path: " + file.getPath() + " not formatted correctly.", e);
-        }
-    }
 
-    private void loadRoom(File file) {
+    private void loadRoom(InputStream file) {
         try (Scanner in = new Scanner(file)) {
             Room room = new Room();
             String line;
@@ -98,11 +54,8 @@ public class World {
             }
             world[room.getX()][room.getY()] = room;
         }
-        catch (FileNotFoundException e) {
-            Logger.log("File at path: " + file.getPath() + " not found.", e);
-        }
         catch (FileFormatException e) {
-            Logger.log("File at path: " + file.getPath() + " not formatted correctly.", e);
+            Logger.log("File at path: " + file.toString() + " not formatted correctly.", e);
         }
     }
 
