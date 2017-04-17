@@ -2,20 +2,20 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane id="AnchorPane" prefHeight="200.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.netbeans.modules.autoupdate.silentupdate.gui.FXMLDocumentController">
    <children>
-      <ScrollPane layoutX="14.0" layoutY="60.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0">
+      <ScrollPane layoutX="12.0" layoutY="79.0" prefHeight="101.0" prefWidth="268.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="79.0">
          <content>
             <VBox fx:id="moduleContainer" />
          </content>
       </ScrollPane>
-      <HBox alignment="CENTER" prefHeight="57.0" prefWidth="300.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <HBox alignment="CENTER" prefHeight="84.0" prefWidth="300.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
             <VBox alignment="CENTER">
                <children>
@@ -25,6 +25,7 @@
                      </font>
                   </Label>
                   <Label fx:id="lblAmountLoaded" text="currently loaded" />
+                  <TextField fx:id="txtSearch" onKeyReleased="#searchModules" promptText="Search..." />
                </children>
             </VBox>
          </children>
