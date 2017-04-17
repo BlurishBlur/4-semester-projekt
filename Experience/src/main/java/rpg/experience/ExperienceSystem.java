@@ -37,30 +37,32 @@ public class ExperienceSystem implements IEntityProcessingService {
                 gameData.addEvent(new Event(EventType.XP_PICKUP, experience));
             }
         }
-        checkExperience(world, gameData);
-        sendMessages(world);
+        if (world.getPlayer() != null) {
+            checkExperience(world, gameData);
+            sendMessages(world);
+        }
     }
-    
+
     private void sendPickupMessage(Experience experience) {
         MessageHandler.addMessage(new Message("+" + experience.getValue() + " exp", 3, experience));
     }
 
     private void checkExperience(World world, GameData gameData) {
-        if (world.getPlayer().getExperience() >= experienceToNextLevel) {
+        if (world.getPlayer() != null && world.getPlayer().getExperience() >= experienceToNextLevel) {
             world.getPlayer().levelUp();
             MessageHandler.addMessage(new Message("Level up!", 5, world.getPlayer()));
             experienceToNextLevel += world.getPlayer().getLevel() * 100;
             gameData.addEvent(new Event(EventType.LEVEL_UP, world.getPlayer()));
         }
     }
-    
+
     private void sendMessages(World world) {
-         Entity player = world.getPlayer();
-         MessageHandler.addMessage(new Message("Level: " + player.getLevel(), 
-                 0, 1150, world.getCurrentRoom().getHeight() - 25));
-         MessageHandler.addMessage(new Message("Exp: " + player.getExperience() + "/" + experienceToNextLevel, 
-                 0, 1150, world.getCurrentRoom().getHeight() - 65));
-     }
+        Entity player = world.getPlayer();
+        MessageHandler.addMessage(new Message("Level: " + player.getLevel(),
+                0, 1150, world.getCurrentRoom().getHeight() - 25));
+        MessageHandler.addMessage(new Message("Exp: " + player.getExperience() + "/" + experienceToNextLevel,
+                0, 1150, world.getCurrentRoom().getHeight() - 65));
+    }
 
     private boolean pickup(Entity experience, Entity player) {
         float a = experience.getRoomPosition().getX() - player.getRoomPosition().getX();

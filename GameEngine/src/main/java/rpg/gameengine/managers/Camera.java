@@ -24,6 +24,10 @@ public class Camera {
         this(viewportWidth, viewportHeight);
         this.target = target;
     }
+    
+    public void setTarget(Entity target) {
+        this.target = target;
+    }
 
     public Entity getTarget() {
         return target;

@@ -1,10 +1,7 @@
 package rpg.common.data;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import rpg.common.entities.Entity;
 import rpg.common.events.Event;
@@ -16,10 +13,19 @@ public class GameData {
     private int displayWidth;
     private int displayHeight;
     private float cameraZoom;
+    private Entity cameraTarget;
     private boolean showDebug;
     private boolean isChangingRoom;
     private List<Event> events = new CopyOnWriteArrayList<>();
     private GameKeys keys = new GameKeys();
+    
+    public void setCameraTarget(Entity target) {
+        cameraTarget = target;
+    }
+    
+    public Entity getCameraTarget() {
+        return cameraTarget;
+    }
     
     public void setIsChangingRoom(boolean isChangingRoom) {
         this.isChangingRoom = isChangingRoom;

@@ -20,14 +20,16 @@ public class CombatSystem implements IEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
-        if(world.getPlayer().getWeapon() == null) {
-            addHand(world);
+        if (world.getPlayer() != null) {
+            if (world.getPlayer().getWeapon() == null) {
+                addHand(world);
+            }
+            if (gameData.getKeys().isPressed(GameKeys.F1)) {
+                addSword(gameData, world);
+            }
+            checkPlayerWeaponSwing(gameData, world);
+            handleWeaponHit(gameData, world);
         }
-        if (gameData.getKeys().isPressed(GameKeys.F1)) {
-            addSword(gameData, world);
-        }
-        checkPlayerWeaponSwing(gameData, world);
-        handleWeaponHit(gameData, world);
     }
 
     private void handleWeaponHit(GameData gameData, World world) {
@@ -89,7 +91,7 @@ public class CombatSystem implements IEntityProcessingService {
             Logger.log("No weapon equipped.");
         }
     }
-    
+
     private void addHand(World world) {
         Entity player = world.getPlayer();
         Weapon weapon = new Weapon();

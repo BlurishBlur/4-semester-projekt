@@ -20,30 +20,32 @@ public class CurrencySystem implements IEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
-        for(Event event : gameData.getEvents(EventType.ENEMY_DIED)) {
+        for (Event event : gameData.getEvents(EventType.ENEMY_DIED)) {
             createRandomCurrency(event.getEntity(), world);
             System.out.println("creating currency");
         }
-        for(Entity currency : world.getCurrentRoom().getEntities(Currency.class)) {
-            if(pickup(currency, world.getPlayer())) {
+        for (Entity currency : world.getCurrentRoom().getEntities(Currency.class)) {
+            if (pickup(currency, world.getPlayer())) {
                 world.getPlayer().addCurrency(((Currency) currency).getValue());
                 sendPickupMessage((Currency) currency);
                 world.getCurrentRoom().removeEntity(currency);
                 gameData.addEvent(new Event(EventType.COIN_PICKUP, currency));
             }
         }
-        sendMessage(world);
+        if (world.getPlayer() != null) {
+            sendMessage(world);
+        }
     }
-    
+
     private void sendPickupMessage(Currency currency) {
         MessageHandler.addMessage(new Message("+" + currency.getValue() + " gold", 3, currency));
     }
-    
+
     private void sendMessage(World world) {
         MessageHandler.addMessage(new Message("Currency: " + world.getPlayer().getCurrency(),
                 0, 600, world.getCurrentRoom().getHeight() - 40));
     }
-    
+
     private boolean pickup(Entity currency, Entity player) {
         float a = currency.getRoomPosition().getX() - player.getRoomPosition().getX();
         float b = currency.getRoomPosition().getY() - player.getRoomPosition().getY();
@@ -54,7 +56,7 @@ public class CurrencySystem implements IEntityProcessingService {
 
         //return Math.sqrt(Math.pow(entity1.getX() - entity2.getX(), 2) + Math.pow(entity1.getY() - entity2.getY(), 2)) < entity1.getRadius() + entity2.getRadius();
     }
-    
+
     private void createRandomCurrency(Entity entity, World world) {
         ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         for (int i = 0; i < (Math.random() * 10) + 1; i++) {
@@ -63,7 +65,7 @@ public class CurrencySystem implements IEntityProcessingService {
             });
         }
     }
-    
+
     private Currency createCurrency(Entity entity) {
         Currency currency = new Currency();
         currency.getRoomPosition().set(entity.getRoomPosition().getX() + (int) (Math.random() * 50) - 25, entity.getRoomPosition().getY() + (int) (Math.random() * 50) - 25);
@@ -77,5 +79,5 @@ public class CurrencySystem implements IEntityProcessingService {
         //currency.getSounds().put("GRASS", "rpg/gameengine/Footstep Grass 2.wav");
         return currency;
     }
-    
+
 }

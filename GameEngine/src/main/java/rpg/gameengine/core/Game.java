@@ -42,7 +42,6 @@ public class Game implements ApplicationListener {
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
         gameData.setCameraZoom(1.50f);
         world.loadRooms();
-
         
         result = lookup.lookupResult(IGamePluginService.class);
         result.addLookupListener(lookupListener);
@@ -55,7 +54,7 @@ public class Game implements ApplicationListener {
         //walk = Gdx.audio.newSound(Gdx.files.internal(world.getEntity(EntityType.PLAYER).getSounds().get("GRASS").toString()));
         
         soundManager = new SoundManager();
-
+        
         playerCamera = new Camera(gameData.getDisplayWidth() / gameData.getCameraZoom(), gameData.getDisplayHeight() / gameData.getCameraZoom(), world.getPlayer());
         playerCamera.update(gameData, world);
         hudCamera = new Camera(gameData.getDisplayWidth(), gameData.getDisplayHeight());
@@ -83,6 +82,12 @@ public class Game implements ApplicationListener {
     }
 
     private void updatePlayerCamera() {
+        if(playerCamera.getTarget() != gameData.getCameraTarget() && gameData.getCameraTarget() != null) {
+            playerCamera.setTarget(gameData.getCameraTarget());
+        }
+        /*if(world.getPlayer() != null) {
+            playerCamera.setTarget(world.getPlayer());
+        }*/
         if (gameData.isChangingRoom() && world.getRoom(playerCamera.getTarget().getWorldPosition()) != world.getCurrentRoom()) {
             world.getRoom(playerCamera.getTarget().getWorldPosition()).addEntity(playerCamera.getTarget());
             playerCamera.initializeRoomChange(world);

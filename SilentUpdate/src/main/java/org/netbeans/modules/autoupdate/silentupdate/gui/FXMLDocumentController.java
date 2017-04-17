@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import org.netbeans.api.autoupdate.UpdateUnit;
 import org.netbeans.modules.autoupdate.silentupdate.UpdateHandler;
+import org.openide.util.Exceptions;
 
 /**
  * @author Niels
@@ -59,7 +60,7 @@ public class FXMLDocumentController implements Initializable {
     private void updateAmountLabel() {
         Platform.runLater(() -> {
             int amountOfModules = UpdateHandler.getLocallyInstalled().size();
-            lblAmountLoaded.setText(amountOfModules + (amountOfModules == 1 ? " module currently loaded" : " modules currently loaded"));
+            lblAmountLoaded.setText(amountOfModules + (amountOfModules == 1 ? " module" : " modules") + " currently loaded");
         });
     }
 

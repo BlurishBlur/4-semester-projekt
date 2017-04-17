@@ -50,12 +50,12 @@ public final class UpdateHandler {
             super(msg, th);
         }
     }
-    
+
     public synchronized static void load(String codeName) {
         //modulesToLoad.clear();
         modulesToLoad.add(codeName);
     }
-    
+
     public synchronized static void unload(String codeName) {
         OperationContainer<OperationSupport> oc = OperationContainer.createForDirectUninstall();
         for (UpdateUnit unit : UpdateManager.getDefault().getUpdateUnits(new UpdateManager.TYPE[]{UpdateManager.TYPE.MODULE})) {
@@ -94,7 +94,7 @@ public final class UpdateHandler {
 
         Collection<UpdateElement> updates = findUpdates();
         Collection<UpdateElement> available;
-        if(first) {
+        if (first) {
             available = findAllModules();
             first = false;
         }
@@ -275,7 +275,7 @@ public final class UpdateHandler {
         modulesToLoad.clear();
         return elements4install;
     }
-    
+
     static Collection<UpdateElement> findAllModules() {
         // check updates
         Collection<UpdateElement> elements4install = new HashSet<>();
