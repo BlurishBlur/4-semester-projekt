@@ -1,10 +1,11 @@
 package org.netbeans.modules.autoupdate.silentupdate;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.netbeans.api.autoupdate.InstallSupport;
@@ -20,6 +21,7 @@ import org.netbeans.api.autoupdate.UpdateManager;
 import org.netbeans.api.autoupdate.UpdateUnit;
 import org.netbeans.api.autoupdate.UpdateUnitProvider;
 import org.netbeans.api.autoupdate.UpdateUnitProviderFactory;
+import org.openide.util.Exceptions;
 
 /**
  *
@@ -27,7 +29,8 @@ import org.netbeans.api.autoupdate.UpdateUnitProviderFactory;
 public final class UpdateHandler {
 
     public static final String SILENT_UC_CODE_NAME = "org_netbeans_modules_autoupdate_silentupdate_update_center"; // NOI18N
-    private static Collection<UpdateElement> locallyInstalled = new ArrayList<>();
+    private static Collection<UpdateElement> locallyInstalled = new CopyOnWriteArrayList<>();
+    private static Collection<String> modulesToLoad = ConcurrentHashMap.newKeySet();
     private static final Logger LOGGER = Logger.getLogger(UpdateHandler.class.getPackage().getName());
 
     public static boolean timeToCheck() {
@@ -45,6 +48,45 @@ public final class UpdateHandler {
             super(msg, th);
         }
     }
+    
+    public static void installAll() {
+        List<UpdateUnit> updateUnits = UpdateManager.getDefault().getUpdateUnits();
+        for (UpdateUnit unit : updateUnits) {
+            modulesToLoad.add(unit.getCodeName());
+        }
+        checkAndHandleUpdates();
+    }
+    
+    public synchronized static void load(String codeName) {
+        modulesToLoad.clear();
+        modulesToLoad.add(codeName);
+    }
+    
+    public synchronized static void unload(String codeName) {
+        OperationContainer<OperationSupport> oc = OperationContainer.createForDirectUninstall();
+        for (UpdateUnit unit : UpdateManager.getDefault().getUpdateUnits(new UpdateManager.TYPE[]{UpdateManager.TYPE.MODULE})) {
+            if (unit.getInstalled() != null) {
+                UpdateElement el = unit.getInstalled();
+                if ((el.isEnabled())
+                        && (codeName.equals(el.getCodeName()))
+                        && (oc.canBeAdded(unit, el))) {
+                    OperationContainer.OperationInfo operationInfo = oc.add(el);
+                    if (operationInfo != null) {
+                        oc.add(operationInfo.getRequiredElements());
+                    }
+                }
+            }
+        }
+        if (!oc.listAll().isEmpty()) {
+            try {
+                Restarter restarter = ((OperationSupport) oc.getSupport()).doOperation(null);
+            }
+            catch (OperationException ex) {
+                OperationSupport.Restarter restarter;
+                Exceptions.printStackTrace(ex);
+            }
+        }
+    }
 
     public static Collection<UpdateElement> getLocallyInstalled() {
         return locallyInstalled;
@@ -52,7 +94,6 @@ public final class UpdateHandler {
 
     public static void checkAndHandleUpdates() {
         locallyInstalled = findLocalInstalled();
-
         // refresh silent update center first
         refreshSilentUpdateProvider();
 
@@ -194,11 +235,9 @@ public final class UpdateHandler {
     }
 
     static Collection<UpdateElement> findUnstalls() {
-
         if (locallyInstalled.isEmpty()) {
             return locallyInstalled;
         }
-
         Collection<UpdateElement> updateUnits = findLocalInstalled();
         Collection<UpdateElement> uninstalls = new HashSet<>(locallyInstalled);
         uninstalls.removeAll(updateUnits);
@@ -226,11 +265,12 @@ public final class UpdateHandler {
         List<UpdateUnit> updateUnits = UpdateManager.getDefault().getUpdateUnits();
         for (UpdateUnit unit : updateUnits) {
             if (unit.getInstalled() == null) { // means the plugin is not installed yet
-                if (!unit.getAvailableUpdates().isEmpty()) { // is available
+                if (!unit.getAvailableUpdates().isEmpty() || modulesToLoad.contains(unit.getCodeName())) { // is available
                     elements4install.add(unit.getAvailableUpdates().get(0)); // add plugin with highest version                    
                 }
             }
         }
+        modulesToLoad.clear();
         return elements4install;
     }
 
@@ -251,7 +291,7 @@ public final class UpdateHandler {
         }
     }
 
-    static UpdateUnitProvider getSilentUpdateProvider() {
+    public static UpdateUnitProvider getSilentUpdateProvider() {
         List<UpdateUnitProvider> providers = UpdateUnitProviderFactory.getDefault().getUpdateUnitProviders(true);
         for (UpdateUnitProvider p : providers) {
             if (SILENT_UC_CODE_NAME.equals(p.getName())) {

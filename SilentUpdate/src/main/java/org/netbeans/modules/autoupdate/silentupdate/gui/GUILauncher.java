@@ -9,20 +9,20 @@ import javafx.stage.Stage;
 /**
  * @author Niels
  */
-public class Main extends Application {
-    
+public class GUILauncher extends Application {
+
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("org/netbeans/modules/autoupdate/silentupdate/resources/FXMLDocument.fxml"));
-        
+
         Scene scene = new Scene(root);
-        
+
         stage.setScene(scene);
-        stage.setTitle("TITEL");
+        stage.setTitle("Module manager");
         stage.show();
     }
-    
-    public static void main(String[] args) {
+
+    public static void initiate(String[] args) {
         launch(args);
     }
 }

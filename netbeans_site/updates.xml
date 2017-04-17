@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <!DOCTYPE module_updates PUBLIC "-//NetBeans//DTD Autoupdate Catalog 2.5//EN" "http://www.netbeans.org/dtds/autoupdate-catalog-2_5.dtd">
-<module_updates timestamp="07/59/15/16/04/2017">
+<module_updates timestamp="27/43/01/17/04/2017">
 
 
 
@@ -15,12 +15,12 @@
     
 </module>
 
-<module codenamebase="rpg.Combat" distribution="Combat-1.0.0-SNAPSHOT.nbm" downloadsize="7127" license="AF77BD25" needsrestart="false" releasedate="2017/04/16" targetcluster="rpg">
+<module codenamebase="rpg.Combat" distribution="Combat-1.0.0-SNAPSHOT.nbm" downloadsize="7119" license="AF77BD25" needsrestart="false" releasedate="2017/04/17" targetcluster="rpg">
     <manifest OpenIDE-Module="rpg.Combat" OpenIDE-Module-Display-Category="rpg" OpenIDE-Module-Implementation-Version="1.0.0-20170416" OpenIDE-Module-Long-Description="&lt;undefined&gt;" OpenIDE-Module-Module-Dependencies="org.netbeans.api.annotations.common/1 &gt; 1.26.1, org.openide.util.lookup &gt; 8.32.1, rpg.Common &gt; 1.0.0, org.openide.modules &gt; 7.47.1, org.openide.util.ui &gt; 9.4.1, rpg.CommonWeapon &gt; 1.0.0" OpenIDE-Module-Name="Combat" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Short-Description="&lt;undefined&gt;" OpenIDE-Module-Specification-Version="1.0.0"/>
     
 </module>
 
-<module codenamebase="rpg.Common" distribution="Common-1.0.0-SNAPSHOT.nbm" downloadsize="20226" license="AF77BD25" needsrestart="false" releasedate="2017/04/16" targetcluster="rpg">
+<module codenamebase="rpg.Common" distribution="Common-1.0.0-SNAPSHOT.nbm" downloadsize="20206" license="AF77BD25" needsrestart="false" releasedate="2017/04/17" targetcluster="rpg">
     <manifest OpenIDE-Module="rpg.Common" OpenIDE-Module-Display-Category="rpg" OpenIDE-Module-Implementation-Version="1.0.0-20170416" OpenIDE-Module-Long-Description="&lt;undefined&gt;" OpenIDE-Module-Module-Dependencies="org.netbeans.api.annotations.common/1 &gt; 1.26.1" OpenIDE-Module-Name="Common" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Short-Description="&lt;undefined&gt;" OpenIDE-Module-Specification-Version="1.0.0"/>
     
 </module>
@@ -30,32 +30,32 @@
     
 </module>
 
-<module codenamebase="rpg.CommonEnemy" distribution="CommonEnemy-1.0.0-SNAPSHOT.nbm" downloadsize="4042" license="AF77BD25" needsrestart="false" releasedate="2017/04/16" targetcluster="rpg">
+<module codenamebase="rpg.CommonEnemy" distribution="CommonEnemy-1.0.0-SNAPSHOT.nbm" downloadsize="4037" license="AF77BD25" needsrestart="false" releasedate="2017/04/17" targetcluster="rpg">
     <manifest OpenIDE-Module="rpg.CommonEnemy" OpenIDE-Module-Display-Category="rpg" OpenIDE-Module-Implementation-Version="1.0.0-20170416" OpenIDE-Module-Long-Description="&lt;undefined&gt;" OpenIDE-Module-Module-Dependencies="org.netbeans.api.annotations.common/1 &gt; 1.26.1, rpg.Common &gt; 1.0.0" OpenIDE-Module-Name="CommonEnemy" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Short-Description="&lt;undefined&gt;" OpenIDE-Module-Specification-Version="1.0.0"/>
     
 </module>
 
-<module codenamebase="rpg.CommonPlayer" distribution="CommonPlayer-1.0.0-SNAPSHOT.nbm" downloadsize="3897" license="AF77BD25" needsrestart="false" releasedate="2017/04/16" targetcluster="rpg">
+<module codenamebase="rpg.CommonPlayer" distribution="CommonPlayer-1.0.0-SNAPSHOT.nbm" downloadsize="3885" license="AF77BD25" needsrestart="false" releasedate="2017/04/17" targetcluster="rpg">
     <manifest OpenIDE-Module="rpg.CommonPlayer" OpenIDE-Module-Display-Category="rpg" OpenIDE-Module-Implementation-Version="1.0.0-20170416" OpenIDE-Module-Long-Description="&lt;undefined&gt;" OpenIDE-Module-Module-Dependencies="org.netbeans.api.annotations.common/1 &gt; 1.26.1, rpg.Common &gt; 1.0.0" OpenIDE-Module-Name="CommonPlayer" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Short-Description="&lt;undefined&gt;" OpenIDE-Module-Specification-Version="1.0.0"/>
     
 </module>
 
-<module codenamebase="rpg.CommonWeapon" distribution="CommonWeapon-1.0.0-SNAPSHOT.nbm" downloadsize="4384" license="AF77BD25" needsrestart="false" releasedate="2017/04/16" targetcluster="rpg">
+<module codenamebase="rpg.CommonWeapon" distribution="CommonWeapon-1.0.0-SNAPSHOT.nbm" downloadsize="4382" license="AF77BD25" needsrestart="false" releasedate="2017/04/17" targetcluster="rpg">
     <manifest OpenIDE-Module="rpg.CommonWeapon" OpenIDE-Module-Display-Category="rpg" OpenIDE-Module-Implementation-Version="1.0.0-20170416" OpenIDE-Module-Long-Description="&lt;undefined&gt;" OpenIDE-Module-Module-Dependencies="org.netbeans.api.annotations.common/1 &gt; 1.26.1, rpg.Common &gt; 1.0.0" OpenIDE-Module-Name="CommonWeapon" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Short-Description="&lt;undefined&gt;" OpenIDE-Module-Specification-Version="1.0.0"/>
     
 </module>
 
-<module codenamebase="rpg.Currency" distribution="Currency-1.0.0-SNAPSHOT.nbm" downloadsize="6717" license="AF77BD25" needsrestart="false" releasedate="2017/04/16" targetcluster="rpg">
+<module codenamebase="rpg.Currency" distribution="Currency-1.0.0-SNAPSHOT.nbm" downloadsize="6716" license="AF77BD25" needsrestart="false" releasedate="2017/04/17" targetcluster="rpg">
     <manifest OpenIDE-Module="rpg.Currency" OpenIDE-Module-Display-Category="rpg" OpenIDE-Module-Implementation-Version="1.0.0-20170416" OpenIDE-Module-Long-Description="&lt;undefined&gt;" OpenIDE-Module-Module-Dependencies="org.netbeans.api.annotations.common/1 &gt; 1.26.1, rpg.Common &gt; 1.0.0, org.openide.util.lookup &gt; 8.32.1" OpenIDE-Module-Name="Currency" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Short-Description="&lt;undefined&gt;" OpenIDE-Module-Specification-Version="1.0.0"/>
     
 </module>
 
-<module codenamebase="rpg.Enemy" distribution="Enemy-1.0.0-SNAPSHOT.nbm" downloadsize="0" license="AF77BD25" needsrestart="false" releasedate="2017/04/16" targetcluster="rpg">
+<module codenamebase="rpg.Enemy" distribution="Enemy-1.0.0-SNAPSHOT.nbm" downloadsize="6380" license="AF77BD25" needsrestart="false" releasedate="2017/04/17" targetcluster="rpg">
     <manifest OpenIDE-Module="rpg.Enemy" OpenIDE-Module-Display-Category="rpg" OpenIDE-Module-Implementation-Version="1.0.0-20170416" OpenIDE-Module-Long-Description="&lt;undefined&gt;" OpenIDE-Module-Module-Dependencies="org.netbeans.api.annotations.common/1 &gt; 1.26.1, rpg.Common &gt; 1.0.0, org.openide.modules &gt; 7.47.1, org.openide.util.ui &gt; 9.4.1, rpg.CommonEnemy &gt; 1.0.0" OpenIDE-Module-Name="Enemy" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Short-Description="&lt;undefined&gt;" OpenIDE-Module-Specification-Version="1.0.0"/>
     
 </module>
 
-<module codenamebase="rpg.Experience" distribution="Experience-1.0.0-SNAPSHOT.nbm" downloadsize="6780" license="AF77BD25" needsrestart="false" releasedate="2017/04/16" targetcluster="rpg">
+<module codenamebase="rpg.Experience" distribution="Experience-1.0.0-SNAPSHOT.nbm" downloadsize="6757" license="AF77BD25" needsrestart="false" releasedate="2017/04/17" targetcluster="rpg">
     <manifest OpenIDE-Module="rpg.Experience" OpenIDE-Module-Display-Category="rpg" OpenIDE-Module-Implementation-Version="1.0.0-20170416" OpenIDE-Module-Long-Description="&lt;undefined&gt;" OpenIDE-Module-Module-Dependencies="org.netbeans.api.annotations.common/1 &gt; 1.26.1, rpg.Common &gt; 1.0.0, org.openide.util.lookup &gt; 8.32.1" OpenIDE-Module-Name="Experience" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Short-Description="&lt;undefined&gt;" OpenIDE-Module-Specification-Version="1.0.0"/>
     
 </module>
@@ -65,9 +65,9 @@
     
 </module>
 
-<module codenamebase="rpg.GameEngine" distribution="GameEngine-1.0.0-SNAPSHOT.nbm" downloadsize="0" license="AF77BD25" needsrestart="false" releasedate="2017/04/16" targetcluster="rpg">
+<module codenamebase="rpg.GameEngine" distribution="GameEngine-1.0.0-SNAPSHOT.nbm" downloadsize="11351784" license="AF77BD25" needsrestart="false" releasedate="2017/04/17" targetcluster="rpg">
     <manifest OpenIDE-Module="rpg.GameEngine" OpenIDE-Module-Display-Category="rpg" OpenIDE-Module-Implementation-Version="1.0.0-20170416" OpenIDE-Module-Long-Description="&lt;undefined&gt;" OpenIDE-Module-Module-Dependencies="org.netbeans.api.annotations.common/1 &gt; 1.26.1, rpg.Common &gt; 1.0.0, org.openide.modules &gt; 7.47.1, org.openide.util.ui &gt; 9.4.1, org.openide.util.lookup &gt; 8.32.1, rpg.CommonPlayer &gt; 1.0.0" OpenIDE-Module-Name="GameEngine" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Short-Description="&lt;undefined&gt;" OpenIDE-Module-Specification-Version="1.0.0"/>
-
+    
 </module>
 
 <module codenamebase="org.openide.util.lookup" distribution="org-openide-util-lookup-RELEASE81.nbm" downloadsize="126650" homepage="http://www.netbeans.org/" license="14E6055" moduleauthor="" needsrestart="false" releasedate="2015/10/22" targetcluster="platform">
@@ -80,7 +80,7 @@
     
 </module>
 
-<module codenamebase="rpg.Movement" distribution="Movement-1.0.0-SNAPSHOT.nbm" downloadsize="5640" license="AF77BD25" needsrestart="false" releasedate="2017/04/16" targetcluster="rpg">
+<module codenamebase="rpg.Movement" distribution="Movement-1.0.0-SNAPSHOT.nbm" downloadsize="5642" license="AF77BD25" needsrestart="false" releasedate="2017/04/17" targetcluster="rpg">
     <manifest OpenIDE-Module="rpg.Movement" OpenIDE-Module-Display-Category="rpg" OpenIDE-Module-Implementation-Version="1.0.0-20170416" OpenIDE-Module-Long-Description="&lt;undefined&gt;" OpenIDE-Module-Module-Dependencies="org.netbeans.api.annotations.common/1 &gt; 1.26.1, rpg.Common &gt; 1.0.0, org.openide.util.lookup &gt; 8.32.1" OpenIDE-Module-Name="Movement" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Short-Description="&lt;undefined&gt;" OpenIDE-Module-Specification-Version="1.0.0"/>
     
 </module>
@@ -90,7 +90,7 @@
     
 </module>
 
-<module codenamebase="rpg.Player" distribution="Player-1.0.0-SNAPSHOT.nbm" downloadsize="6687" license="AF77BD25" needsrestart="false" releasedate="2017/04/16" targetcluster="rpg">
+<module codenamebase="rpg.Player" distribution="Player-1.0.0-SNAPSHOT.nbm" downloadsize="6685" license="AF77BD25" needsrestart="false" releasedate="2017/04/17" targetcluster="rpg">
     <manifest OpenIDE-Module="rpg.Player" OpenIDE-Module-Display-Category="rpg" OpenIDE-Module-Implementation-Version="1.0.0-20170416" OpenIDE-Module-Long-Description="&lt;undefined&gt;" OpenIDE-Module-Module-Dependencies="org.netbeans.api.annotations.common/1 &gt; 1.26.1, rpg.Common &gt; 1.0.0, org.openide.modules &gt; 7.47.1, org.openide.util.ui &gt; 9.4.1, rpg.CommonPlayer &gt; 1.0.0" OpenIDE-Module-Name="Player" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Short-Description="&lt;undefined&gt;" OpenIDE-Module-Specification-Version="1.0.0"/>
     
 </module>
@@ -110,7 +110,7 @@
     
 </module>
 
-<module codenamebase="rpg.Zoom" distribution="Zoom-1.0.0-SNAPSHOT.nbm" downloadsize="4364" license="AF77BD25" needsrestart="false" releasedate="2017/04/16" targetcluster="rpg">
+<module codenamebase="rpg.Zoom" distribution="Zoom-1.0.0-SNAPSHOT.nbm" downloadsize="4350" license="AF77BD25" needsrestart="false" releasedate="2017/04/17" targetcluster="rpg">
     <manifest OpenIDE-Module="rpg.Zoom" OpenIDE-Module-Display-Category="rpg" OpenIDE-Module-Implementation-Version="1.0.0-20170416" OpenIDE-Module-Long-Description="&lt;undefined&gt;" OpenIDE-Module-Module-Dependencies="org.netbeans.api.annotations.common/1 &gt; 1.26.1, rpg.Common &gt; 1.0.0, org.openide.util.lookup &gt; 8.32.1" OpenIDE-Module-Name="Zoom" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Short-Description="&lt;undefined&gt;" OpenIDE-Module-Specification-Version="1.0.0"/>
     
 </module>
