@@ -2,6 +2,7 @@ package org.netbeans.modules.autoupdate.silentupdate;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,6 +33,7 @@ public final class UpdateHandler {
     private static Collection<UpdateElement> locallyInstalled = new CopyOnWriteArrayList<>();
     private static Collection<String> modulesToLoad = ConcurrentHashMap.newKeySet();
     private static final Logger LOGGER = Logger.getLogger(UpdateHandler.class.getPackage().getName());
+    private static boolean first = true;
 
     public static boolean timeToCheck() {
         // every startup
@@ -49,16 +51,8 @@ public final class UpdateHandler {
         }
     }
     
-    public static void installAll() {
-        List<UpdateUnit> updateUnits = UpdateManager.getDefault().getUpdateUnits();
-        for (UpdateUnit unit : updateUnits) {
-            modulesToLoad.add(unit.getCodeName());
-        }
-        checkAndHandleUpdates();
-    }
-    
     public synchronized static void load(String codeName) {
-        modulesToLoad.clear();
+        //modulesToLoad.clear();
         modulesToLoad.add(codeName);
     }
     
@@ -94,11 +88,19 @@ public final class UpdateHandler {
 
     public static void checkAndHandleUpdates() {
         locallyInstalled = findLocalInstalled();
+        System.out.println(modulesToLoad.toString());
         // refresh silent update center first
         refreshSilentUpdateProvider();
 
         Collection<UpdateElement> updates = findUpdates();
-        Collection<UpdateElement> available = findNewModules();
+        Collection<UpdateElement> available;
+        if(first) {
+            available = findAllModules();
+            first = false;
+        }
+        else {
+            available = findNewModules();
+        }
         Collection<UpdateElement> uninstalls = findUnstalls();
 
         if (updates.isEmpty() && available.isEmpty() && uninstalls.isEmpty()) {
@@ -265,12 +267,26 @@ public final class UpdateHandler {
         List<UpdateUnit> updateUnits = UpdateManager.getDefault().getUpdateUnits();
         for (UpdateUnit unit : updateUnits) {
             if (unit.getInstalled() == null) { // means the plugin is not installed yet
-                if (!unit.getAvailableUpdates().isEmpty() || modulesToLoad.contains(unit.getCodeName())) { // is available
+                if (!unit.getAvailableUpdates().isEmpty() && modulesToLoad.contains(unit.getCodeName())) { // is available
                     elements4install.add(unit.getAvailableUpdates().get(0)); // add plugin with highest version                    
                 }
             }
         }
         modulesToLoad.clear();
+        return elements4install;
+    }
+    
+    static Collection<UpdateElement> findAllModules() {
+        // check updates
+        Collection<UpdateElement> elements4install = new HashSet<>();
+        List<UpdateUnit> updateUnits = UpdateManager.getDefault().getUpdateUnits();
+        for (UpdateUnit unit : updateUnits) {
+            if (unit.getInstalled() == null) { // means the plugin is not installed yet
+                if (!unit.getAvailableUpdates().isEmpty()) { // is available
+                    elements4install.add(unit.getAvailableUpdates().get(0)); // add plugin with highest version                    
+                }
+            }
+        }
         return elements4install;
     }
 

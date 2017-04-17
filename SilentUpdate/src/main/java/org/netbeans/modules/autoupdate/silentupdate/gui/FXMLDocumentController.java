@@ -52,7 +52,7 @@ public class FXMLDocumentController implements Initializable {
         else {
             UpdateHandler.unload(codeName);
         }
-        UpdateHandler.checkAndHandleUpdates();
+        //UpdateHandler.checkAndHandleUpdates();
         updateAmountLabel();
     }
 
