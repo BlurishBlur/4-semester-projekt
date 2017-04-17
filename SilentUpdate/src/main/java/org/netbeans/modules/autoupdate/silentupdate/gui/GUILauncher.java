@@ -14,7 +14,7 @@ public class GUILauncher extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("org/netbeans/modules/autoupdate/silentupdate/resources/FXMLDocument.fxml"));
-
+            
         Scene scene = new Scene(root);
 
         stage.setScene(scene);
