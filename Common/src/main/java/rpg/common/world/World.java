@@ -1,9 +1,8 @@
 package rpg.common.world;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import rpg.common.entities.Entity;
@@ -24,13 +23,18 @@ public class World {
     }
 
     public void loadRooms() {
-        File[] listOfFiles = new File("../../../Common/src/main/resources/rpg/common/rooms/").listFiles();
-        for (File file : listOfFiles) {
-            if (file.getName().endsWith(".room")) {
-                loadRoom(file);
+        try {
+            File[] listOfFiles = new File(getClass().getClassLoader().getResource("rpg/common/rooms/").toURI()).listFiles();
+            for (File file : listOfFiles) {
+                if (file.getName().endsWith(".room")) {
+                    loadRoom(file);
+                }
             }
+            currentRoom = world[0][1];
         }
-        currentRoom = world[0][1];
+        catch (URISyntaxException e) {
+            Logger.log("Exception getting URI to rooms", e);
+        }
     }
 
     private void loadRoom(File file) {
