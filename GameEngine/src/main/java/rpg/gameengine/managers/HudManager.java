@@ -83,7 +83,7 @@ public class HudManager {
                     "DX: " + player.getVelocity().getX() + "\n" +
                     "DY: " + player.getVelocity().getY() + "\n" +
                     "Rotation: " + player.getVelocity().getAngle()*/ + "Movement speed: " + player.getCurrentMovementSpeed() + "\n"
-                    + "Movement speed modifier: " + player.getMovementSpeedModifier();
+                    + "Movement speed modifier: " + (player.getSprintModifier() * player.getMovementSpeedModifier());
             font.draw(batch, message, 7.5f, 127.5f); // y += 20 for hver linje
         }
     }
