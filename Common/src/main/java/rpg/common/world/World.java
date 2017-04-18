@@ -1,9 +1,6 @@
 package rpg.common.world;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import rpg.common.entities.Entity;
@@ -13,9 +10,9 @@ import rpg.common.util.Vector;
 
 public class World {
 
-    private final int WORLD_WIDTH = 2;
+    private final int WORLD_WIDTH = 4;
     private final int WORLD_HEIGHT = 3;
-    private final int WORLD_SIZE = 3;
+    private final int WORLD_SIZE = 10;
     private Room[][] world;
     private Room currentRoom;
     private Entity player;

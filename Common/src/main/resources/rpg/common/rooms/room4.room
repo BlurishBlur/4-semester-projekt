@@ -1,0 +1,9 @@
+spritePath = rpg/gameengine/Map7.png
+width = 1280
+height = 720
+worldPositionX = 1
+worldPositionY = 0
+canExitUp = true
+canExitDown = false
+canExitLeft = false
+canExitRight = true
