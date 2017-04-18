@@ -7,3 +7,15 @@ canExitUp = true
 canExitDown = false
 canExitLeft = false
 canExitRight = true
+{
+    (1, 719)
+    (102, 719)
+    (111, 127)
+    (803, 132)
+    (816, 100)
+    (983, 117)
+    (1279, 112)
+    (1279, 1)
+    (1, 1)
+    (1, 719)
+}
