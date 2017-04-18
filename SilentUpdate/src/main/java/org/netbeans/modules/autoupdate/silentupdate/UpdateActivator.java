@@ -15,14 +15,14 @@ public class UpdateActivator extends ModuleInstall {
     public void restored() {
         exector.scheduleAtFixedRate(doCheck, 5000, 5000, TimeUnit.MILLISECONDS);
         new Thread(() -> {
-            while (UpdateHandler.getSilentUpdateProvider().getUpdateUnits().isEmpty() || UpdateHandler.getLocallyInstalled().size() != UpdateHandler.getSilentUpdateProvider().getUpdateUnits().size()) {
+            /*while (UpdateHandler.getSilentUpdateProvider().getUpdateUnits().isEmpty() || UpdateHandler.getLocallyInstalled().size() != UpdateHandler.getSilentUpdateProvider().getUpdateUnits().size()) {
                 try {
                     Thread.sleep(500);
                 }
                 catch (InterruptedException ex) {
                     Exceptions.printStackTrace(ex);
                 }
-            }
+            }*/
             GUILauncher.initiate(null);
         }).start();
     }
