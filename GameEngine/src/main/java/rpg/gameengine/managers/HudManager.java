@@ -55,7 +55,7 @@ public class HudManager {
             gameData.setShowDebug(!gameData.showDebug());
             world.getPlayer().setSkillPoints(world.getPlayer().getSkillPoints() + 1);
         }
-        if (gameData.showDebug()) {
+        if (world.getPlayer() != null && gameData.showDebug()) {
             Entity player = world.getPlayer();
             /*Runtime runtime = Runtime.getRuntime();
 
