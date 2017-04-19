@@ -6,11 +6,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import rpg.common.data.GameData;
 import rpg.common.entities.Entity;
 import rpg.common.util.Logger;
+import rpg.common.util.Vector;
 import rpg.common.world.Room;
 import rpg.common.world.World;
 
@@ -22,12 +25,14 @@ public class SpriteManager {
     private Map<Entity, HpBar> hpBars;
     private Sprite currentRoom;
     private Sprite previousRoom;
+    private ShapeRenderer sr;
 
     public SpriteManager() {
         sprites = new ConcurrentHashMap<>();
         atlases = new ConcurrentHashMap<>();
         hpBars = new ConcurrentHashMap<>();
         batch = new SpriteBatch();
+        sr = new ShapeRenderer();
     }
 
     public void loadSprites(World world) {
@@ -84,6 +89,7 @@ public class SpriteManager {
         batch.begin();
         drawMap();
         drawEntitySprites(gameData, world);
+        drawCollision(gameData, world, camera);
         batch.end();
     }
 
@@ -121,6 +127,30 @@ public class SpriteManager {
                 Logger.log("Couldn't draw sprite, no sprite loaded for entity of class " + entity.getClass() + ": " + entity.toString());
             }
         });
+    }
+
+    private void drawCollision(GameData gameData, World world, Camera camera) {
+        if (gameData.showDebug()) {
+            sr.setProjectionMatrix(camera.getProjection());
+            sr.setColor(255 / 255, 105 / 255, 180 / 255, 0.8f);
+            for (List<Vector> poly : world.getCurrentRoom().getCollidables()) {
+                sr.begin(ShapeRenderer.ShapeType.Filled);
+                for (int i = 0, j = poly.size() - 1;
+                        i < poly.size();
+                        j = i++) {
+                    Vector firstPoint = poly.get(i);
+                    Vector secondPoint = poly.get(j);
+                    sr.line(firstPoint.getX(), firstPoint.getY(), secondPoint.getX(), secondPoint.getY());
+                }
+                sr.end();
+            }
+            for (Entity entity : world.getCurrentRoom().getEntities()) {
+                sr.begin(ShapeRenderer.ShapeType.Filled);
+                sr.rect(entity.getRoomPosition().getX() - entity.getWidth() / 2, entity.getRoomPosition().getY() - entity.getHeight() / 2, 
+                        entity.getWidth(), entity.getHeight());
+                sr.end();
+            }
+        }
     }
 
 }
