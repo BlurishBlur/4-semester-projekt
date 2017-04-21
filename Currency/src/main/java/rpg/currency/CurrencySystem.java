@@ -18,6 +18,8 @@ import rpg.common.world.World;
 })
 public class CurrencySystem implements IEntityProcessingService {
 
+    private int currentCurrency;
+
     @Override
     public void process(GameData gameData, World world) {
         for (Event event : gameData.getEvents(EventType.ENEMY_DIED)) {
@@ -26,15 +28,14 @@ public class CurrencySystem implements IEntityProcessingService {
         }
         for (Entity currency : world.getCurrentRoom().getEntities(Currency.class)) {
             if (pickup(currency, world.getPlayer())) {
-                world.getPlayer().addCurrency(((Currency) currency).getValue());
+                currentCurrency += ((Currency) currency).getValue();
+                //world.getPlayer().addCurrency(((Currency) currency).getValue());
                 sendPickupMessage((Currency) currency);
                 world.getCurrentRoom().removeEntity(currency);
                 gameData.addEvent(new Event(EventType.COIN_PICKUP, currency));
             }
         }
-        if (world.getPlayer() != null) {
-            sendMessage(world);
-        }
+        sendMessage(world);
     }
 
     private void sendPickupMessage(Currency currency) {
@@ -42,7 +43,7 @@ public class CurrencySystem implements IEntityProcessingService {
     }
 
     private void sendMessage(World world) {
-        MessageHandler.addMessage(new Message("Currency: " + world.getPlayer().getCurrency(),
+        MessageHandler.addMessage(new Message("Currency: " + currentCurrency,
                 0, 600, world.getCurrentRoom().getHeight() - 40));
     }
 
@@ -66,10 +67,10 @@ public class CurrencySystem implements IEntityProcessingService {
         }
     }
 
-    private Currency createCurrency(Entity entity) {
+    private Currency createCurrency(Entity parent) {
         Currency currency = new Currency();
-        currency.getRoomPosition().set(entity.getRoomPosition().getX() + (int) (Math.random() * 50) - 25, entity.getRoomPosition().getY() + (int) (Math.random() * 50) - 25);
-        currency.getWorldPosition().set(entity.getWorldPosition());
+        currency.getRoomPosition().set(parent.getRoomPosition().getX() + (int) (Math.random() * 50) - 25, parent.getRoomPosition().getY() + (int) (Math.random() * 50) - 25);
+        currency.getWorldPosition().set(parent.getWorldPosition());
         currency.setSize(10, 10);
         currency.setSpritePath("rpg/gameengine/currency.png");
         currency.setValue(1);

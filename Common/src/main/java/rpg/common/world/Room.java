@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import rpg.common.entities.Entity;
+import rpg.common.util.Polygon;
 import rpg.common.util.Vector;
 
 public class Room {
@@ -21,7 +22,7 @@ public class Room {
     private boolean canExitLeft;
     private boolean canExitRight;
     private String spritePath;
-    private Stack<List<Vector>> collidables;
+    private Stack<Polygon> collidables;
     
     public Room(String spritePath) {
         this.spritePath = spritePath;
@@ -47,11 +48,11 @@ public class Room {
         this.y = y;
     }
     
-    public Stack<List<Vector>> getCollidables() {
+    public Stack<Polygon> getCollidables() {
         return collidables;
     }
     
-    public void setCollidables(Stack<List<Vector>> collidables) {
+    public void setCollidables(Stack<Polygon> collidables) {
         this.collidables = collidables;
     }
     

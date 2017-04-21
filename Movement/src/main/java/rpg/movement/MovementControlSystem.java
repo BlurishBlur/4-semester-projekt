@@ -10,6 +10,7 @@ import rpg.common.data.GameData;
 import rpg.common.world.World;
 import rpg.common.entities.Entity;
 import rpg.common.services.IEntityProcessingService;
+import rpg.common.util.Polygon;
 import rpg.common.util.Vector;
 
 @ServiceProviders(value = {
@@ -51,9 +52,9 @@ public class MovementControlSystem implements IEntityProcessingService {
         }
     }
 
-    private boolean isPointInPolygons(Stack<List<Vector>> polygons, Vector point) {
+    private boolean isPointInPolygons(Stack<Polygon> polygons, Vector point) {
         if (polygons != null) {
-            for (List<Vector> polygon : polygons) {
+            for (Polygon polygon : polygons) {
                 if (isPointInPolygon(polygon, point)) {
                     return true;
                 }
@@ -62,9 +63,9 @@ public class MovementControlSystem implements IEntityProcessingService {
         return false;
     }
 
-    private boolean isPointInPolygon(List<Vector> polygon, Vector point) {
+    private boolean isPointInPolygon(Polygon polygon, Vector point) {
         if (polygon != null) {
-            Vector lastVertice = polygon.get(polygon.size() - 1);
+            Vector lastVertice = polygon.getLast();
             boolean oddNodes = false;
             for (int i = 0; i < polygon.size(); i++) {
                 Vector vertice = polygon.get(i);

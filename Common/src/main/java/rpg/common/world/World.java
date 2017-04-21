@@ -6,6 +6,7 @@ import java.util.Scanner;
 import rpg.common.entities.Entity;
 import rpg.common.exceptions.FileFormatException;
 import rpg.common.util.Logger;
+import rpg.common.util.Polygon;
 import rpg.common.util.Vector;
 
 public class World {
@@ -92,7 +93,7 @@ public class World {
 
     private void loadCollidables(Room room, String line) throws FileFormatException {
         if (line.startsWith("{")) {
-            room.getCollidables().push(new ArrayList<>());
+            room.getCollidables().push(new Polygon());
         }
         else if (line.startsWith("(")) {
             String[] point = line.replace("(", "").replace(")", "").split(",");

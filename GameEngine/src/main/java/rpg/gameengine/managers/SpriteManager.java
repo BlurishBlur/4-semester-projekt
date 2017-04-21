@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import rpg.common.data.GameData;
 import rpg.common.entities.Entity;
 import rpg.common.util.Logger;
+import rpg.common.util.Polygon;
 import rpg.common.util.Vector;
 import rpg.common.world.Room;
 import rpg.common.world.World;
@@ -133,13 +134,13 @@ public class SpriteManager {
         if (gameData.showDebug()) {
             sr.setProjectionMatrix(camera.getProjection());
             sr.setColor(255 / 255, 105 / 255, 180 / 255, 0.8f);
-            for (List<Vector> poly : world.getCurrentRoom().getCollidables()) {
+            for (Polygon polygon : world.getCurrentRoom().getCollidables()) {
                 sr.begin(ShapeRenderer.ShapeType.Filled);
-                for (int i = 0, j = poly.size() - 1;
-                        i < poly.size();
+                for (int i = 0, j = polygon.size() - 1;
+                        i < polygon.size();
                         j = i++) {
-                    Vector firstPoint = poly.get(i);
-                    Vector secondPoint = poly.get(j);
+                    Vector firstPoint = polygon.get(i);
+                    Vector secondPoint = polygon.get(j);
                     sr.line(firstPoint.getX(), firstPoint.getY(), secondPoint.getX(), secondPoint.getY());
                 }
                 sr.end();

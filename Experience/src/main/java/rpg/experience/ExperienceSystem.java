@@ -1,5 +1,7 @@
 package rpg.experience;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 import rpg.common.data.GameData;
@@ -17,30 +19,31 @@ import rpg.common.world.World;
 })
 public class ExperienceSystem implements IEntityProcessingService {
 
-    private int experienceToNextLevel = 100;
+    private int currentExperience = 0;
+    private int level = 1;
+    private int experienceToNextLevel = calculateExperienceToNextLevel();
 
     @Override
     public void process(GameData gameData, World world) {
         if (gameData.getKeys().isPressed(GameKeys.K)) {
-            world.getPlayer().addExperience(world.getPlayer().getLevel() * 110);
+            currentExperience += calculateExperienceToNextLevel() * 10;
+            //world.getPlayer().addExperience(world.getPlayer().getLevel() * 110);
         }
         for (Event event : gameData.getEvents(EventType.ENEMY_DIED)) {
             createRandomExperienceOrbs(event.getEntity(), world);
-            System.out.println("creating xp");
         }
         for (Entity experience : world.getCurrentRoom().getEntities(Experience.class)) {
             experience.increaseFrame(gameData.getDeltaTime() * 5);
             if (pickup(experience, world.getPlayer())) {
-                world.getPlayer().addExperience(((Experience) experience).getValue());
+                currentExperience += ((Experience) experience).getValue();
+                //world.getPlayer().addExperience(((Experience) experience).getValue());
                 sendPickupMessage((Experience) experience);
                 world.getCurrentRoom().removeEntity(experience);
                 gameData.addEvent(new Event(EventType.XP_PICKUP, experience));
             }
         }
-        if (world.getPlayer() != null) {
-            checkExperience(world, gameData);
-            sendMessages(world);
-        }
+        checkExperience(world, gameData);
+        sendMessages(world);
     }
 
     private void sendPickupMessage(Experience experience) {
@@ -48,19 +51,23 @@ public class ExperienceSystem implements IEntityProcessingService {
     }
 
     private void checkExperience(World world, GameData gameData) {
-        if (world.getPlayer() != null && world.getPlayer().getExperience() >= experienceToNextLevel) {
-            world.getPlayer().levelUp();
-            MessageHandler.addMessage(new Message("Level up!", 5, world.getPlayer()));
-            experienceToNextLevel += world.getPlayer().getLevel() * 100;
-            gameData.addEvent(new Event(EventType.LEVEL_UP, world.getPlayer()));
+        if (currentExperience > experienceToNextLevel) {
+            level++;
+            //world.getPlayer().levelUp();
+            MessageHandler.addMessage(new Message("Level up!", 5, 1100, world.getCurrentRoom().getHeight() - 45));
+            experienceToNextLevel = calculateExperienceToNextLevel();
+            gameData.addEvent(new Event(EventType.LEVEL_UP, world.getPlayer())); //Det her skal lige kigges på - hvorfor skal player med
         }
     }
 
+    private int calculateExperienceToNextLevel() {
+        return level * 100;
+    }
+
     private void sendMessages(World world) {
-        Entity player = world.getPlayer();
-        MessageHandler.addMessage(new Message("Level: " + player.getLevel(),
+        MessageHandler.addMessage(new Message("Level: " + level,
                 0, 1150, world.getCurrentRoom().getHeight() - 25));
-        MessageHandler.addMessage(new Message("Exp: " + player.getExperience() + "/" + experienceToNextLevel,
+        MessageHandler.addMessage(new Message("Exp: " + currentExperience + "/" + experienceToNextLevel,
                 0, 1150, world.getCurrentRoom().getHeight() - 65));
     }
 
@@ -76,15 +83,18 @@ public class ExperienceSystem implements IEntityProcessingService {
     }
 
     private void createRandomExperienceOrbs(Entity entity, World world) {
+        ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         for (int i = 0; i < (Math.random() * 10) + 1; i++) {
-            world.getCurrentRoom().addEntity(createExperienceOrb(entity));
+            pool.execute(() -> {
+                world.getCurrentRoom().addEntity(createExperienceOrb(entity));
+            });
         }
     }
 
-    private Experience createExperienceOrb(Entity entity) {
+    private Experience createExperienceOrb(Entity parent) {
         Experience experience = new Experience();
-        experience.getRoomPosition().set(entity.getRoomPosition().getX() + (int) (Math.random() * 50) - 25, entity.getRoomPosition().getY() + (int) (Math.random() * 50) - 25);
-        experience.getWorldPosition().set(entity.getWorldPosition());
+        experience.getRoomPosition().set(parent.getRoomPosition().getX() + (int) (Math.random() * 50) - 25, parent.getRoomPosition().getY() + (int) (Math.random() * 50) - 25);
+        experience.getWorldPosition().set(parent.getWorldPosition());
         experience.setSize(15, 15);
         experience.setSpritePath("rpg/gameengine/xp.atlas");
         experience.setValue(1);
