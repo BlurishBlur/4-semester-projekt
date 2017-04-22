@@ -98,7 +98,7 @@ public class Game implements ApplicationListener {
             processor.process(gameData, world);
         }
         for (IPostEntityProcessingService postProcessor : getPostEntityProcessingServices()) {
-            postProcessor.process(gameData, world);
+            postProcessor.postProcess(gameData, world);
         }
     }
 

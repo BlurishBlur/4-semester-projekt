@@ -23,7 +23,7 @@ public class CollisionDetectionSystem implements IEntityProcessingService {
                         new Vector(entity.getRoomPosition().getX() - entity.getWidth() / 2, entity.getRoomPosition().getY()))) {
                     entity.getVelocity().setX(0);
                 }
-                else if (entity.getVelocity().getX() > 0 && isPointInPolygons(world.getCurrentRoom().getCollidables(), 
+                if (entity.getVelocity().getX() > 0 && isPointInPolygons(world.getCurrentRoom().getCollidables(), 
                         new Vector(entity.getRoomPosition().getX() + entity.getWidth() / 2, entity.getRoomPosition().getY()))) {
                     entity.getVelocity().setX(0);
                 }
@@ -31,7 +31,7 @@ public class CollisionDetectionSystem implements IEntityProcessingService {
                         new Vector(entity.getRoomPosition().getX(), entity.getRoomPosition().getY() - entity.getHeight() / 2))) {
                     entity.getVelocity().setY(0);
                 }
-                else if (entity.getVelocity().getY() > 0 && isPointInPolygons(world.getCurrentRoom().getCollidables(), 
+                if (entity.getVelocity().getY() > 0 && isPointInPolygons(world.getCurrentRoom().getCollidables(), 
                         new Vector(entity.getRoomPosition().getX(), entity.getRoomPosition().getY() + entity.getHeight() / 2))) {
                     entity.getVelocity().setY(0);
                 }
