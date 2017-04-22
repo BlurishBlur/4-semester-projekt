@@ -38,16 +38,22 @@ public class FXMLDocumentController implements Initializable {
 
     private void createModuleCheckBoxes(String searchTerm) {
         moduleContainer.getChildren().clear();
+        String name;
         for (UpdateUnit unit : allModules) {
-            String name = unit.getCodeName().replace("rpg.", "");
+            name = unit.getCodeName().replace("rpg.", "");
             if (name.toLowerCase().contains(searchTerm.toLowerCase())) {
                 CheckBox checkBox = new CheckBox(name);
                 checkBox.setSelected(unit.getInstalled() != null);
-                checkBox.setOnAction((e) -> {
-                    new Thread(() -> {
-                        update(unit.getCodeName(), checkBox.isSelected());
-                    }).start();
-                });
+                if (name.equals("GameEngine") || name.equals("Common")) {
+                    checkBox.setDisable(true);
+                }
+                else {
+                    checkBox.setOnAction((e) -> {
+                        new Thread(() -> {
+                            update(unit.getCodeName(), checkBox.isSelected());
+                        }).start();
+                    });
+                }
                 moduleContainer.getChildren().add(checkBox);
             }
         }

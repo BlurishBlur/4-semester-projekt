@@ -85,9 +85,6 @@ public class Game implements ApplicationListener {
         if(playerCamera.getTarget() != gameData.getCameraTarget() && gameData.getCameraTarget() != null) {
             playerCamera.setTarget(gameData.getCameraTarget());
         }
-        /*if(world.getPlayer() != null) {
-            playerCamera.setTarget(world.getPlayer());
-        }*/
         if (gameData.isChangingRoom() && world.getRoom(playerCamera.getTarget().getWorldPosition()) != world.getCurrentRoom()) {
             world.getRoom(playerCamera.getTarget().getWorldPosition()).addEntity(playerCamera.getTarget());
             playerCamera.initializeRoomChange(world);

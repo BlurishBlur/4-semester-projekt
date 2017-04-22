@@ -1,22 +1,16 @@
 package rpg.movement;
 
-import java.util.ArrayList;
-import static java.util.Arrays.asList;
-import java.util.List;
-import java.util.Stack;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 import rpg.common.data.GameData;
 import rpg.common.world.World;
 import rpg.common.entities.Entity;
-import rpg.common.services.IEntityProcessingService;
-import rpg.common.util.Polygon;
-import rpg.common.util.Vector;
+import rpg.common.services.IPostEntityProcessingService;
 
 @ServiceProviders(value = {
-    @ServiceProvider(service = IEntityProcessingService.class)
+    @ServiceProvider(service = IPostEntityProcessingService.class)
 })
-public class MovementControlSystem implements IEntityProcessingService {
+public class MovementControlSystem implements IPostEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
@@ -28,58 +22,12 @@ public class MovementControlSystem implements IEntityProcessingService {
             }
             if (entity.getVelocity().isMoving()) {
                 entity.setDirection(entity.getVelocity().getAngle());
-
-                if (entity.getVelocity().getX() < 0 && isPointInPolygons(world.getCurrentRoom().getCollidables(), new Vector(entity.getRoomPosition().getX() - entity.getWidth() / 2, entity.getRoomPosition().getY()))) {
-                    entity.getVelocity().setX(0);
-                }
-                else if (entity.getVelocity().getX() > 0 && isPointInPolygons(world.getCurrentRoom().getCollidables(), new Vector(entity.getRoomPosition().getX() + entity.getWidth() / 2, entity.getRoomPosition().getY()))) {
-                    entity.getVelocity().setX(0);
-                }
-                if (entity.getVelocity().getY() < 0 && isPointInPolygons(world.getCurrentRoom().getCollidables(), new Vector(entity.getRoomPosition().getX(), entity.getRoomPosition().getY() - entity.getHeight() / 2))) {
-                    entity.getVelocity().setY(0);
-                }
-                else if (entity.getVelocity().getY() > 0 && isPointInPolygons(world.getCurrentRoom().getCollidables(), new Vector(entity.getRoomPosition().getX(), entity.getRoomPosition().getY() + entity.getHeight() / 2))) {
-                    entity.getVelocity().setY(0);
-                }
-
                 entity.getRoomPosition().add(entity.getVelocity());
-
             }
 
             if (entity.hasWeapon()) {
                 entity.getWeapon().getRoomPosition().set(entity.getRoomPosition());
             }
-        }
-    }
-
-    private boolean isPointInPolygons(Stack<Polygon> polygons, Vector point) {
-        if (polygons != null) {
-            for (Polygon polygon : polygons) {
-                if (isPointInPolygon(polygon, point)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean isPointInPolygon(Polygon polygon, Vector point) {
-        if (polygon != null) {
-            Vector lastVertice = polygon.getLast();
-            boolean oddNodes = false;
-            for (int i = 0; i < polygon.size(); i++) {
-                Vector vertice = polygon.get(i);
-                if ((vertice.getY() < point.getY() && lastVertice.getY() >= point.getY()) || (lastVertice.getY() < point.getY() && vertice.getY() >= point.getY())) {
-                    if (vertice.getX() + (point.getY() - vertice.getY()) / (lastVertice.getY() - vertice.getY()) * (lastVertice.getX() - vertice.getX()) < point.getX()) {
-                        oddNodes = !oddNodes;
-                    }
-                }
-                lastVertice = vertice;
-            }
-            return oddNodes;
-        }
-        else {
-            return false;
         }
     }
 
