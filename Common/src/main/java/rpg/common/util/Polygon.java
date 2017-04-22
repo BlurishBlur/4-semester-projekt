@@ -1,9 +1,10 @@
 package rpg.common.util;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Polygon {
+public class Polygon implements Serializable {
     
     private List<Vector> polygon;
     

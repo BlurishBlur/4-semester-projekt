@@ -1,6 +1,8 @@
 package rpg.common.data;
 
-public class GameKeys {
+import java.io.Serializable;
+
+public class GameKeys implements Serializable {
     
     private static boolean[] keys;
     private static boolean[] pressedKeys;

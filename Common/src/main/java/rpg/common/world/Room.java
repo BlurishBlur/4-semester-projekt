@@ -1,5 +1,6 @@
 package rpg.common.world;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -8,9 +9,8 @@ import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import rpg.common.entities.Entity;
 import rpg.common.util.Polygon;
-import rpg.common.util.Vector;
 
-public class Room {
+public class Room implements Serializable {
     
     private final Map<String, Entity> entities = new ConcurrentHashMap<>();
     private int width = 1280;

@@ -1,7 +1,7 @@
 package rpg.common.world;
 
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.Scanner;
 import rpg.common.entities.Entity;
 import rpg.common.exceptions.FileFormatException;
@@ -9,7 +9,7 @@ import rpg.common.util.Logger;
 import rpg.common.util.Polygon;
 import rpg.common.util.Vector;
 
-public class World {
+public class World implements Serializable {
 
     private final int WORLD_WIDTH = 4;
     private final int WORLD_HEIGHT = 3;

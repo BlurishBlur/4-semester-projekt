@@ -1,5 +1,6 @@
 package rpg.common.data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -7,7 +8,7 @@ import rpg.common.entities.Entity;
 import rpg.common.events.Event;
 import rpg.common.events.EventType;
 
-public class GameData {
+public class GameData implements Serializable {
 
     private float deltaTime;
     private int displayWidth;
