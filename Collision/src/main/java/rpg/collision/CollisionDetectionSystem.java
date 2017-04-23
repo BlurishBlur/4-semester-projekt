@@ -19,7 +19,79 @@ public class CollisionDetectionSystem implements IEntityProcessingService {
     public void process(GameData gameData, World world) {
         for (Entity entity : world.getCurrentRoom().getEntities()) {
             if (entity.getVelocity().isMoving()) {
-                if (entity.getVelocity().getX() < 0 && isPointInPolygons(world.getCurrentRoom().getCollidables(), 
+                if (isPointInPolygons(world.getCurrentRoom().getCollidables(), // top left corner
+                        new Vector(entity.getRoomPosition().getX() - entity.getWidth() / 2 + (entity.getVelocity().getX() * gameData.getDeltaTime()),
+                                entity.getRoomPosition().getY() + entity.getHeight() / 2 + (entity.getVelocity().getY() * gameData.getDeltaTime())))) {
+                    if (entity.getVelocity().getX() < 0) {
+                        entity.getVelocity().setX(0);
+                    }
+                    if (entity.getVelocity().getY() > 0) {
+                        entity.getVelocity().setY(0);
+                    }
+                }
+                if (isPointInPolygons(world.getCurrentRoom().getCollidables(), // top right corner
+                        new Vector(entity.getRoomPosition().getX() + entity.getWidth() / 2 + (entity.getVelocity().getX() * gameData.getDeltaTime()),
+                                entity.getRoomPosition().getY() + entity.getHeight() / 2 + (entity.getVelocity().getY() * gameData.getDeltaTime())))) {
+                    if (entity.getVelocity().getX() > 0) {
+                        entity.getVelocity().setX(0);
+                    }
+                    if (entity.getVelocity().getY() > 0) {
+                        entity.getVelocity().setY(0);
+                    }
+                }
+                if (isPointInPolygons(world.getCurrentRoom().getCollidables(), // bottom right corner
+                        new Vector(entity.getRoomPosition().getX() + entity.getWidth() / 2 + (entity.getVelocity().getX() * gameData.getDeltaTime()),
+                                entity.getRoomPosition().getY() - entity.getHeight() / 2 + (entity.getVelocity().getY() * gameData.getDeltaTime())))) {
+                    if (entity.getVelocity().getX() > 0) {
+                        entity.getVelocity().setX(0);
+                    }
+                    if (entity.getVelocity().getY() < 0) {
+                        entity.getVelocity().setY(0);
+                    }
+                }
+                if (isPointInPolygons(world.getCurrentRoom().getCollidables(), // bottom left corner
+                        new Vector(entity.getRoomPosition().getX() - entity.getWidth() / 2 + (entity.getVelocity().getX() * gameData.getDeltaTime()),
+                                entity.getRoomPosition().getY() - entity.getHeight() / 2 + (entity.getVelocity().getY() * gameData.getDeltaTime())))) {
+                    if (entity.getVelocity().getX() < 0) {
+                        entity.getVelocity().setX(0);
+                    }
+                    if (entity.getVelocity().getY() < 0) {
+                        entity.getVelocity().setY(0);
+                    }
+                }
+                
+                if (isPointInPolygons(world.getCurrentRoom().getCollidables(), // left middle
+                        new Vector(entity.getRoomPosition().getX() - entity.getWidth() / 2 + (entity.getVelocity().getX() * gameData.getDeltaTime()),
+                                entity.getRoomPosition().getY() + (entity.getVelocity().getY() * gameData.getDeltaTime())))) {
+                    if (entity.getVelocity().getX() < 0) {
+                        entity.getVelocity().setX(0);
+                    }
+                }
+                
+                if (isPointInPolygons(world.getCurrentRoom().getCollidables(), // top middle
+                        new Vector(entity.getRoomPosition().getX() + (entity.getVelocity().getX() * gameData.getDeltaTime()),
+                                entity.getRoomPosition().getY() + entity.getHeight() / 2 + (entity.getVelocity().getY() * gameData.getDeltaTime())))) {
+                    if (entity.getVelocity().getY() > 0) {
+                        entity.getVelocity().setY(0);
+                    }
+                }
+                
+                if (isPointInPolygons(world.getCurrentRoom().getCollidables(), // right middle
+                        new Vector(entity.getRoomPosition().getX() + entity.getWidth() / 2 + (entity.getVelocity().getX() * gameData.getDeltaTime()),
+                                entity.getRoomPosition().getY() + (entity.getVelocity().getY() * gameData.getDeltaTime())))) {
+                    if (entity.getVelocity().getX() > 0) {
+                        entity.getVelocity().setX(0);
+                    }
+                }
+                
+                if (isPointInPolygons(world.getCurrentRoom().getCollidables(), // bottom middle
+                        new Vector(entity.getRoomPosition().getX() + (entity.getVelocity().getX() * gameData.getDeltaTime()),
+                                entity.getRoomPosition().getY() - entity.getHeight() / 2 + (entity.getVelocity().getY() * gameData.getDeltaTime())))) {
+                    if (entity.getVelocity().getY() < 0) {
+                        entity.getVelocity().setY(0);
+                    }
+                }
+                /*if (entity.getVelocity().getX() < 0 && isPointInPolygons(world.getCurrentRoom().getCollidables(), 
                         new Vector(entity.getRoomPosition().getX() - entity.getWidth() / 2, entity.getRoomPosition().getY()))) {
                     entity.getVelocity().setX(0);
                 }
@@ -34,7 +106,7 @@ public class CollisionDetectionSystem implements IEntityProcessingService {
                 if (entity.getVelocity().getY() > 0 && isPointInPolygons(world.getCurrentRoom().getCollidables(), 
                         new Vector(entity.getRoomPosition().getX(), entity.getRoomPosition().getY() + entity.getHeight() / 2))) {
                     entity.getVelocity().setY(0);
-                }
+                }*/
             }
         }
     }
