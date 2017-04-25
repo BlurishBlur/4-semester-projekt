@@ -3,7 +3,10 @@ package rpg.enemy;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 import rpg.common.data.GameData;
+import rpg.common.data.GameKeys;
 import rpg.common.entities.Entity;
+import rpg.common.events.Event;
+import rpg.common.events.EventType;
 import rpg.common.services.IEntityProcessingService;
 import rpg.common.services.IGamePluginService;
 import rpg.common.world.World;
@@ -30,6 +33,7 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
         for (Entity enemy : world.getCurrentRoom().getEntities(Enemy.class)) {
             if(enemy.getCurrentHealth() <= 0) {
                 System.out.println("Enemy died");
+                gameData.addEvent(new Event(EventType.ENEMY_DIED, enemy));
                 world.getCurrentRoom().removeEntity(enemy);
             }
             enemy.getVelocity().set(0, 0);
@@ -52,6 +56,11 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
             else if (enemy.getHorizontalMovementChance() < 0.40) { // right
                 enemy.getVelocity().addX(enemy.getCurrentMovementSpeed());
             }
+            
+            if(gameData.getKeys().isPressed(GameKeys.K)) {
+                enemy.setCurrentHealth(0);
+                System.out.println("Killing all enemies");
+            }
         }
     }
 
@@ -68,9 +77,7 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
         newEnemy.setCurrentMovementSpeed(newEnemy.getDefaultMovementSpeed());
         newEnemy.setMaxHealth(50);
         newEnemy.setCurrentHealth(newEnemy.getMaxHealth());
-        newEnemy.setWidth(30);
-        newEnemy.setHeight(30);
-        newEnemy.setHasHpBar(true);
+        newEnemy.setSize(30, 30);
         newEnemy.setSpritePath("rpg/gameengine/enemy.png");
         return newEnemy;
     }
@@ -80,16 +87,16 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
             enemy.getRoomPosition().setX(0 + (enemy.getWidth() / 2));
             enemy.getVelocity().setX(0);
         }
-        else if (enemy.getRoomPosition().getX() + (enemy.getWidth() / 2) > gameData.getDisplayWidth()) {
-            enemy.getRoomPosition().setX(gameData.getDisplayWidth() - (enemy.getWidth() / 2));
+        else if (enemy.getRoomPosition().getX() + (enemy.getWidth() / 2) > world.getCurrentRoom().getWidth()) {
+            enemy.getRoomPosition().setX(world.getCurrentRoom().getWidth() - (enemy.getWidth() / 2));
             enemy.getVelocity().setX(0);
         }
         if (enemy.getRoomPosition().getY() - (enemy.getHeight() / 2) < 0) {
             enemy.getRoomPosition().setY(0 + (enemy.getHeight() / 2));
             enemy.getVelocity().setY(0);
         }
-        else if (enemy.getRoomPosition().getY() + (enemy.getHeight() / 2) > gameData.getDisplayHeight()) {
-            enemy.getRoomPosition().setY(gameData.getDisplayHeight() - (enemy.getHeight() / 2));
+        else if (enemy.getRoomPosition().getY() + (enemy.getHeight() / 2) > world.getCurrentRoom().getHeight()) {
+            enemy.getRoomPosition().setY(world.getCurrentRoom().getHeight() - (enemy.getHeight() / 2));
             enemy.getVelocity().setY(0);
         }
     }

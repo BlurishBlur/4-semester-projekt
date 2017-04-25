@@ -1,7 +1,8 @@
 package rpg.common.events;
 
-public enum EventType {
+import java.io.Serializable;
+
+public enum EventType implements Serializable {
     
-    ATTACK;
-    
+    ATTACK, ENEMY_DIED, COIN_PICKUP, XP_PICKUP, PUNCH_NO_HIT, WEAPON_USE, WEAPON_HIT, LEVEL_UP;
 }

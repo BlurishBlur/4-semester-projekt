@@ -9,6 +9,7 @@ import rpg.common.entities.Entity;
 import rpg.common.events.Event;
 import rpg.common.events.EventType;
 import rpg.common.services.IEntityProcessingService;
+import rpg.common.util.Logger;
 import rpg.common.util.Vector;
 import rpg.commonweapon.Weapon;
 
@@ -19,19 +20,25 @@ public class CombatSystem implements IEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
-        if (gameData.getKeys().isPressed(GameKeys.F1)) {
-            addTestWeapon(gameData, world);
+        if (world.getPlayer() != null) {
+            if (world.getPlayer().getWeapon() == null) {
+                addHand(world);
+            }
+            if (gameData.getKeys().isPressed(GameKeys.F1)) {
+                addSword(gameData, world);
+            }
+            checkPlayerWeaponSwing(gameData, world);
+            handleWeaponHit(gameData, world);
         }
-        checkPlayerWeaponSwing(gameData, world);
-        handleWeaponHit(gameData, world);
     }
 
     private void handleWeaponHit(GameData gameData, World world) {
         for (Event event : gameData.getEvents(EventType.ATTACK)) {
             for (Entity entity : world.getCurrentRoom().getEntities()) {
-                if (event.getEntity() != entity && !entity.getClass().equals(Weapon.class) && isHit(event.getEntity(), entity)) {
+                if (event.getEntity() != entity && entity.hasHpBar() && isHit(event.getEntity(), entity)) {
                     entity.reduceCurrentHealth(((Weapon) event.getEntity().getWeapon()).getDamage());
                     System.out.println("Attackee health: " + entity.getCurrentHealth());
+                    gameData.addEvent(new Event(EventType.WEAPON_HIT, event.getEntity().getWeapon()));
                 }
             }
             gameData.removeEvent(event);
@@ -71,24 +78,50 @@ public class CombatSystem implements IEntityProcessingService {
     }
 
     private void attack(Weapon weapon, Entity player, Vector vector, int direction, GameData gameData) { //TODO gør den her metode pænere
-        if (weapon.canAttack()) {
-            weapon.getRoomPosition().set(player.getRoomPosition().plus(vector));
-            weapon.setDirection(direction);
-            weapon.resetTimeSinceLastAttack();
-            gameData.addEvent(new Event(EventType.ATTACK, player));
+        try {
+            if (weapon.canAttack()) {
+                weapon.getRoomPosition().set(player.getRoomPosition().plus(vector));
+                weapon.setDirection(direction);
+                weapon.resetTimeSinceLastAttack();
+                gameData.addEvent(new Event(EventType.ATTACK, player));
+                gameData.addEvent(new Event(EventType.WEAPON_USE, weapon));
+            }
+        }
+        catch (NullPointerException e) {
+            Logger.log("No weapon equipped.");
         }
     }
 
-    private void addTestWeapon(GameData gameData, World world) {
+    private void addHand(World world) {
+        Entity player = world.getPlayer();
+        Weapon weapon = new Weapon();
+        weapon.setDefaultMovementSpeed(0);
+        weapon.setWidth(20);
+        weapon.setHeight(20);
+        weapon.getRoomPosition().set(player.getRoomPosition());
+        weapon.setSpritePath("rpg/gameengine/hand.png");
+        weapon.setDamage(2);
+        weapon.setAttackSpeed(0.5f);
+        weapon.getSounds().put("HIT", "rpg/gameengine/punch.mp3");
+        weapon.getSounds().put("MISS", "rpg/gameengine/woosh.mp3");
+        player.setWeapon(weapon);
+        System.out.println("Added weapon to player");
+    }
+
+    private void addSword(GameData gameData, World world) {
         Entity player = world.getPlayer();
         Weapon weapon = new Weapon();
         weapon.setDefaultMovementSpeed(0);
         weapon.setWidth(player.getWidth());
         weapon.setHeight(player.getHeight());
         weapon.getRoomPosition().set(player.getRoomPosition());
-        weapon.setSpritePath("rpg/gameengine/sword.png");
+        weapon.setSpritePath("rpg/gameengine/sword.atlas");
         weapon.setDamage(10);
         weapon.setAttackSpeed(2);
+        weapon.setCurrentFrame(1);
+        weapon.setMaxFrames(4);
+        weapon.getSounds().put("HIT", "rpg/gameengine/stabsound.wav");
+        weapon.getSounds().put("MISS", "rpg/gameengine/woosh.mp3");
         player.setWeapon(weapon);
         System.out.println("Added weapon to player");
     }

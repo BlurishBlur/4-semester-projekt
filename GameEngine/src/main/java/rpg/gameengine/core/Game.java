@@ -5,27 +5,33 @@ import rpg.gameengine.managers.SpriteManager;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import org.openide.util.Lookup;
-import rpg.common.entities.Entity;
+import org.openide.util.LookupEvent;
+import org.openide.util.LookupListener;
 import rpg.common.data.GameData;
-import rpg.common.data.GameKeys;
 import rpg.common.world.World;
 import rpg.common.services.IEntityProcessingService;
 import rpg.common.services.IGamePluginService;
 import rpg.common.services.IPostEntityProcessingService;
-import rpg.gameengine.managers.Hud;
+import rpg.gameengine.managers.SkillpointsHud;
 import rpg.gameengine.managers.GameInputProcessor;
+import rpg.gameengine.managers.HudManager;
 import rpg.gameengine.managers.SoundManager;
 
 public class Game implements ApplicationListener {
 
     private Camera playerCamera;
     private Camera hudCamera;
-    private SpriteManager renderer;
+    private SpriteManager spriteManager;
     private Lookup lookup = Lookup.getDefault();
+    private List<IGamePluginService> plugins = new CopyOnWriteArrayList<>();
+    private Lookup.Result<IGamePluginService> result;
     private final GameData gameData = new GameData();
     private World world = new World();
-    private Hud hud;
+    private SkillpointsHud skillpointsHud;
+    private HudManager hudManager;
     private GameInputProcessor gameInputProcessor;
     private SoundManager soundManager;
 
@@ -35,25 +41,30 @@ public class Game implements ApplicationListener {
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
         gameData.setCameraZoom(1.50f);
-
-        for (IGamePluginService plugin : getGamePluginServices()) {
+        world.loadRooms();
+        
+        result = lookup.lookupResult(IGamePluginService.class);
+        result.addLookupListener(lookupListener);
+        result.allItems();
+        for (IGamePluginService plugin : result.allInstances()) {
             plugin.start(gameData, world);
+            plugins.add(plugin);
         }
         
         //walk = Gdx.audio.newSound(Gdx.files.internal(world.getEntity(EntityType.PLAYER).getSounds().get("GRASS").toString()));
-
-        world.setCurrentRoom(world.getPlayer().getWorldPosition());
-        renderer = new SpriteManager();
-        renderer.loadRoomSprite(world);
         
         soundManager = new SoundManager();
-        soundManager.loadSounds(world);
-
+        
         playerCamera = new Camera(gameData.getDisplayWidth() / gameData.getCameraZoom(), gameData.getDisplayHeight() / gameData.getCameraZoom(), world.getPlayer());
         playerCamera.update(gameData, world);
         hudCamera = new Camera(gameData.getDisplayWidth(), gameData.getDisplayHeight());
         hudCamera.update(gameData, world);
-        hud = new Hud(hudCamera, gameInputProcessor, gameData, world);
+        
+        spriteManager = new SpriteManager();
+        spriteManager.loadRoomSprite(world, playerCamera);
+        
+        skillpointsHud = new SkillpointsHud(hudCamera, gameInputProcessor, gameData, world);
+        hudManager = new HudManager(hudCamera);
     }
 
     @Override
@@ -61,19 +72,23 @@ public class Game implements ApplicationListener {
         gameData.setDeltaTime(Math.min(Gdx.graphics.getDeltaTime(), (float) 60f / 3600f));
         update();
         updatePlayerCamera();
-        renderer.loadSprites(world);
-        renderer.draw(gameData, world, playerCamera);
+        soundManager.loadSounds(world);
+        spriteManager.loadSprites(world);
+        spriteManager.draw(gameData, world, playerCamera);
         soundManager.playSounds(gameData, world);
-        drawDebug();
-        hud.drawHud();
+        skillpointsHud.drawSkillPointsHud();
+        hudManager.draw(gameData, world);
         gameData.getKeys().update();
     }
 
     private void updatePlayerCamera() {
+        if(playerCamera.getTarget() != gameData.getCameraTarget() && gameData.getCameraTarget() != null) {
+            playerCamera.setTarget(gameData.getCameraTarget());
+        }
         if (gameData.isChangingRoom() && world.getRoom(playerCamera.getTarget().getWorldPosition()) != world.getCurrentRoom()) {
             world.getRoom(playerCamera.getTarget().getWorldPosition()).addEntity(playerCamera.getTarget());
             playerCamera.initializeRoomChange(world);
-            renderer.loadNewRoomSprite(world);
+            spriteManager.loadNewRoomSprite(world, playerCamera);
         }
         playerCamera.update(gameData, world);
     }
@@ -83,27 +98,7 @@ public class Game implements ApplicationListener {
             processor.process(gameData, world);
         }
         for (IPostEntityProcessingService postProcessor : getPostEntityProcessingServices()) {
-            postProcessor.process(gameData, world);
-        }
-    }
-
-    public void drawDebug() {
-        if (gameData.getKeys().isPressed(GameKeys.F1)) {
-            gameData.setShowDebug(!gameData.showDebug());
-            world.getPlayer().setSkillPoints(world.getPlayer().getSkillPoints() + 1);
-        }
-        if (gameData.showDebug()) {
-            Entity player = world.getPlayer();
-            String message = "FPS: " + Gdx.graphics.getFramesPerSecond() + "\n"
-                    + "Zoom: " + gameData.getCameraZoom() + "\n"
-                    + "X: " + player.getRoomPosition().getX() + "\n"
-                    + "Y: " + player.getRoomPosition().getY() + "\n"
-                    /*+
-                    "DX: " + player.getVelocity().getX() + "\n" +
-                    "DY: " + player.getVelocity().getY() + "\n" +
-                    "Rotation: " + player.getVelocity().getAngle()*/ + "Movement speed: " + player.getCurrentMovementSpeed() + "\n"
-                    + "Movement speed modifier: " + player.getMovementSpeedModifier();
-            renderer.drawDebug(gameData, world, hudCamera, message);
+            postProcessor.postProcess(gameData, world);
         }
     }
 
@@ -118,6 +113,25 @@ public class Game implements ApplicationListener {
     private Collection<? extends IPostEntityProcessingService> getPostEntityProcessingServices() {
         return lookup.lookupAll(IPostEntityProcessingService.class);
     }
+    
+    private final LookupListener lookupListener = new LookupListener() {
+        @Override
+        public void resultChanged(LookupEvent lookupEvent) {
+            Collection<? extends IGamePluginService> updated = result.allInstances();
+            for(IGamePluginService updatedService : updated) {
+                if(!plugins.contains(updatedService)) {
+                    updatedService.start(gameData, world);
+                    plugins.add(updatedService);
+                }
+            }
+            for(IGamePluginService gameService : plugins) {
+                if(!updated.contains(gameService)) {
+                    gameService.stop(gameData, world);
+                    plugins.remove(gameService);
+                }
+            }
+        }
+    };
 
     @Override
     public void resize(int width, int height) {
