@@ -1,0 +1,27 @@
+spritePath = rpg/gameengine/Map5.png
+width = 1280
+height = 720
+worldPositionX = 2
+worldPositionY = 1
+canExitUp = true
+canExitDown = false
+canExitLeft = false
+canExitRight = true
+{
+	(1202, 719)
+	(1279, 719)
+	(1279, 418)
+	(1202, 418)
+}
+{
+	(1202, 418)
+	(1141, 418)
+	(1141, 383)
+	(1202, 383)
+}
+{
+	(1202, 291)
+	(1279, 291)
+	(1279, 1)
+	(1202, 1)
+}

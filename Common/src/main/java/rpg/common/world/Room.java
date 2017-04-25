@@ -1,25 +1,59 @@
 package rpg.common.world;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import rpg.common.entities.Entity;
+import rpg.common.util.Polygon;
 
-public class Room {
+public class Room implements Serializable {
     
     private final Map<String, Entity> entities = new ConcurrentHashMap<>();
     private int width = 1280;
     private int height = 720;
+    private int x;
+    private int y;
     private boolean canExitUp;
     private boolean canExitDown;
     private boolean canExitLeft;
     private boolean canExitRight;
     private String spritePath;
+    private Stack<Polygon> collidables;
     
     public Room(String spritePath) {
         this.spritePath = spritePath;
+    }
+    
+    public Room() {
+        collidables = new Stack();
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+    
+    public Stack<Polygon> getCollidables() {
+        return collidables;
+    }
+    
+    public void setCollidables(Stack<Polygon> collidables) {
+        this.collidables = collidables;
     }
     
     public void canExitUp(boolean canExitUp) {

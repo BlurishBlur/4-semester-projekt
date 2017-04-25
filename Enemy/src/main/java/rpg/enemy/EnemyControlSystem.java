@@ -3,6 +3,7 @@ package rpg.enemy;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 import rpg.common.data.GameData;
+import rpg.common.data.GameKeys;
 import rpg.common.entities.Entity;
 import rpg.common.events.Event;
 import rpg.common.events.EventType;
@@ -55,6 +56,11 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
             else if (enemy.getHorizontalMovementChance() < 0.40) { // right
                 enemy.getVelocity().addX(enemy.getCurrentMovementSpeed());
             }
+            
+            if(gameData.getKeys().isPressed(GameKeys.K)) {
+                enemy.setCurrentHealth(0);
+                System.out.println("Killing all enemies");
+            }
         }
     }
 
@@ -71,9 +77,7 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
         newEnemy.setCurrentMovementSpeed(newEnemy.getDefaultMovementSpeed());
         newEnemy.setMaxHealth(50);
         newEnemy.setCurrentHealth(newEnemy.getMaxHealth());
-        newEnemy.setWidth(30);
-        newEnemy.setHeight(30);
-        newEnemy.setHasHpBar(true);
+        newEnemy.setSize(30, 30);
         newEnemy.setSpritePath("rpg/gameengine/enemy.png");
         return newEnemy;
     }

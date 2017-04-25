@@ -3,45 +3,48 @@ package rpg.gameengine.managers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import rpg.common.data.GameData;
 import rpg.common.entities.Entity;
 import rpg.common.util.Logger;
+import rpg.common.util.Polygon;
+import rpg.common.util.Vector;
 import rpg.common.world.Room;
 import rpg.common.world.World;
 
 public class SpriteManager {
 
     private SpriteBatch batch;
-    private BitmapFont font;
     private Map<Entity, Sprite> sprites;
     private Map<Entity, TextureAtlas> atlases;
     private Map<Entity, HpBar> hpBars;
     private Sprite currentRoom;
     private Sprite previousRoom;
+    private ShapeRenderer sr;
 
     public SpriteManager() {
         sprites = new ConcurrentHashMap<>();
         atlases = new ConcurrentHashMap<>();
         hpBars = new ConcurrentHashMap<>();
         batch = new SpriteBatch();
-        font = new BitmapFont();
+        sr = new ShapeRenderer();
     }
 
     public void loadSprites(World world) {
-        for (Entity entity : world.getCurrentRoom().getEntities()) {
+        world.getCurrentRoom().getEntities().stream().map((entity) -> {
             if (!sprites.containsKey(entity)) {
                 loadSprite(entity);
             }
-            if (entity.hasWeapon() && !sprites.containsKey(entity.getWeapon())) {
-                loadSprite(entity.getWeapon());
-            }
-        }
+            return entity;
+        }).filter((entity) -> (entity.hasWeapon() && !sprites.containsKey(entity.getWeapon()))).forEachOrdered((entity) -> {
+            loadSprite(entity.getWeapon());
+        });
     }
 
     private void loadSprite(Entity entity) {
@@ -87,13 +90,7 @@ public class SpriteManager {
         batch.begin();
         drawMap();
         drawEntitySprites(gameData, world);
-        batch.end();
-    }
-
-    public void drawDebug(GameData gameData, World world, Camera camera, String message) {
-        batch.begin();
-        batch.setProjectionMatrix(camera.getProjection());
-        font.draw(batch, message, 7.5f, 127.5f);
+        drawCollision(gameData, world, camera);
         batch.end();
     }
 
@@ -107,7 +104,7 @@ public class SpriteManager {
     }
 
     private void drawEntitySprites(GameData gameData, World world) {
-        for (Entity entity : world.getCurrentRoom().getEntities()) {
+        world.getCurrentRoom().getEntities().forEach((entity) -> {
             try {
                 Sprite entitySprite = sprites.get(entity);
                 if (entity.isAnimatable()) {
@@ -117,9 +114,10 @@ public class SpriteManager {
                 entitySprite.setPosition(entity.getRoomPosition().getX() - entity.getWidth() / 2, entity.getRoomPosition().getY() - entity.getHeight() / 2);
                 entitySprite.draw(batch);
                 if (entity.hasWeapon()) {
-                    Sprite weaponSprite = sprites.get(entity.getWeapon());
+                    Entity weapon = entity.getWeapon();
+                    Sprite weaponSprite = sprites.get(weapon);
                     weaponSprite.setRotation(entity.getDirection());
-                    weaponSprite.setPosition(entity.getRoomPosition().getX() - entity.getWidth() / 2, entity.getRoomPosition().getY() - entity.getHeight() / 2);
+                    weaponSprite.setPosition(entity.getRoomPosition().getX() - weapon.getWidth() / 2, entity.getRoomPosition().getY() - weapon.getHeight() / 2);
                     weaponSprite.draw(batch);
                 }
                 if (entity.hasHpBar()) {
@@ -128,6 +126,30 @@ public class SpriteManager {
             }
             catch (NullPointerException e) {
                 Logger.log("Couldn't draw sprite, no sprite loaded for entity of class " + entity.getClass() + ": " + entity.toString());
+            }
+        });
+    }
+
+    private void drawCollision(GameData gameData, World world, Camera camera) {
+        if (gameData.showDebug()) {
+            sr.setProjectionMatrix(camera.getProjection());
+            sr.setColor(255 / 255, 105 / 255, 180 / 255, 0.8f);
+            for (Polygon polygon : world.getCurrentRoom().getCollidables()) {
+                sr.begin(ShapeRenderer.ShapeType.Filled);
+                for (int i = 0, j = polygon.size() - 1;
+                        i < polygon.size();
+                        j = i++) {
+                    Vector firstPoint = polygon.get(i);
+                    Vector secondPoint = polygon.get(j);
+                    sr.line(firstPoint.getX(), firstPoint.getY(), secondPoint.getX(), secondPoint.getY());
+                }
+                sr.end();
+            }
+            for (Entity entity : world.getCurrentRoom().getEntities()) {
+                sr.begin(ShapeRenderer.ShapeType.Filled);
+                sr.rect(entity.getRoomPosition().getX() - entity.getWidth() / 2, entity.getRoomPosition().getY() - entity.getHeight() / 2, 
+                        entity.getWidth(), entity.getHeight());
+                sr.end();
             }
         }
     }

@@ -9,6 +9,8 @@ import rpg.common.data.GameKeys;
 import rpg.common.world.World;
 import rpg.common.services.IEntityProcessingService;
 import rpg.common.services.IGamePluginService;
+import rpg.common.util.Message;
+import rpg.common.util.MessageHandler;
 
 @ServiceProviders(value = {
     @ServiceProvider(service = IEntityProcessingService.class)
@@ -21,59 +23,76 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
 
     @Override
     public void start(GameData gameData, World world) {
-        player = createPlayer();
+        player = createPlayer(world);
+        gameData.setCameraTarget(player);
         world.setPlayer(player);
         world.getCurrentRoom().addEntity(player);
     }
 
     @Override
     public void process(GameData gameData, World world) {
-        player.getVelocity().set(0, 0);
-        handleEdgeCollision(gameData, world, player);
-        player.setSprintModifier(1);
-        if (gameData.getKeys().isDown(GameKeys.W)) {
-            player.getVelocity().addY(player.getCurrentMovementSpeed());
+        if (player != null) {
+            player.getVelocity().set(0, 0);
+            handleEdgeCollision(gameData, world, player);
+            player.setSprintModifier(1);
+            if (gameData.getKeys().isDown(GameKeys.W)) {
+                player.getVelocity().addY(player.getCurrentMovementSpeed());
+            }
+            else if (gameData.getKeys().isDown(GameKeys.S)) {
+                player.getVelocity().subtractY(player.getCurrentMovementSpeed());
+            }
+            if (gameData.getKeys().isDown(GameKeys.A)) {
+                player.getVelocity().subtractX(player.getCurrentMovementSpeed());
+            }
+            else if (gameData.getKeys().isDown(GameKeys.D)) {
+                player.getVelocity().addX(player.getCurrentMovementSpeed());
+            }
+            if (player.getVelocity().isMoving()) {
+                player.increaseFrame(gameData.getDeltaTime() * (player.getCurrentMovementSpeed() / (player.getWidth() / 3))); //enten width / 3 eller width / 4
+            }
+            else {
+                player.setCurrentFrame(1);
+            }
+            if (gameData.getKeys().isDown(GameKeys.SHIFT)) {
+                player.setSprintModifier(1.75f);
+            }
+            player.setCurrentMovementSpeed(player.getDefaultMovementSpeed() * player.getMovementSpeedModifier() * player.getSprintModifier());
+            sendMessages(world, player);
         }
-        else if (gameData.getKeys().isDown(GameKeys.S)) {
-            player.getVelocity().subtractY(player.getCurrentMovementSpeed());
-        }
-        if (gameData.getKeys().isDown(GameKeys.A)) {
-            player.getVelocity().subtractX(player.getCurrentMovementSpeed());
-        }
-        else if (gameData.getKeys().isDown(GameKeys.D)) {
-            player.getVelocity().addX(player.getCurrentMovementSpeed());
-
-        }
-        if (player.getVelocity().isMoving()) {
-            player.increaseFrame(gameData.getDeltaTime());
-        }
-        else {
-            player.setCurrentFrame(1);
-        }
-        if (gameData.getKeys().isDown(GameKeys.SHIFT)) {
-            player.setSprintModifier(1.75f);
-        }
-        player.setCurrentMovementSpeed(player.getDefaultMovementSpeed() * player.getMovementSpeedModifier() * player.getSprintModifier());
-
     }
 
-    private Player createPlayer() {
+    private void sendMessages(World world, Player player) {
+        MessageHandler.addMessage(new Message("Health: " + player.getCurrentHealth() + "/" + player.getMaxHealth(),
+                0, 50, world.getCurrentRoom().getHeight() - 40));
+    }
+
+    private Player createPlayer(World world) {
+        //test-kode, ignorér
+        /*int degree = 356;
+        boolean run = true;
+        while(run) {
+            double x = (Math.cos(Math.toRadians(degree)) * 328.5) + 478.5;
+            double y = (Math.sin(Math.toRadians(degree)) * 328.5) + 334.5;
+            System.out.println("(" + Math.round(x) + ", " + Math.round(y) + ")");
+            degree -= 7;
+            if(degree < 13) {
+                run = false;
+            }
+        }*/
+
         Player newPlayer = new Player();
-        newPlayer.getRoomPosition().set(25, 25);
-        newPlayer.getWorldPosition().set(0, 0);
+        newPlayer.getRoomPosition().set(500, 250);
+        newPlayer.getWorldPosition().set(world.getCurrentRoom().getX(), world.getCurrentRoom().getY());
         newPlayer.setDefaultMovementSpeed(200);
-        newPlayer.setLevel(1);
-        newPlayer.setExperiencePoints(0);
         newPlayer.setMaxHealth(100);
         newPlayer.setCurrentHealth(newPlayer.getMaxHealth());
         newPlayer.setMovementSpeedModifier(1);
-        //newPlayer.setSpritePath("rpg/gameengine/player.png");
-        newPlayer.setWidth(50);
-        newPlayer.setHeight(50);
+        newPlayer.setSize(50, 50);
         newPlayer.setSpritePath("rpg/gameengine/testTexture.atlas");
+        //newPlayer.setSize(2, 2);
+        //newPlayer.setSpritePath("rpg/gameengine/pink_dot.png");
         newPlayer.setCurrentFrame(1);
         newPlayer.setMaxFrames(3);
-        newPlayer.setHasHpBar(true);
         newPlayer.getSounds().put("GRASS", "rpg/gameengine/Footstep Grass 2.wav");
         return newPlayer;
     }
@@ -127,6 +146,8 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
 
     @Override
     public void stop(GameData gameData, World world) {
+        gameData.setCameraTarget(null);
+        world.setPlayer(null);
         world.getCurrentRoom().removeEntity(player);
     }
 
