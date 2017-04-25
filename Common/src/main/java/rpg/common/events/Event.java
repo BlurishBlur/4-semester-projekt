@@ -1,8 +1,9 @@
 package rpg.common.events;
 
+import java.io.Serializable;
 import rpg.common.entities.Entity;
 
-public class Event {
+public class Event implements Serializable {
     
     private final EventType type;
     private final Entity entity;

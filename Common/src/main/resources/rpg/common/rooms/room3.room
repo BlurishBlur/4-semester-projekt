@@ -1,0 +1,33 @@
+spritePath = rpg/gameengine/Map4.png
+width = 1280
+height = 720
+worldPositionX = 1
+worldPositionY = 1
+canExitUp = true
+canExitDown = true
+canExitLeft = true
+canExitRight = false
+{
+	(0, 380)
+	(76, 380)
+	(76, 407)
+	(128, 407)
+    (154, 471)
+    (186, 535)
+    (192, 720)
+}
+{
+	(67, 314)
+    (67, 298)
+    (0, 298)
+    (0, 224)
+    (36, 224)
+    (46, 226)
+    (118, 266)
+    (150, 181)
+    (174, 72)
+    (144, 31)
+    (136, 27)
+    (136, 1)
+    (0, 0)
+}

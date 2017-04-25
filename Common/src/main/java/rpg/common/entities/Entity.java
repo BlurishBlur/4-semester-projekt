@@ -4,19 +4,20 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import rpg.common.util.Vector;
 
 public class Entity implements Serializable {
-    
+
     private final UUID ID = UUID.randomUUID();
-    private EntityType type;
     private Vector roomPosition;
     private Vector velocity;
     private Vector worldPosition;
     private Vector worldVelocity;
+    private float currentMovementSpeed;
     private float defaultMovementSpeed;
-    private float movementSpeed;
     private float movementSpeedModifier;
+    private float sprintModifier;
     private int currentHealth;
     private int maxHealth;
     private int skillPoints;
@@ -28,43 +29,67 @@ public class Entity implements Serializable {
     private float width;
     private float height;
     private String spritePath;
+    private boolean isAnimatable;
     private float currentFrame;
     private int maxFrames;
     private Map<String, String> sounds;
-    
+    private Entity weapon;
+    private boolean hasHpBar;
+
     public Entity() {
         roomPosition = new Vector();
         velocity = new Vector();
         worldPosition = new Vector();
         worldVelocity = new Vector();
+        sounds = new ConcurrentHashMap<>();
     }
-    
+
+    public boolean hasWeapon() {
+        return weapon != null;
+    }
+
+    public Entity getWeapon() {
+        return weapon;
+    }
+
+    public void setWeapon(Entity weapon) {
+        this.weapon = weapon;
+    }
+
+    public boolean isAnimatable() {
+        return isAnimatable;
+    }
+
+    public boolean hasHpBar() {
+        return hasHpBar;
+    }
+
     public int getArmor() {
         return this.armor;
     }
-    
+
     public void setArmor(int armor) {
         this.armor = armor;
     }
-    
+
     public int getSkillPoints() {
         return skillPoints;
     }
-    
+
     public void setSkillPoints(int amount) {
         this.skillPoints = amount;
         sounds = new HashMap<>();
     }
-    
-    public void increaseFrame(float deltaTime) {
-        currentFrame += deltaTime * (movementSpeed / (width / 3)); //enten width / 3 eller width / 4
-        if(currentFrame > maxFrames + 1) {
+
+    public void increaseFrame(float delta) {
+        currentFrame += delta;
+        if (currentFrame > maxFrames + 1) {
             currentFrame = 2;
         }
         //currentFrame = (currentFrame % maxFrames) + 1;
     }
-    
-    public Map getSounds() {
+
+    public Map<String, String> getSounds() {
         return sounds;
     }
 
@@ -83,11 +108,11 @@ public class Entity implements Serializable {
     public void setMovementSpeedModifier(float movementSpeedModifier) {
         this.movementSpeedModifier = movementSpeedModifier;
     }
-    
+
     public Vector getWorldVelocity() {
         return worldVelocity;
     }
-    
+
     public Vector getWorldPosition() {
         return worldPosition;
     }
@@ -95,11 +120,11 @@ public class Entity implements Serializable {
     public Vector getRoomPosition() {
         return roomPosition;
     }
-    
+
     public Vector getVelocity() {
         return velocity;
     }
-    
+
     public float getDirection() {
         return direction;
     }
@@ -115,7 +140,7 @@ public class Entity implements Serializable {
     public void setActionTimer(float actionTimer) {
         this.actionTimer = actionTimer;
     }
-    
+
     public void reduceActionTimer(float deltaTime) {
         actionTimer -= deltaTime;
     }
@@ -142,6 +167,7 @@ public class Entity implements Serializable {
 
     public void setSpritePath(String spritePath) {
         this.spritePath = spritePath;
+        isAnimatable = spritePath.substring(spritePath.length() - 6, spritePath.length()).equals(".atlas");
     }
 
     public int getCurrentHealth() {
@@ -152,28 +178,44 @@ public class Entity implements Serializable {
         this.currentHealth = currentHealth;
     }
 
+    public void reduceCurrentHealth(int damage) {
+        float damageReduction = (armor / 10.0f) / 100.0f;
+        if ((int) damageReduction == 0) {
+            damageReduction = 1;
+        }
+        currentHealth -= damage * damageReduction;
+    }
+
     public int getMaxHealth() {
         return maxHealth;
     }
 
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
+        if (maxHealth > 1) {
+            hasHpBar = true;
+        }
     }
 
-    public EntityType getType() {
-        return type;
+    public float getCurrentMovementSpeed() {
+        return currentMovementSpeed;
     }
 
-    public void setType(EntityType type) {
-        this.type = type;
+    public void setCurrentMovementSpeed(float currentMovementSpeed) {
+        this.currentMovementSpeed = currentMovementSpeed;
     }
 
-    public float getMovementSpeed() {
-        return movementSpeed;
+    public float getSprintModifier() {
+        return sprintModifier;
     }
 
-    public void setMovementSpeed(float speed) {
-        this.movementSpeed = speed;
+    public void setSprintModifier(float sprintModifier) {
+        this.sprintModifier = sprintModifier;
+    }
+
+    public void setSize(float width, float height) {
+        this.width = width;
+        this.height = height;
     }
 
     public float getWidth() {
@@ -191,24 +233,24 @@ public class Entity implements Serializable {
     public void setHeight(float height) {
         this.height = height;
     }
-    
+
     public String getID() {
         return ID.toString();
     }
-    
-    public int getCurrentFrame(){
+
+    public int getCurrentFrame() {
         return (int) currentFrame;
     }
-    
-    public void setCurrentFrame(int frame){
+
+    public void setCurrentFrame(int frame) {
         this.currentFrame = frame;
     }
-    
-    public int getMaxFrames(){
+
+    public int getMaxFrames() {
         return maxFrames;
     }
-    
-    public void setMaxFrames(int frames){
+
+    public void setMaxFrames(int frames) {
         this.maxFrames = frames;
     }
 }

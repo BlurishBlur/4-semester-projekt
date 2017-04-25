@@ -12,3 +12,10 @@
 /AcquireWeapon/target/
 /HUD/target/
 /Weapon/target/
+/CommonEnemy/target/
+/CommonWeapon/target/
+/Currency/target/
+/CommonPlayer/target/
+/Experience/target/
+/SilentUpdate/target/
+/target/

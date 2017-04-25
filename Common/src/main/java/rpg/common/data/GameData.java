@@ -1,26 +1,32 @@
 package rpg.common.data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import rpg.common.entities.Entity;
 import rpg.common.events.Event;
 import rpg.common.events.EventType;
 
-public class GameData {
+public class GameData implements Serializable {
 
     private float deltaTime;
     private int displayWidth;
     private int displayHeight;
     private float cameraZoom;
+    private Entity cameraTarget;
     private boolean showDebug;
     private boolean isChangingRoom;
     private List<Event> events = new CopyOnWriteArrayList<>();
-    private Map<Entity, Entity> weapons = new ConcurrentHashMap<>();
     private GameKeys keys = new GameKeys();
+    
+    public void setCameraTarget(Entity target) {
+        cameraTarget = target;
+    }
+    
+    public Entity getCameraTarget() {
+        return cameraTarget;
+    }
     
     public void setIsChangingRoom(boolean isChangingRoom) {
         this.isChangingRoom = isChangingRoom;
@@ -32,18 +38,6 @@ public class GameData {
     
     public GameKeys getKeys() {
         return keys;
-    }
-    
-    public Collection<Entity> getWeapons() {
-        return weapons.values();
-    }
-    
-    public void addWeapon(Entity entity, Entity weapon) {
-        weapons.put(entity, weapon);
-    }
-    
-    public Entity getWeapon(Entity entity) {
-        return weapons.get(entity);
     }
 
     public boolean showDebug() {

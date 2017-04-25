@@ -25,6 +25,10 @@ public class Camera {
         this.target = target;
     }
     
+    public void setTarget(Entity target) {
+        this.target = target;
+    }
+
     public Entity getTarget() {
         return target;
     }
@@ -96,7 +100,6 @@ public class Camera {
     private void followTarget(GameData gameData, World world) {
         camera.position.lerp(new Vector3(target.getRoomPosition().getX(), target.getRoomPosition().getY(), 0), 2.5f * gameData.getDeltaTime());
         handleEdgeCollision(world);
-
     }
 
     private void handleEdgeCollision(World world) {
