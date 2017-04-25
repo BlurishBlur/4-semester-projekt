@@ -99,10 +99,10 @@ public class Vector implements Serializable {
     public float getAngle() {
         return (float) Math.toDegrees(Math.atan2(y, x));
     }
-    
+
     public float getAngleTo(Vector other) {
         //return (float) Math.toDegrees(Math.atan2(getCrossProduct(other), getDotProduct(other)));
-        
+
         return (float) Math.toDegrees(Math.acos(getDotProduct(other) / getMagnitude() * other.getMagnitude()));
     }
 
@@ -122,7 +122,7 @@ public class Vector implements Serializable {
     public float getDotProduct(Vector other) {
         return x * other.getX() + y * other.getY();
     }
-    
+
     public float getCrossProduct(Vector other) {
         return x * other.getY() - y * other.getX();
     }
@@ -133,6 +133,19 @@ public class Vector implements Serializable {
 
     private float magnitude(float factor) {
         return magnitude(factor, factor);
+    }
+
+    public float hashcode() {
+        return x * y;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Vector) {
+            Vector other = (Vector) o;
+            return (other.getX() == x) && (other.getY() == y);
+        }
+        return false;
     }
 
     @Override
