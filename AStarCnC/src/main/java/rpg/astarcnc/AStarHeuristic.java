@@ -6,11 +6,12 @@
 package rpg.astarcnc;
 
 import rpg.common.world.Room;
+import rpg.common.entities.Entity;
 
 /**
  *
  * @author Antonio
  */
 public interface AStarHeuristic {
-    public float getCost(Room room, Mover mover, int startX, int startY, int targetX, int targetY);
+    public float getCost(Room room, Entity entity, int startX, int startY, int targetX, int targetY);
 }

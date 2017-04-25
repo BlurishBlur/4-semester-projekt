@@ -4,12 +4,12 @@
  * and open the template in the editor.
  */
 package rpg.astarcnc;
-
+import rpg.common.entities.Entity;
 /**
  *
  * @author Antonio
  */
 public interface PathFinder {
     
-    public Path findPath(Mover mover, int startX, int startY, int targetX, int targetY);
+    public Path findPath(Entity entity, int startX, int startY, int targetX, int targetY);
 }

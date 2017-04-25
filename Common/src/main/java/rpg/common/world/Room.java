@@ -175,5 +175,9 @@ public class Room implements Serializable {
     public void setSpritePath(String spritePath) {
         this.spritePath = spritePath;
     }
+    
+    public float getCost(Entity entity, int sx, int sy, int tx, int ty) {
+        return 1;
+    }
 
 }
