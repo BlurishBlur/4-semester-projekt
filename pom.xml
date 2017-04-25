@@ -83,6 +83,7 @@
         <module>Experience</module>
         <module>SilentUpdate</module>
         <module>Collision</module>
+        <module>AStarCnC</module>
     </modules>
 
     <properties>
