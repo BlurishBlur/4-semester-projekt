@@ -13,5 +13,7 @@ import rpg.common.entities.Entity;
  * @author Antonio
  */
 public interface AStarHeuristic {
-    public float getCost(Room room, Entity entity, int startX, int startY, int targetX, int targetY);
+
+    float getCost(Room room, Entity entity, int startX, int startY, int targetX, int targetY);
+    
 }

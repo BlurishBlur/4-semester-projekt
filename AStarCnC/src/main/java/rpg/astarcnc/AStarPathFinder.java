@@ -2,12 +2,13 @@ package rpg.astarcnc;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Stack;
-import rpg.common.util.Polygon;
+import rpg.common.data.GameData;
 import rpg.common.world.Room;
 import rpg.common.entities.Entity;
+import rpg.common.services.IEntityProcessingService;
+import rpg.common.world.World;
 
-public class AStarPathFinder implements PathFinder {
+public class AStarPathFinder implements PathFinder, IEntityProcessingService {
 
     private ArrayList closed = new ArrayList();
     private SortedList open = new SortedList();
@@ -257,6 +258,11 @@ public class AStarPathFinder implements PathFinder {
      */
     public float getHeuristicCost(Entity entity, int x, int y, int tx, int ty) {
         return heuristic.getCost(room, entity, x, y, tx, ty);
+    }
+
+    @Override
+    public void process(GameData gameData, World world) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
