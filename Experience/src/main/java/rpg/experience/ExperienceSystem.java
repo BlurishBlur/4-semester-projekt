@@ -26,7 +26,7 @@ public class ExperienceSystem implements IEntityProcessingService {
     @Override
     public void process(GameData gameData, World world) {
         if (gameData.getKeys().isPressed(GameKeys.K)) {
-            currentExperience += calculateExperienceToNextLevel() * 10;
+            currentExperience = calculateExperienceToNextLevel() + 10;
             //world.getPlayer().addExperience(world.getPlayer().getLevel() * 110);
         }
         for (Event event : gameData.getEvents(EventType.ENEMY_DIED)) {
@@ -53,8 +53,12 @@ public class ExperienceSystem implements IEntityProcessingService {
     private void checkExperience(World world, GameData gameData) {
         if (currentExperience > experienceToNextLevel) {
             level++;
-            //world.getPlayer().levelUp();
-            MessageHandler.addMessage(new Message("Level up!", 5, 1100, world.getCurrentRoom().getHeight() - 45));
+            if (world.getPlayer() != null) {
+                MessageHandler.addMessage(new Message("Level up!", 5, world.getPlayer()));
+            }
+            else {
+                MessageHandler.addMessage(new Message("Level up!", 5, 1100, world.getCurrentRoom().getHeight() - 45));
+            }
             experienceToNextLevel = calculateExperienceToNextLevel();
             gameData.addEvent(new Event(EventType.LEVEL_UP, world.getPlayer())); //Det her skal lige kigges på - hvorfor skal player med
         }
