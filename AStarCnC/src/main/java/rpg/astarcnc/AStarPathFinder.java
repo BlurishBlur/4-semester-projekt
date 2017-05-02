@@ -16,10 +16,8 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
     private int maxSearchDistance;
     private Node[][] nodes;
     private boolean allowDiagMovement;
-    private AStarHeuristic heuristic;
-    
+
     public AStarPathFinder(Room room, Node[][] nodes, int maxSearchDistance, boolean allowDiagMovement) {
-        heuristic = new ClosestHeuristic();
         this.room = room;
         this.maxSearchDistance = maxSearchDistance;
         this.allowDiagMovement = allowDiagMovement;
@@ -27,11 +25,6 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
     }
 
     public AStarPathFinder(Room room, int maxSearchDistance, boolean allowDiagMovement) {
-        this(room, maxSearchDistance, allowDiagMovement, new ClosestHeuristic());
-    }
-
-    public AStarPathFinder(Room room, int maxSearchDistance, boolean allowDiagMovement, AStarHeuristic heuristic) {
-        this.heuristic = heuristic;
         this.room = room;
         this.maxSearchDistance = maxSearchDistance;
         this.allowDiagMovement = allowDiagMovement;
@@ -258,21 +251,25 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
      * order the locations are processed.
      *
      * @param mover The entity that is being moved
-     * @param x The x coordinate of the tile whose cost is being determined
-     * @param y The y coordiante of the tile whose cost is being determined
+     * @param startX The x coordinate of the tile whose cost is being determined
+     * @param startY The y coordiante of the tile whose cost is being determined
      * @param tx The x coordinate of the target location
      * @param ty The y coordinate of the target location
      * @return The heuristic cost assigned to the tile
      */
-    public float getHeuristicCost(Entity entity, int x, int y, int tx, int ty) {
-        return heuristic.getCost(room, entity, x, y, tx, ty);
+    public float getHeuristicCost(Entity entity, int startX, int startY, int targetX, int targetY) {
+        float dx = targetX - startX;
+        float dy = targetY - startY;
+
+        float result = (float) (Math.sqrt((dx * dx) + (dy * dy)));
+        return result;
     }
 
     @Override
     public void process(GameData gameData, World world) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     /**
      * A simple sorted list
      *

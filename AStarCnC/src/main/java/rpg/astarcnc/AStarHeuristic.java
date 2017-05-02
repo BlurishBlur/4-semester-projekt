@@ -12,6 +12,7 @@ import rpg.common.entities.Entity;
  *
  * @author Antonio
  */
+@Deprecated
 public interface AStarHeuristic {
 
     float getCost(Room room, Entity entity, int startX, int startY, int targetX, int targetY);

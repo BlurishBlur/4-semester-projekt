@@ -7,19 +7,20 @@ package rpg.astarcnc;
 
 import rpg.common.world.Room;
 import rpg.common.entities.Entity;
+
 /**
  *
  * @author Antonio
  */
-public class ClosestHeuristic implements AStarHeuristic{
+public class ClosestHeuristic implements AStarHeuristic {
 
     @Override
     public float getCost(Room room, Entity entity, int startX, int startY, int targetX, int targetY) {
         float dx = targetX - startX;
         float dy = targetY - startY;
-        
-        float result = (float) (Math.sqrt((dx*dx) + (dy*dy)));
+
+        float result = (float) (Math.sqrt((dx * dx) + (dy * dy)));
         return result;
     }
-    
+
 }
