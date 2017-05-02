@@ -27,18 +27,25 @@ public class AStarControlSystem implements IEntityProcessingService {
         for (Entity entity : world.getCurrentRoom().getEntities(Enemy.class)) {
             Enemy enemy = (Enemy) entity;
             AStarPathFinder pathFinder;
-            if (currentRoom != null && world.getCurrentRoom().equals(currentRoom)) {
-                pathFinder = new AStarPathFinder(currentRoom, 1500, true);
+            if (currentRoom != null && nodes != null && world.getCurrentRoom().equals(currentRoom)) {
+                pathFinder = new AStarPathFinder(currentRoom, nodes, (int) enemy.getWidth(), true);
+                System.out.println("opretter IKKE nye");
             }
             else {
+                System.out.println("opretter nye");
                 currentRoom = world.getCurrentRoom();
                 nodes = new Node[currentRoom.getWidth()][currentRoom.getHeight()];
-                for (int x = 0; x < currentRoom.getWidth(); x++) {
-                    for (int y = 0; y < currentRoom.getHeight(); y++) {
+                int minX = (int) Math.min(enemy.getRoomPosition().getX(), world.getPlayer().getRoomPosition().getX());
+                int maxX = (int) Math.max(enemy.getRoomPosition().getX(), world.getPlayer().getRoomPosition().getX()) + (int) enemy.getWidth();
+                int minY = (int) Math.min(enemy.getRoomPosition().getY(), world.getPlayer().getRoomPosition().getY());
+                int maxY = (int) Math.max(enemy.getRoomPosition().getY(), world.getPlayer().getRoomPosition().getY()) + (int) enemy.getHeight();
+                //nodes = new Node[(int) enemy.getWidth() * 2][(int) enemy.getHeight() * 2];
+                for (int x = minX; x < maxX; x++) {
+                    for (int y = minY; y < maxY; y++) {
                         nodes[x][y] = new Node(x, y);
                     }
                 }
-                pathFinder = new AStarPathFinder(currentRoom, nodes, 1500, true);
+                pathFinder = new AStarPathFinder(currentRoom, nodes, (int) enemy.getWidth(), true);
             }
             
             Path path = pathFinder.findPath(enemy, (int) enemy.getRoomPosition().getX(),
