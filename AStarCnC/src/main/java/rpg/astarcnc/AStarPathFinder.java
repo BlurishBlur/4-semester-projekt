@@ -17,6 +17,14 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
     private Node[][] nodes;
     private boolean allowDiagMovement;
     private AStarHeuristic heuristic;
+    
+    public AStarPathFinder(Room room, Node[][] nodes, int maxSearchDistance, boolean allowDiagMovement) {
+        heuristic = new ClosestHeuristic();
+        this.room = room;
+        this.maxSearchDistance = maxSearchDistance;
+        this.allowDiagMovement = allowDiagMovement;
+        this.nodes = nodes;
+    }
 
     public AStarPathFinder(Room room, int maxSearchDistance, boolean allowDiagMovement) {
         this(room, maxSearchDistance, allowDiagMovement, new ClosestHeuristic());
@@ -45,13 +53,13 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
 
         // initial state for A*. The closed group is empty. Only the starting
         // tile is in the open list and it'e're already there
-        nodes[sx][sy].cost = 0;
-        nodes[sx][sy].depth = 0;
+        nodes[sx][sy].setCost(0);
+        nodes[sx][sy].setDepth(0);
         closed.clear();
         open.clear();
         open.add(nodes[sx][sy]);
 
-        nodes[tx][ty].parent = null;
+        nodes[tx][ty].setParent(null);
 
         // while we haven'n't exceeded our max search depth
         int maxDepth = 0;
@@ -86,22 +94,22 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
                     }
 
                     // determine the location of the neighbour and evaluate it
-                    int xp = x + current.x;
-                    int yp = y + current.y;
+                    int xp = x + current.getX();
+                    int yp = y + current.getY();
 
                     if (isValidLocation(entity, sx, sy, xp, yp)) {
                         // the cost to get to this node is cost the current plus the movement
 
                         // cost to reach this node. Note that the heursitic value is only used
                         // in the sorted open list
-                        float nextStepCost = current.cost + getMovementCost(entity, current.x, current.y, xp, yp);
+                        float nextStepCost = current.getCost() + getMovementCost(entity, current.getX(), current.getY(), xp, yp);
                         Node neighbour = nodes[xp][yp];
 
                         // if the new cost we've determined for this node is lower than 
                         // it has been previously makes sure the node hasn'e've
                         // determined that there might have been a better path to get to
                         // this node so it needs to be re-evaluated
-                        if (nextStepCost < neighbour.cost) {
+                        if (nextStepCost < neighbour.getCost()) {
                             if (inOpenList(neighbour)) {
                                 removeFromOpen(neighbour);
                             }
@@ -114,8 +122,8 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
                         // reset it's cost to our current cost and add it as a next possible
                         // step (i.e. to the open list)
                         if (!inOpenList(neighbour) && !(inClosedList(neighbour))) {
-                            neighbour.cost = nextStepCost;
-                            neighbour.heuristic = getHeuristicCost(entity, xp, yp, tx, ty);
+                            neighbour.setCost(nextStepCost);
+                            neighbour.setHeuristic(getHeuristicCost(entity, xp, yp, tx, ty));
                             maxDepth = Math.max(maxDepth, neighbour.setParent(current));
                             addToOpen(neighbour);
                         }
@@ -126,7 +134,7 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
 
         // since we'e've run out of search 
         // there was no path. Just return null
-        if (nodes[tx][ty].parent == null) {
+        if (nodes[tx][ty].getParent() == null) {
             return null;
         }
 
@@ -136,8 +144,8 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
         Path path = new Path();
         Node target = nodes[tx][ty];
         while (target != nodes[sx][sy]) {
-            path.prependStep(target.x, target.y);
-            target = target.parent;
+            path.prependStep(target.getX(), target.getY());
+            target = target.getParent();
         }
         path.prependStep(sx, sy);
 
@@ -329,79 +337,6 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
          */
         public boolean contains(Object o) {
             return list.contains(o);
-        }
-    }
-
-    /**
-     * A single node in the search graph
-     */
-    private class Node implements Comparable {
-
-        /**
-         * The x coordinate of the node
-         */
-        private int x;
-        /**
-         * The y coordinate of the node
-         */
-        private int y;
-        /**
-         * The path cost for this node
-         */
-        private float cost;
-        /**
-         * The parent of this node, how we reached it in the search
-         */
-        private Node parent;
-        /**
-         * The heuristic cost of this node
-         */
-        private float heuristic;
-        /**
-         * The search depth of this node
-         */
-        private int depth;
-
-        /**
-         * Create a new node
-         *
-         * @param x The x coordinate of the node
-         * @param y The y coordinate of the node
-         */
-        public Node(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        /**
-         * Set the parent of this node
-         *
-         * @param parent The parent node which lead us to this node
-         * @return The depth we have no reached in searching
-         */
-        public int setParent(Node parent) {
-            depth = parent.depth + 1;
-            this.parent = parent;
-
-            return depth;
-        }
-
-        /**
-         * @see Comparable#compareTo(Object)
-         */
-        public int compareTo(Object other) {
-            Node o = (Node) other;
-
-            float f = heuristic + cost;
-            float of = o.heuristic + o.cost;
-
-            if (f < of) {
-                return -1;
-            } else if (f > of) {
-                return 1;
-            } else {
-                return 0;
-            }
         }
     }
 }
