@@ -11,6 +11,7 @@ import rpg.common.events.EventType;
 import rpg.common.services.IEntityProcessingService;
 import rpg.common.util.Logger;
 import rpg.common.util.Vector;
+import rpg.commonweapon.Bullet;
 import rpg.commonweapon.Weapon;
 
 @ServiceProviders(value = {
@@ -20,6 +21,10 @@ public class CombatSystem implements IEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
+        for(Entity entity : world.getCurrentRoom().getEntities(Bullet.class)) {
+            Bullet bullet = (Bullet) entity;
+            bullet.getVelocity().set(bullet.getDefaultVelocity());
+        }
         if (world.getPlayer() != null) {
             if (world.getPlayer().getWeapon() == null) {
                 addHand(world);
@@ -36,23 +41,24 @@ public class CombatSystem implements IEntityProcessingService {
         for (Event event : gameData.getEvents(EventType.ATTACK)) {
             for (Entity entity : world.getCurrentRoom().getEntities()) {
                 if (event.getEntity() != entity && entity.hasHpBar() && isHit(event.getEntity(), entity)) {
-                    entity.reduceCurrentHealth(((Weapon) event.getEntity().getWeapon()).getDamage());
+                    entity.reduceCurrentHealth(((Bullet) event.getEntity()).getDamage());
                     System.out.println("Attackee health: " + entity.getCurrentHealth());
-                    gameData.addEvent(new Event(EventType.WEAPON_HIT, event.getEntity().getWeapon()));
+                    gameData.addEvent(new Event(EventType.WEAPON_HIT, event.getEntity()));
+                    world.getCurrentRoom().removeEntity(event.getEntity());
+                    gameData.removeEvent(event);
+                    break;
                 }
             }
-            gameData.removeEvent(event);
         }
     }
 
-    private boolean isHit(Entity attacker, Entity attackee) {
-        Entity weapon = attacker.getWeapon();
-        float a = weapon.getRoomPosition().getX() - attackee.getRoomPosition().getX();
-        float b = weapon.getRoomPosition().getY() - attackee.getRoomPosition().getY();
+    private boolean isHit(Entity bullet, Entity attackee) {
+        float a = bullet.getRoomPosition().getX() - attackee.getRoomPosition().getX();
+        float b = bullet.getRoomPosition().getY() - attackee.getRoomPosition().getY();
 
         double c = Math.sqrt((double) (a * a) + (double) (b * b));
 
-        return c < weapon.getWidth() / 2 + attackee.getWidth() / 2;
+        return c < bullet.getWidth() / 2 + attackee.getWidth() / 2;
 
         //return Math.sqrt(Math.pow(entity1.getX() - entity2.getX(), 2) + Math.pow(entity1.getY() - entity2.getY(), 2)) < entity1.getRadius() + entity2.getRadius();
     }
@@ -64,26 +70,41 @@ public class CombatSystem implements IEntityProcessingService {
             weapon.increaseTimeSinceLastAttack(gameData.getDeltaTime());
         }
         if (gameData.getKeys().isPressed(GameKeys.UP)) {
-            attack(weapon, player, new Vector(0, player.getHeight() / 2), 0, gameData);
+            //attack(weapon, player, new Vector(0, player.getHeight() / 2), 0, gameData);
+            //attack(weapon, player, bullet, gameData);
+            attack(weapon, new Vector(5, 5), new Vector(player.getRoomPosition().getX(), player.getRoomPosition().getY() + player.getHeight()), new Vector(0, 250), 0, gameData, world);
         }
         else if (gameData.getKeys().isPressed(GameKeys.DOWN)) {
-            attack(weapon, player, new Vector(0, -player.getHeight() / 2), 180, gameData);
+            //attack(weapon, player, new Vector(0, -player.getHeight() / 2), 180, gameData);
+            attack(weapon, new Vector(5, 5), new Vector(player.getRoomPosition().getX(), player.getRoomPosition().getY() - player.getHeight()), new Vector(0, -250), 180, gameData, world);
         }
         else if (gameData.getKeys().isPressed(GameKeys.LEFT)) {
-            attack(weapon, player, new Vector(-player.getWidth() / 2, 0), 90, gameData);
+            //attack(weapon, player, new Vector(-player.getWidth() / 2, 0), 90, gameData);
+            attack(weapon, new Vector(5, 5), new Vector(player.getRoomPosition().getX() - player.getWidth(), player.getRoomPosition().getY()), new Vector(-250, 0), 90, gameData, world);
         }
         else if (gameData.getKeys().isPressed(GameKeys.RIGHT)) {
-            attack(weapon, player, new Vector(player.getWidth() / 2, 0), 270, gameData);
+            //attack(weapon, player, new Vector(player.getWidth() / 2, 0), 270, gameData);
+            attack(weapon, new Vector(5, 5), new Vector(player.getRoomPosition().getX() + player.getWidth(), player.getRoomPosition().getY()), new Vector(250, 0), 270, gameData, world);
         }
     }
 
-    private void attack(Weapon weapon, Entity player, Vector vector, int direction, GameData gameData) { //TODO gør den her metode pænere
+    private void attack(Weapon weapon, Vector size, Vector position, Vector velocity, int direction, GameData gameData, World world) { //TODO gør den her metode pænere
         try {
             if (weapon.canAttack()) {
-                weapon.getRoomPosition().set(player.getRoomPosition().plus(vector));
-                weapon.setDirection(direction);
+                Bullet bullet = new Bullet();
+                bullet.setDamage(weapon.getDamage());
+                bullet.setSpritePath("rpg/gameengine/pink_dot.png");
+                System.out.println("ny bullet");
+                bullet.setSize(size.getX(), size.getY());
+                bullet.getRoomPosition().set(position);
+                bullet.getDefaultVelocity().set(velocity);
+                System.out.println(velocity);
+                bullet.setDirection(direction);
+                //weapon.getRoomPosition().set(player.getRoomPosition().plus(vector));
+                //weapon.setDirection(direction);
                 weapon.resetTimeSinceLastAttack();
-                gameData.addEvent(new Event(EventType.ATTACK, player));
+                world.getCurrentRoom().addEntity(bullet);
+                gameData.addEvent(new Event(EventType.ATTACK, bullet));
                 gameData.addEvent(new Event(EventType.WEAPON_USE, weapon));
             }
         }
