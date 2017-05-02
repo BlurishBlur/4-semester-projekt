@@ -40,9 +40,9 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
     public Path findPath(Entity entity, int sx, int sy, int tx, int ty) {
         // easy first check, if the destination is blocked, we can't get there
 
-        if (room.blocked(entity, tx, ty)) {
+        /*if (room.blocked(entity, tx, ty)) {
             return null;
-        }
+        }*/
 
         // initial state for A*. The closed group is empty. Only the starting
         // tile is in the open list and it'e're already there
@@ -102,6 +102,7 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
                         // it has been previously makes sure the node hasn'e've
                         // determined that there might have been a better path to get to
                         // this node so it needs to be re-evaluated
+                        System.out.println(xp + ", " + yp);
                         if (nextStepCost < neighbour.getCost()) {
                             if (inOpenList(neighbour)) {
                                 removeFromOpen(neighbour);

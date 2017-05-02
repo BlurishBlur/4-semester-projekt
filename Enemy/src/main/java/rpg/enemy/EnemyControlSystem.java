@@ -32,7 +32,7 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
     public void process(GameData gameData, World world) {
         for (Entity entity : world.getCurrentRoom().getEntities(Enemy.class)) {
             Enemy enemy = (Enemy) entity;
-            if(enemy.getCurrentHealth() <= 0) {
+            if (enemy.getCurrentHealth() <= 0) {
                 System.out.println("Enemy died");
                 gameData.addEvent(new Event(EventType.ENEMY_DIED, enemy));
                 world.getCurrentRoom().removeEntity(enemy);
@@ -45,10 +45,10 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
                 enemy.setHorizontalMovementChance(Math.random());
                 enemy.setActionTimer((int) (Math.random() * 4) + 1);
             }
-            
+
             float diffX = enemy.getNextStep().getX() - enemy.getVelocity().getX();
             float diffY = enemy.getNextStep().getY() - enemy.getVelocity().getY();
-            
+
             if (diffX < 0) {
                 enemy.getVelocity().subtractX(enemy.getCurrentMovementSpeed());
             }
@@ -75,8 +75,8 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
             else if (enemy.getHorizontalMovementChance() < 0.40) { // right
                 enemy.getVelocity().addX(enemy.getCurrentMovementSpeed());
             }*/
-            
-            if(gameData.getKeys().isPressed(GameKeys.K)) {
+
+            if (gameData.getKeys().isPressed(GameKeys.K)) {
                 enemy.setCurrentHealth(0);
                 System.out.println("Killing all enemies");
             }
@@ -91,12 +91,13 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
     @Override
     public Entity createEnemy(GameData gameData) {
         Entity newEnemy = new Enemy();
-        newEnemy.getRoomPosition().set(640, 360);
+        //newEnemy.getRoomPosition().set(640, 360);
+        newEnemy.getRoomPosition().set(520, 220);
         newEnemy.setDefaultMovementSpeed(100);
         newEnemy.setCurrentMovementSpeed(newEnemy.getDefaultMovementSpeed());
         newEnemy.setMaxHealth(50);
         newEnemy.setCurrentHealth(newEnemy.getMaxHealth());
-        newEnemy.setSize(30, 30);
+        newEnemy.setSize(50, 50);
         newEnemy.setSpritePath("rpg/gameengine/enemy.png");
         return newEnemy;
     }

@@ -34,8 +34,9 @@ public class Room implements Serializable {
     }
 
     public boolean blocked(Entity entity, float targetX, float targetY) {
-        return isPointInPolygons(collidables,
-                new Vector(entity.getRoomPosition().getX() + targetX, entity.getRoomPosition().getY() + targetY));
+        /*return isPointInPolygons(collidables,
+                new Vector(entity.getRoomPosition().getX() + targetX, entity.getRoomPosition().getY() + targetY));*/
+        return isPointInPolygons(collidables, new Vector(targetX, targetY));
     }
 
     private boolean isPointInPolygons(Stack<Polygon> polygons, Vector point) {

@@ -45,7 +45,9 @@ public class Node implements Comparable {
      * @return The depth we have no reached in searching
      */
     public int setParent(Node parent) {
-        depth = parent.depth + 1;
+        if (parent != null) {
+            depth = parent.depth + 1;
+        }
         this.parent = parent;
 
         return depth;
@@ -70,37 +72,37 @@ public class Node implements Comparable {
             return 0;
         }
     }
-    
+
     public Node getParent() {
         return parent;
     }
-    
+
     public int getX() {
         return x;
     }
-    
+
     public int getY() {
         return y;
     }
-    
+
     public float getHeuristic() {
         return heuristic;
     }
-    
+
     public float getCost() {
         return cost;
     }
-    
+
     public void setHeuristic(float heuristic) {
         this.heuristic = heuristic;
     }
-    
+
     public void setCost(float cost) {
         this.cost = cost;
     }
-    
+
     public void setDepth(int depth) {
         this.depth = depth;
     }
-    
+
 }
