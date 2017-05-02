@@ -45,8 +45,26 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
                 enemy.setHorizontalMovementChance(Math.random());
                 enemy.setActionTimer((int) (Math.random() * 4) + 1);
             }
-            if (enemy.getVerticalMovementChance() < 0.20) { // up
+            
+            float diffX = enemy.getNextStep().getX() - enemy.getVelocity().getX();
+            float diffY = enemy.getNextStep().getY() - enemy.getVelocity().getY();
+            
+            if (diffX < 0) {
+                enemy.getVelocity().subtractX(enemy.getCurrentMovementSpeed());
+            }
+            else if (diffX > 0) {
+                enemy.getVelocity().addX(enemy.getCurrentMovementSpeed());
+            }
+            if (diffY < 0) {
+                enemy.getVelocity().subtractY(enemy.getCurrentMovementSpeed());
+            }
+            else if (diffY > 0) {
                 enemy.getVelocity().addY(enemy.getCurrentMovementSpeed());
+            }
+            /*
+            if (enemy.getVerticalMovementChance() < 0.20) { // up
+                //enemy.getVelocity().addY(enemy.getCurrentMovementSpeed());
+                
             }
             else if (enemy.getVerticalMovementChance() < 0.40) { // down
                 enemy.getVelocity().subtractY(enemy.getCurrentMovementSpeed());
@@ -56,7 +74,7 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
             }
             else if (enemy.getHorizontalMovementChance() < 0.40) { // right
                 enemy.getVelocity().addX(enemy.getCurrentMovementSpeed());
-            }
+            }*/
             
             if(gameData.getKeys().isPressed(GameKeys.K)) {
                 enemy.setCurrentHealth(0);
