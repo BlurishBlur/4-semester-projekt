@@ -43,7 +43,6 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
         /*if (room.blocked(entity, tx, ty)) {
             return null;
         }*/
-
         // initial state for A*. The closed group is empty. Only the starting
         // tile is in the open list and it'e're already there
         nodes[sx][sy].setCost(0);
@@ -270,7 +269,7 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
     public void process(GameData gameData, World world) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     /**
      * A simple sorted list
      *

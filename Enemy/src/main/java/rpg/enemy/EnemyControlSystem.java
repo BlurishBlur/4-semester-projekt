@@ -46,20 +46,22 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
                 enemy.setActionTimer((int) (Math.random() * 4) + 1);
             }
 
-            float diffX = enemy.getNextStep().getX() - enemy.getVelocity().getX();
-            float diffY = enemy.getNextStep().getY() - enemy.getVelocity().getY();
+            if (enemy.getNextStep() != null) {
+                float diffX = enemy.getNextStep().getX() - enemy.getVelocity().getX();
+                float diffY = enemy.getNextStep().getY() - enemy.getVelocity().getY();
 
-            if (diffX < 0) {
-                enemy.getVelocity().subtractX(enemy.getCurrentMovementSpeed());
-            }
-            else if (diffX > 0) {
-                enemy.getVelocity().addX(enemy.getCurrentMovementSpeed());
-            }
-            if (diffY < 0) {
-                enemy.getVelocity().subtractY(enemy.getCurrentMovementSpeed());
-            }
-            else if (diffY > 0) {
-                enemy.getVelocity().addY(enemy.getCurrentMovementSpeed());
+                if (diffX < 0) {
+                    enemy.getVelocity().subtractX(enemy.getCurrentMovementSpeed());
+                }
+                else if (diffX > 0) {
+                    enemy.getVelocity().addX(enemy.getCurrentMovementSpeed());
+                }
+                if (diffY < 0) {
+                    enemy.getVelocity().subtractY(enemy.getCurrentMovementSpeed());
+                }
+                else if (diffY > 0) {
+                    enemy.getVelocity().addY(enemy.getCurrentMovementSpeed());
+                }
             }
             /*
             if (enemy.getVerticalMovementChance() < 0.20) { // up
