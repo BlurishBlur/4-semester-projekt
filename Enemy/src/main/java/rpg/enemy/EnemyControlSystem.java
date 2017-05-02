@@ -30,7 +30,8 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
 
     @Override
     public void process(GameData gameData, World world) {
-        for (Entity enemy : world.getCurrentRoom().getEntities(Enemy.class)) {
+        for (Entity entity : world.getCurrentRoom().getEntities(Enemy.class)) {
+            Enemy enemy = (Enemy) entity;
             if(enemy.getCurrentHealth() <= 0) {
                 System.out.println("Enemy died");
                 gameData.addEvent(new Event(EventType.ENEMY_DIED, enemy));
