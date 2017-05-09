@@ -50,9 +50,11 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
                 int diffY = (int) (enemy.getNextStep().getY() - ((int)enemy.getRoomPosition().getY() / 20));
 
                 System.out.println("Diff: " + diffX + " " + diffY);
+
                 if (diffX < 0) {
                     enemy.getVelocity().subtractX(enemy.getCurrentMovementSpeed());
-                } else if (diffX > 0) {
+                }
+                else if (diffX > 0) {
                     enemy.getVelocity().addX(enemy.getCurrentMovementSpeed());
                 }
                 if (diffY < 0) {
