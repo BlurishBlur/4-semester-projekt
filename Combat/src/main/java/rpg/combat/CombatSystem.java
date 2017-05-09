@@ -24,6 +24,10 @@ public class CombatSystem implements IEntityProcessingService {
         for(Entity entity : world.getCurrentRoom().getEntities(Bullet.class)) {
             Bullet bullet = (Bullet) entity;
             bullet.getVelocity().set(bullet.getDefaultVelocity());
+            bullet.reduceDuration(gameData.getDeltaTime());
+            if(bullet.getDuration() < 0) {
+                world.getCurrentRoom().removeEntity(entity);
+            }
         }
         if (world.getPlayer() != null) {
             if (world.getPlayer().getWeapon() == null) {
@@ -93,12 +97,12 @@ public class CombatSystem implements IEntityProcessingService {
             if (weapon.canAttack()) {
                 Bullet bullet = new Bullet();
                 bullet.setDamage(weapon.getDamage());
+                bullet.setDuration(3);
                 bullet.setSpritePath("rpg/gameengine/pink_dot.png");
                 System.out.println("ny bullet");
                 bullet.setSize(size.getX(), size.getY());
                 bullet.getRoomPosition().set(position);
                 bullet.getDefaultVelocity().set(velocity);
-                System.out.println(velocity);
                 bullet.setDirection(direction);
                 //weapon.getRoomPosition().set(player.getRoomPosition().plus(vector));
                 //weapon.setDirection(direction);

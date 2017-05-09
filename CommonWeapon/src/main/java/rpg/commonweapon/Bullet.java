@@ -11,6 +11,7 @@ public class Bullet extends Entity {
     
     private int damage;
     private Vector defaultVelocity;
+    private float duration;
             
     public Bullet() {
         defaultVelocity = new Vector();
@@ -26,6 +27,18 @@ public class Bullet extends Entity {
     
     public int getDamage() {
         return damage;
+    }
+    
+    public void setDuration(float duration) {
+        this.duration = duration;
+    }
+    
+    public float getDuration() {
+        return duration;
+    }
+    
+    public void reduceDuration(float deltaTime) {
+        this.duration -= deltaTime;
     }
     
 }
