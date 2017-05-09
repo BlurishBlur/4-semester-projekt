@@ -8,7 +8,6 @@ import static org.mockito.Mockito.*;
 import rpg.common.data.GameData;
 import rpg.common.data.GameKeys;
 import rpg.common.entities.Entity;
-import rpg.common.util.Vector;
 import rpg.common.world.Room;
 import rpg.common.world.World;
 
@@ -48,7 +47,10 @@ public class PlayerTest {
 
     @After
     public void tearDown() {
-
+        playerControlSystem = null;
+        player = null;
+        gameData = null;
+        world = null;
     }
 
     @Test
