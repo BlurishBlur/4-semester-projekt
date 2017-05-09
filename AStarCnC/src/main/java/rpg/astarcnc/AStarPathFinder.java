@@ -37,15 +37,19 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
         }
     }
 
+    @Override
     public Path findPath(Entity entity, int sx, int sy, int tx, int ty) {
         // easy first check, if the destination is blocked, we can't get there
+        //System.out.println(room.blocked(entity, tx, ty)); TODO slet
 
-        /*if (room.blocked(entity, tx, ty)) {
+        /*if (room.blocked(tx, ty)) {
+            System.out.println("blocked");
             return null;
         }*/
 
         // initial state for A*. The closed group is empty. Only the starting
         // tile is in the open list and it'e're already there
+        //System.out.println(sx + " " + sy); TODO slet
         nodes[sx][sy].setCost(0);
         nodes[sx][sy].setDepth(0);
         closed.clear();
@@ -102,7 +106,8 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
                         // it has been previously makes sure the node hasn'e've
                         // determined that there might have been a better path to get to
                         // this node so it needs to be re-evaluated
-                        System.out.println(xp + ", " + yp);
+                        //System.out.println(xp + ", " + yp);
+                        //System.out.println(neighbour);
                         if (nextStepCost < neighbour.getCost()) {
                             if (inOpenList(neighbour)) {
                                 removeFromOpen(neighbour);
@@ -129,6 +134,7 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
         // since we'e've run out of search 
         // there was no path. Just return null
         if (nodes[tx][ty].getParent() == null) {
+            System.out.println("no parent");
             return null;
         }
 
@@ -227,7 +233,7 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
         boolean invalid = (x < 0) || (y < 0) || (x >= room.getWidth()) || (y >= room.getHeight());
 
         if ((!invalid) && ((sx != x) || (sy != y))) {
-            invalid = room.blocked(entity, x, y);
+            invalid = room.blocked((x*20), (y*20));
         }
 
         return !invalid;

@@ -14,8 +14,7 @@ import rpg.commonenemy.Enemy;
 import rpg.commonenemy.EnemySPI;
 
 @ServiceProviders(value = {
-    @ServiceProvider(service = IEntityProcessingService.class)
-    ,
+    @ServiceProvider(service = IEntityProcessingService.class),
     @ServiceProvider(service = IGamePluginService.class)
 })
 public class EnemyControlSystem implements IEntityProcessingService, IGamePluginService, EnemySPI {
@@ -46,22 +45,23 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
                 enemy.setActionTimer((int) (Math.random() * 4) + 1);
             }
 
-            float diffX = enemy.getNextStep().getX() - enemy.getVelocity().getX();
-            float diffY = enemy.getNextStep().getY() - enemy.getVelocity().getY();
+            if (enemy.getNextStep() != null) {
+                int diffX = (int) (enemy.getNextStep().getX() - ((int)enemy.getRoomPosition().getX() / 20));
+                int diffY = (int) (enemy.getNextStep().getY() - ((int)enemy.getRoomPosition().getY() / 20));
 
-            if (diffX < 0) {
-                enemy.getVelocity().subtractX(enemy.getCurrentMovementSpeed());
-            }
-            else if (diffX > 0) {
-                enemy.getVelocity().addX(enemy.getCurrentMovementSpeed());
-            }
-            if (diffY < 0) {
-                enemy.getVelocity().subtractY(enemy.getCurrentMovementSpeed());
-            }
-            else if (diffY > 0) {
-                enemy.getVelocity().addY(enemy.getCurrentMovementSpeed());
-            }
-            /*
+                System.out.println("Diff: " + diffX + " " + diffY);
+                if (diffX < 0) {
+                    enemy.getVelocity().subtractX(enemy.getCurrentMovementSpeed());
+                } else if (diffX > 0) {
+                    enemy.getVelocity().addX(enemy.getCurrentMovementSpeed());
+                }
+                if (diffY < 0) {
+                    enemy.getVelocity().subtractY(enemy.getCurrentMovementSpeed());
+                } else if (diffY > 0) {
+                    enemy.getVelocity().addY(enemy.getCurrentMovementSpeed());
+                }
+            } else {
+                /*
             if (enemy.getVerticalMovementChance() < 0.20) { // up
                 //enemy.getVelocity().addY(enemy.getCurrentMovementSpeed());
                 
@@ -75,6 +75,7 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
             else if (enemy.getHorizontalMovementChance() < 0.40) { // right
                 enemy.getVelocity().addX(enemy.getCurrentMovementSpeed());
             }*/
+            }
 
             if (gameData.getKeys().isPressed(GameKeys.K)) {
                 enemy.setCurrentHealth(0);
@@ -106,16 +107,14 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
         if (enemy.getRoomPosition().getX() - (enemy.getWidth() / 2) < 0) {
             enemy.getRoomPosition().setX(0 + (enemy.getWidth() / 2));
             enemy.getVelocity().setX(0);
-        }
-        else if (enemy.getRoomPosition().getX() + (enemy.getWidth() / 2) > world.getCurrentRoom().getWidth()) {
+        } else if (enemy.getRoomPosition().getX() + (enemy.getWidth() / 2) > world.getCurrentRoom().getWidth()) {
             enemy.getRoomPosition().setX(world.getCurrentRoom().getWidth() - (enemy.getWidth() / 2));
             enemy.getVelocity().setX(0);
         }
         if (enemy.getRoomPosition().getY() - (enemy.getHeight() / 2) < 0) {
             enemy.getRoomPosition().setY(0 + (enemy.getHeight() / 2));
             enemy.getVelocity().setY(0);
-        }
-        else if (enemy.getRoomPosition().getY() + (enemy.getHeight() / 2) > world.getCurrentRoom().getHeight()) {
+        } else if (enemy.getRoomPosition().getY() + (enemy.getHeight() / 2) > world.getCurrentRoom().getHeight()) {
             enemy.getRoomPosition().setY(world.getCurrentRoom().getHeight() - (enemy.getHeight() / 2));
             enemy.getVelocity().setY(0);
         }
