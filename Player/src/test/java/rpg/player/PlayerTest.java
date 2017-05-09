@@ -67,5 +67,13 @@ public class PlayerTest {
         assertFalse(player.getVelocity().getX() == 0);
         assertFalse(player.getVelocity().getY() == 0);
     }
+    
+    @Test
+    public void testPlayerEdgeCollision() {
+        player.getRoomPosition().set(-50, -50);
+        playerControlSystem.process(gameData, world);
+        assertTrue(player.getRoomPosition().getX() == player.getWidth() / 2);
+        assertTrue(player.getRoomPosition().getY() == player.getHeight() / 2);
+    }
 
 }
