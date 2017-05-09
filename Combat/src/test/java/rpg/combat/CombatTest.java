@@ -1,9 +1,8 @@
-package rpg.collision;
+package rpg.combat;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import rpg.common.data.GameData;
 import rpg.common.data.GameKeys;
@@ -15,16 +14,16 @@ import rpg.common.world.World;
  *
  * @author Niels
  */
-public class CollisionTest {
+public class CombatTest {
 
-    private CollisionDetectionSystem collisionDetectionSystem;
+    private CombatSystem combatSystem;
     private Entity player;
     private GameData gameData;
     private World world;
 
     @Before
     public void setUp() {
-        collisionDetectionSystem = new CollisionDetectionSystem();
+        combatSystem = new CombatSystem();
 
         Room room = new Room();
         room.setWidth(1280);
@@ -52,7 +51,7 @@ public class CollisionTest {
 
     @After
     public void tearDown() {
-        collisionDetectionSystem = null;
+        combatSystem = null;
         player = null;
         gameData = null;
         world = null;
