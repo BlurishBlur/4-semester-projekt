@@ -36,7 +36,34 @@ public class Room implements Serializable {
     public boolean blocked(float targetX, float targetY) {
         /*return isPointInPolygons(collidables,
                 new Vector(entity.getRoomPosition().getX() + targetX, entity.getRoomPosition().getY() + targetY));*/
-        return isPointInPolygons(collidables, new Vector(targetX, targetY));
+        return isPointInPolygonsAI(collidables, new Vector(targetX, targetY));
+    }
+    
+    private boolean isPointInPolygonsAI(Stack<Polygon> polygons, Vector point) {
+        if (polygons != null) {
+            for (Polygon polygon : polygons) {
+                if (isPointInPolygonAI(polygon, point)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    private boolean isPointInPolygonAI(Polygon polygon, Vector point) {
+        Vector lastVertice = polygon.getLast();
+        boolean oddNodes = false;
+        for (int i = 0; i < polygon.size(); i++) {
+            Vector vertice = polygon.get(i);
+            if ((vertice.getY() < point.getY() && lastVertice.getY() >= point.getY()) || (lastVertice.getY() < point.getY() && vertice.getY() >= point.getY())) {
+                if (vertice.getX() + (point.getY() - vertice.getY()) / (lastVertice.getY() - vertice.getY()) * (lastVertice.getX() - vertice.getX()) < point.getX()) {
+                    oddNodes = !oddNodes;
+                }
+            }
+
+            lastVertice = vertice;
+        }
+        return oddNodes;
     }
 
     private boolean isPointInPolygons(Stack<Polygon> polygons, Vector point) {

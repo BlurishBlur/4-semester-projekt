@@ -49,7 +49,7 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
                 int diffX = (int) (enemy.getNextStep().getX() - ((int)enemy.getRoomPosition().getX() / 20));
                 int diffY = (int) (enemy.getNextStep().getY() - ((int)enemy.getRoomPosition().getY() / 20));
 
-                System.out.println("Diff: " + diffX + " " + diffY);
+                //System.out.println("Diff: " + diffX + " " + diffY);
 
                 if (diffX < 0) {
                     enemy.getVelocity().subtractX(enemy.getCurrentMovementSpeed());
@@ -95,7 +95,7 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
     public Entity createEnemy(GameData gameData) {
         Entity newEnemy = new Enemy();
         //newEnemy.getRoomPosition().set(640, 360);
-        newEnemy.getRoomPosition().set(520, 220);
+        newEnemy.getRoomPosition().set(368, 526);
         newEnemy.setDefaultMovementSpeed(100);
         newEnemy.setCurrentMovementSpeed(newEnemy.getDefaultMovementSpeed());
         newEnemy.setMaxHealth(50);

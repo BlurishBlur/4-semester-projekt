@@ -93,7 +93,7 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
                     int xp = x + current.getX();
                     int yp = y + current.getY();
 
-                    if (isValidLocation(entity, sx, sy, xp, yp)) {
+                    if (isValidLocation(sx, sy, xp, yp)) {
                         // the cost to get to this node is cost the current plus the movement
 
                         // cost to reach this node. Note that the heursitic value is only used
@@ -221,18 +221,20 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
     /**
      * Check if a given location is valid for the supplied mover
      *
-     * @param mover The mover that would hold a given location
      * @param sx The starting x coordinate
      * @param sy The starting y coordinate
      * @param x The x coordinate of the location to check
      * @param y The y coordinate of the location to check
      * @return True if the location is valid for the given mover
      */
-    protected boolean isValidLocation(Entity entity, int sx, int sy, int x, int y) {
+    protected boolean isValidLocation(int sx, int sy, int x, int y) {
         boolean invalid = (x < 0) || (y < 0) || (x >= room.getWidth()) || (y >= room.getHeight());
 
         if ((!invalid) && ((sx != x) || (sy != y))) {
-            invalid = room.blocked((x*20), (y*20));
+            System.out.println(invalid);
+            //invalid = room.blocked((x*20), (y*20));
+            System.out.println(invalid);
+            System.out.println("");
         }
 
         return !invalid;
