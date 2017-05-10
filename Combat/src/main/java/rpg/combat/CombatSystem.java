@@ -21,11 +21,11 @@ public class CombatSystem implements IEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
-        for(Entity entity : world.getCurrentRoom().getEntities(Bullet.class)) {
+        for (Entity entity : world.getCurrentRoom().getEntities(Bullet.class)) {
             Bullet bullet = (Bullet) entity;
             bullet.getVelocity().set(bullet.getDefaultVelocity());
             bullet.reduceCurrentDuration(gameData.getDeltaTime());
-            if(bullet.getCurrentDuration() < 0) {
+            if (bullet.getCurrentDuration() < 0) {
                 world.getCurrentRoom().removeEntity(entity);
                 gameData.removeEvent(gameData.getEvent(entity));
             }
@@ -35,7 +35,12 @@ public class CombatSystem implements IEntityProcessingService {
                 addSword(world);
             }
             if (gameData.getKeys().isPressed(GameKeys.F1)) {
-                addGun(world);
+                if (world.getPlayer().getWeapon().isAnimatable()) {
+                    addGun(world);
+                }
+                else {
+                    addSword(world);
+                }
             }
             checkPlayerWeaponSwing(gameData, world);
             handleWeaponHit(gameData, world);
@@ -109,21 +114,21 @@ public class CombatSystem implements IEntityProcessingService {
     private void addGun(World world) {
         Entity player = world.getPlayer();
         Weapon gun = new Weapon();
-        gun.setWidth(20);
-        gun.setHeight(20);
+        gun.setWidth(0);
+        gun.setHeight(0);
         gun.getRoomPosition().set(player.getRoomPosition());
         gun.setSpritePath("rpg/gameengine/empty.png");
         gun.setAttackSpeed(0.5f);
         gun.getSounds().put("HIT", "rpg/gameengine/punch.mp3");
         gun.getSounds().put("MISS", "rpg/gameengine/woosh.mp3");
-        
+
         Bullet bullet = new Bullet();
         bullet.setDamage(7);
         bullet.setDefaultMovementSpeed(400);
         bullet.setDefaultDuration(4);
         bullet.setSize(5, 5);
         bullet.setSpritePath("rpg/gameengine/bullet.png");
-        
+
         gun.setBullet(bullet);
         player.setWeapon(gun);
         System.out.println("Added weapon to player");
@@ -141,14 +146,14 @@ public class CombatSystem implements IEntityProcessingService {
         sword.setMaxFrames(4);
         sword.getSounds().put("HIT", "rpg/gameengine/stabsound.wav");
         sword.getSounds().put("MISS", "rpg/gameengine/woosh.mp3");
-        
+
         Bullet attack = new Bullet();
         attack.setDamage(10);
         attack.setDefaultMovementSpeed(0);
         attack.setDefaultDuration(0);
         attack.setSize(10, 10);
         attack.setSpritePath("rpg/gameengine/empty.png");
-        
+
         sword.setBullet(attack);
         player.setWeapon(sword);
         System.out.println("Added weapon to player");
