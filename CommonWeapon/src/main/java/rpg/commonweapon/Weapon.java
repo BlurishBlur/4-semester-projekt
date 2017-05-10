@@ -4,16 +4,22 @@ import rpg.common.entities.Entity;
 
 public class Weapon extends Entity {
     
-    private int damage;
     private float attackSpeed;
     private float timeSinceLastAttack;
+    private Bullet bullet;
     
-    public int getDamage() {
-        return damage;
+    public void setBullet(Bullet bullet) {
+        this.bullet = bullet;
     }
     
-    public void setDamage(int damage) {
-        this.damage = damage;
+    public Bullet getBullet() {
+        Bullet newBullet = new Bullet();
+        newBullet.setDamage(bullet.getDamage());
+        newBullet.setDefaultMovementSpeed(bullet.getDefaultMovementSpeed());
+        newBullet.setDefaultDuration(bullet.getDefaultDuration());
+        newBullet.setSize(bullet.getWidth(), bullet.getHeight());
+        newBullet.setSpritePath(bullet.getSpritePath());
+        return newBullet;
     }
     
     public float getAttackSpeed() {
