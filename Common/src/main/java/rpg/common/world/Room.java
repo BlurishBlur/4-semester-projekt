@@ -38,18 +38,25 @@ public class Room implements Serializable {
                 new Vector(entity.getRoomPosition().getX() + targetX, entity.getRoomPosition().getY() + targetY));*/
         return isPointInPolygonsAI(collidables, new Vector(targetX, targetY));
     }
-    
+
     private boolean isPointInPolygonsAI(Stack<Polygon> polygons, Vector point) {
         if (polygons != null) {
             for (Polygon polygon : polygons) {
+                //for (int i = 0; i < 10; i++) {
+                //  point.addX(1);
+                //for (int j = 0; j < 10; j++) {
+                //  point.addY(1);
                 if (isPointInPolygonAI(polygon, point)) {
                     return true;
                 }
+                //}
+                // }
+
             }
         }
         return false;
     }
-    
+
     private boolean isPointInPolygonAI(Polygon polygon, Vector point) {
         Vector lastVertice = polygon.getLast();
         boolean oddNodes = false;
@@ -203,7 +210,7 @@ public class Room implements Serializable {
     public void setSpritePath(String spritePath) {
         this.spritePath = spritePath;
     }
-    
+
     public float getCost(Entity entity, int sx, int sy, int tx, int ty) {
         return 1;
     }

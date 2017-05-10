@@ -51,9 +51,9 @@ public class AStarControlSystem implements IEntityProcessingService {
                         //System.out.println(x + " " + y);
                     }
                 }
-                pathFinder = new AStarPathFinder(currentRoom, nodes, 2000, true);
+                pathFinder = new AStarPathFinder(currentRoom, nodes, 2000, false);
             }
-            //if(path == null) {
+            if(path == null) {
             path = pathFinder.findPath(enemy, (int) enemy.getRoomPosition().getX() / 20,
                     (int) enemy.getRoomPosition().getY() / 20, (int) world.getPlayer().getRoomPosition().getX() / 20,
                     (int) world.getPlayer().getRoomPosition().getY() / 20);
@@ -65,9 +65,11 @@ public class AStarControlSystem implements IEntityProcessingService {
 
                 for (int i = 0; i < path.getLength(); i++) {
                     System.out.println(path.getStep(i).getX() + ", " + path.getStep(i).getY());
+                    
                 }
+                System.out.println("");
             }
-            //}
+            }
         }
     }
 

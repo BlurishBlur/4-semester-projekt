@@ -40,7 +40,6 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
     @Override
     public Path findPath(Entity entity, int sx, int sy, int tx, int ty) {
         // easy first check, if the destination is blocked, we can't get there
-        //System.out.println(room.blocked(entity, tx, ty)); TODO slet
 
         /*if (room.blocked(tx, ty)) {
             System.out.println("blocked");
@@ -231,10 +230,10 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
         boolean invalid = (x < 0) || (y < 0) || (x >= room.getWidth()) || (y >= room.getHeight());
 
         if ((!invalid) && ((sx != x) || (sy != y))) {
-            System.out.println(invalid);
-            //invalid = room.blocked((x*20), (y*20));
-            System.out.println(invalid);
-            System.out.println("");
+            //System.out.println(x+" " + y + " " + invalid);
+            invalid = room.blocked((x*20), (y*20));
+            System.out.println(x+" " + y + " " + invalid);
+            //System.out.println("");
         }
 
         return !invalid;
