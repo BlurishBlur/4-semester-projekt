@@ -76,19 +76,19 @@ public class CombatSystem implements IEntityProcessingService {
         if (gameData.getKeys().isPressed(GameKeys.UP)) {
             //attack(weapon, player, new Vector(0, player.getHeight() / 2), 0, gameData);
             //attack(weapon, player, bullet, gameData);
-            attack(weapon, new Vector(5, 5), new Vector(player.getRoomPosition().getX(), player.getRoomPosition().getY() + player.getHeight()), new Vector(0, 250), 0, gameData, world);
+            attack(weapon, new Vector(5, 5), new Vector(player.getRoomPosition().getX(), player.getRoomPosition().getY() + player.getHeight()), new Vector(0, 400), 0, gameData, world);
         }
         else if (gameData.getKeys().isPressed(GameKeys.DOWN)) {
             //attack(weapon, player, new Vector(0, -player.getHeight() / 2), 180, gameData);
-            attack(weapon, new Vector(5, 5), new Vector(player.getRoomPosition().getX(), player.getRoomPosition().getY() - player.getHeight()), new Vector(0, -250), 180, gameData, world);
+            attack(weapon, new Vector(5, 5), new Vector(player.getRoomPosition().getX(), player.getRoomPosition().getY() - player.getHeight()), new Vector(0, -400), 180, gameData, world);
         }
         else if (gameData.getKeys().isPressed(GameKeys.LEFT)) {
             //attack(weapon, player, new Vector(-player.getWidth() / 2, 0), 90, gameData);
-            attack(weapon, new Vector(5, 5), new Vector(player.getRoomPosition().getX() - player.getWidth(), player.getRoomPosition().getY()), new Vector(-250, 0), 90, gameData, world);
+            attack(weapon, new Vector(5, 5), new Vector(player.getRoomPosition().getX() - player.getWidth(), player.getRoomPosition().getY()), new Vector(-400, 0), 90, gameData, world);
         }
         else if (gameData.getKeys().isPressed(GameKeys.RIGHT)) {
             //attack(weapon, player, new Vector(player.getWidth() / 2, 0), 270, gameData);
-            attack(weapon, new Vector(5, 5), new Vector(player.getRoomPosition().getX() + player.getWidth(), player.getRoomPosition().getY()), new Vector(250, 0), 270, gameData, world);
+            attack(weapon, new Vector(5, 5), new Vector(player.getRoomPosition().getX() + player.getWidth(), player.getRoomPosition().getY()), new Vector(400, 0), 270, gameData, world);
         }
     }
 
@@ -98,7 +98,7 @@ public class CombatSystem implements IEntityProcessingService {
                 Bullet bullet = new Bullet();
                 bullet.setDamage(weapon.getDamage());
                 bullet.setDuration(3);
-                bullet.setSpritePath("rpg/gameengine/pink_dot.png");
+                bullet.setSpritePath("rpg/gameengine/bullet.png");
                 System.out.println("ny bullet");
                 bullet.setSize(size.getX(), size.getY());
                 bullet.getRoomPosition().set(position);
