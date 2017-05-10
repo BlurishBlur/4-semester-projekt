@@ -26,7 +26,6 @@ public class CombatSystem implements IEntityProcessingService {
             bullet.getVelocity().set(bullet.getDefaultVelocity());
             bullet.reduceCurrentDuration(gameData.getDeltaTime());
             if(bullet.getCurrentDuration() < 0) {
-                System.out.println("removing entity " + bullet.getSpritePath());
                 world.getCurrentRoom().removeEntity(entity);
                 gameData.removeEvent(gameData.getEvent(entity));
             }
