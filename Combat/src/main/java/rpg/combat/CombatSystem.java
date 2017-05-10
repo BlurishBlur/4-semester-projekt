@@ -114,11 +114,10 @@ public class CombatSystem implements IEntityProcessingService {
     private void addGun(World world) {
         Entity player = world.getPlayer();
         Weapon gun = new Weapon();
-        gun.setWidth(0);
-        gun.setHeight(0);
+        gun.setSize(0, 0);
         gun.getRoomPosition().set(player.getRoomPosition());
         gun.setSpritePath("rpg/gameengine/empty.png");
-        gun.setAttackSpeed(0.5f);
+        gun.setAttackSpeed(0.25f);
         gun.getSounds().put("HIT", "rpg/gameengine/punch.mp3");
         gun.getSounds().put("MISS", "rpg/gameengine/woosh.mp3");
 
@@ -137,11 +136,10 @@ public class CombatSystem implements IEntityProcessingService {
     private void addSword(World world) {
         Entity player = world.getPlayer();
         Weapon sword = new Weapon();
-        sword.setWidth(player.getWidth());
-        sword.setHeight(player.getHeight());
+        sword.setSize(player.getWidth(), player.getHeight());
         sword.getRoomPosition().set(player.getRoomPosition());
         sword.setSpritePath("rpg/gameengine/sword.atlas");
-        sword.setAttackSpeed(2);
+        sword.setAttackSpeed(1.5f);
         sword.setCurrentFrame(1);
         sword.setMaxFrames(4);
         sword.getSounds().put("HIT", "rpg/gameengine/stabsound.wav");
