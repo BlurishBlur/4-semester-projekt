@@ -21,8 +21,9 @@ public class AStarControlSystem implements IEntityProcessingService {
 
     private Room currentRoom;
     private Node[][] nodes;
-    private PathFinder pathFinder;
+    private AStarPathFinder pathFinder;
     private Path path;
+    private int k = 0;
 
     @Override
     public void process(GameData gameData, World world) {
@@ -35,7 +36,7 @@ public class AStarControlSystem implements IEntityProcessingService {
             } else {
                 //System.out.println("opretter nye");
                 currentRoom = world.getCurrentRoom();
-                nodes = new Node[currentRoom.getWidth() / 20][currentRoom.getHeight() / 20];
+                nodes = new Node[currentRoom.getWidth() / World.SCALE][currentRoom.getHeight() / World.SCALE];
                 /*int minX = 0;
                 int minY = 0;
                 int maxX = world.getCurrentRoom().getWidth();
@@ -45,32 +46,36 @@ public class AStarControlSystem implements IEntityProcessingService {
                 int minY = (int) Math.min(enemy.getRoomPosition().getY() - 1, world.getPlayer().getRoomPosition().getY() - 1);
                 int maxY = (int) Math.max(enemy.getRoomPosition().getY() + 1, world.getPlayer().getRoomPosition().getY()) + (int) enemy.getHeight() + 1;
                 //nodes = new Node[(int) enemy.getWidth() * 2][(int) enemy.getHeight() * 2];
-                for (int x = 0; x < currentRoom.getWidth() / 20; x++) {
-                    for (int y = 0; y < currentRoom.getHeight() / 20; y++) {
+                for (int x = 0; x < currentRoom.getWidth() / World.SCALE; x++) {
+                    for (int y = 0; y < currentRoom.getHeight() / World.SCALE; y++) {
                         nodes[x][y] = new Node(x, y);
+                        nodes[x][y].setBlocked(currentRoom.isNodeBlocked(x * World.SCALE, y * World.SCALE));
                         //System.out.println(x + " " + y);
                     }
                 }
-                pathFinder = new AStarPathFinder(currentRoom, nodes, 2000, false);
+                pathFinder = new AStarPathFinder(currentRoom, nodes, 1000, true);
             }
-            if(path == null) {
-            path = pathFinder.findPath(enemy, (int) enemy.getRoomPosition().getX() / 20,
-                    (int) enemy.getRoomPosition().getY() / 20, (int) world.getPlayer().getRoomPosition().getX() / 20,
-                    (int) world.getPlayer().getRoomPosition().getY() / 20);
+            //if (path == null && k == 0) {
 
-            //System.out.println("Player position: " + (int)world.getPlayer().getRoomPosition().getX() / 20 + ", " + (int)world.getPlayer().getRoomPosition().getY() / 20);
-            //System.out.println("Enemy position: " + (int)enemy.getRoomPosition().getX() / 20 + ", " + (int)enemy.getRoomPosition().getY() / 20);
-            if (path != null) {
-                enemy.setNextStep(path.getStep(1));
+                /*for(int i = 0; i < currentRoom.getWidth() / 50; i++) {
+                    for(int j = 0; j < currentRoom.getHeight() / 50; j++) {
+                        System.out.println("Node x = "+i+" y = "+j+" er "+nodes[i][j].isBlocked());
+                    }
+                }*/
+                path = pathFinder.findPath(enemy, enemy.getRoomPosition().getX(),
+                        enemy.getRoomPosition().getY(), world.getPlayer().getRoomPosition().getX(),
+                        world.getPlayer().getRoomPosition().getY());
 
-                for (int i = 0; i < path.getLength(); i++) {
-                    System.out.println(path.getStep(i).getX() + ", " + path.getStep(i).getY());
-                    
+                if (path != null) {
+                    enemy.setNextStep(path.getStep(1));
+                    for (int i = 0; i < path.getLength(); i++) {
+
+                        System.out.println(path.getStep(i).getX() * World.SCALE + ", " + path.getStep(i).getY() * World.SCALE);
+
+                    }
                 }
-                System.out.println("");
-            }
-            }
+            //}
+            
         }
     }
-
 }

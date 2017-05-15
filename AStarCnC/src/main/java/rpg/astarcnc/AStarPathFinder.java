@@ -8,7 +8,7 @@ import rpg.common.entities.Entity;
 import rpg.common.services.IEntityProcessingService;
 import rpg.common.world.World;
 
-public class AStarPathFinder implements PathFinder, IEntityProcessingService {
+public class AStarPathFinder implements IEntityProcessingService {
 
     private ArrayList closed = new ArrayList();
     private SortedList open = new SortedList();
@@ -37,8 +37,13 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
         }
     }
 
-    @Override
-    public Path findPath(Entity entity, int sx, int sy, int tx, int ty) {
+    //@Override
+    public Path findPath(Entity entity, float originSx, float originSy, float originTx, float originTy) {
+        int sx = (int) originSx / World.SCALE;
+        int sy = (int) originSy / World.SCALE;
+        int tx = (int) originTx / World.SCALE;
+        int ty = (int) originTy / World.SCALE;
+        
         // easy first check, if the destination is blocked, we can't get there
 
         /*if (room.blocked(tx, ty)) {
@@ -92,7 +97,7 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
                     int xp = x + current.getX();
                     int yp = y + current.getY();
 
-                    if (isValidLocation(sx, sy, xp, yp)) {
+                    if (isValidLocation(entity, sx, sy, xp, yp)) {
                         // the cost to get to this node is cost the current plus the movement
 
                         // cost to reach this node. Note that the heursitic value is only used
@@ -226,14 +231,21 @@ public class AStarPathFinder implements PathFinder, IEntityProcessingService {
      * @param y The y coordinate of the location to check
      * @return True if the location is valid for the given mover
      */
-    protected boolean isValidLocation(int sx, int sy, int x, int y) {
+    protected boolean isValidLocation(Entity enemy, float sx, float sy, int x, int y) {
         boolean invalid = (x < 0) || (y < 0) || (x >= room.getWidth()) || (y >= room.getHeight());
 
         if ((!invalid) && ((sx != x) || (sy != y))) {
             //System.out.println(x+" " + y + " " + invalid);
-            invalid = room.blocked((x*20), (y*20));
-            System.out.println(x+" " + y + " " + invalid);
+            /////invalid = room.blocked((x*50), (y*50));
+            invalid = nodes[x][y].isBlocked();
+            //System.out.println(x+" " + y + " " + invalid);
             //System.out.println("");
+            if(y * World.SCALE < enemy.getRoomPosition().getY() && !invalid) {
+                invalid = nodes[x][y+1].isBlocked();
+            }
+            if(x * World.SCALE < enemy.getRoomPosition().getX() && !invalid) {
+                invalid = nodes[x+1][y].isBlocked();
+            }
         }
 
         return !invalid;

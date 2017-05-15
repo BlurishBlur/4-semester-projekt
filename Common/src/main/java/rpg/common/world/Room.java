@@ -32,38 +32,113 @@ public class Room implements Serializable {
     public Room() {
         collidables = new Stack();
     }
+    
+    public boolean isNodeBlocked(int x, int y) {
+        boolean blocked = false;
+        
+        if(isPointInPolygonsAI(collidables, new Vector(x,y))) {
+            blocked = true;
+        }
+        if(isPointInPolygonsAI(collidables, new Vector(x+World.SCALE,y))) {
+            blocked = true;
+        }
+        if(isPointInPolygonsAI(collidables, new Vector(x,y+World.SCALE))) {
+            blocked = true;
+        }
+        if(isPointInPolygonsAI(collidables, new Vector(x+World.SCALE,y+World.SCALE))) {
+            blocked = true;
+        }
+        return blocked;
+    }
 
     public boolean blocked(float targetX, float targetY) {
-        /*return isPointInPolygons(collidables,
-                new Vector(entity.getRoomPosition().getX() + targetX, entity.getRoomPosition().getY() + targetY));*/
-        return isPointInPolygonsAI(collidables, new Vector(targetX, targetY));
+        boolean collided = false;
+        System.out.println("Blocked location: "+targetX + " "+targetY);
+
+        if (isPointInPolygonsAI(collidables, new Vector(targetX, targetY))) {
+            //System.out.println("Bottom left"+targetX + " " + targetY);
+            collided = true;
+        }
+        if (isPointInPolygonsAI(collidables, new Vector(targetX + 50, targetY))) {
+            //System.out.println("Bottom right"+targetX + " " + targetY);
+
+            collided = true;
+        }
+        if (isPointInPolygonsAI(collidables, new Vector(targetX, targetY + 50))) {
+            //System.out.println("Top left"+targetX + " " + targetY);
+
+            collided = true;
+        }
+        if (isPointInPolygonsAI(collidables, new Vector(targetX + 50, targetY + 50))) {
+            //System.out.println("Top right"+targetX + " " + targetY);
+
+            collided = true;
+        }
+        if (isPointInPolygonsAI(collidables, new Vector(targetX + 25, targetY + 50))) {
+            //System.out.println("Top middle"+targetX + " " + targetY);
+
+            collided = true;
+        }
+        if (isPointInPolygonsAI(collidables, new Vector(targetX, targetY+25))) {
+            //System.out.println("left middle"+targetX + " " + targetY);
+
+            collided = true;
+        }
+        if (isPointInPolygonsAI(collidables, new Vector(targetX+50, targetY+25))) {
+            //System.out.println("right middle"+targetX + " " + targetY);
+
+            collided = true;
+        }
+        if (isPointInPolygonsAI(collidables, new Vector(targetX+25, targetY))) {
+            //System.out.println("bottom middle"+targetX + " " + targetY);
+
+            collided = true;
+        }
+
+        return collided;
     }
 
     private boolean isPointInPolygonsAI(Stack<Polygon> polygons, Vector point) {
         if (polygons != null) {
             for (Polygon polygon : polygons) {
-                //for (int i = 0; i < 10; i++) {
-                //  point.addX(1);
-                //for (int j = 0; j < 10; j++) {
-                //  point.addY(1);
-                if (isPointInPolygonAI(polygon, point)) {
+
+                if (isPointInPolygonAI(polygon, point.getY(), point.getX())) {
+                    return true;
+                }/*            
+                if (isPointInPolygonAI(polygon, point.getY(), point.getX()+50)) {
                     return true;
                 }
-                //}
-                // }
+                if (isPointInPolygonAI(polygon, point.getY()+50, point.getX())) {
+                    return true;
+                }
+                if (isPointInPolygonAI(polygon, point.getY()+50, point.getX()+50)) {
+                    return true;
+                }
+                if (isPointInPolygonAI(polygon, point.getY()-30, point.getX())) {
+                    return true;
+                }
+                if (isPointInPolygonAI(polygon, point.getY()+30, point.getX()+30)) {
+                    return true;
+                }
+                if (isPointInPolygonAI(polygon, point.getY()-30, point.getX()+30)) {
+                    return true;
+                }
+                if (isPointInPolygonAI(polygon, point.getY()+30, point.getX()-30)) {
+                    return true;
+                }*/
 
             }
         }
         return false;
     }
 
-    private boolean isPointInPolygonAI(Polygon polygon, Vector point) {
+    private boolean isPointInPolygonAI(Polygon polygon, float y, float x) {
         Vector lastVertice = polygon.getLast();
         boolean oddNodes = false;
         for (int i = 0; i < polygon.size(); i++) {
             Vector vertice = polygon.get(i);
-            if ((vertice.getY() < point.getY() && lastVertice.getY() >= point.getY()) || (lastVertice.getY() < point.getY() && vertice.getY() >= point.getY())) {
-                if (vertice.getX() + (point.getY() - vertice.getY()) / (lastVertice.getY() - vertice.getY()) * (lastVertice.getX() - vertice.getX()) < point.getX()) {
+            if ((vertice.getY() < y && lastVertice.getY() >= y) || (lastVertice.getY() < y && vertice.getY() >= y)) {
+                if (vertice.getX() + (y - vertice.getY()) / (lastVertice.getY() - vertice.getY()) * (lastVertice.getX() - vertice.getX()) < x) {
                     oddNodes = !oddNodes;
                 }
             }

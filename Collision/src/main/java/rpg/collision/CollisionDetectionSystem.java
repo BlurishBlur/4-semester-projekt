@@ -9,6 +9,7 @@ import rpg.common.services.IEntityProcessingService;
 import rpg.common.util.Polygon;
 import rpg.common.util.Vector;
 import rpg.common.world.World;
+import rpg.commonenemy.Enemy;
 
 @ServiceProviders(value = {
     @ServiceProvider(service = IEntityProcessingService.class)

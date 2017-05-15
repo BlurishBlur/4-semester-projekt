@@ -17,6 +17,7 @@ public class World implements Serializable {
     private Room[][] world;
     private Room currentRoom;
     private Entity player;
+    public static int SCALE = 30;
 
     public World() {
         world = new Room[WORLD_WIDTH][WORLD_HEIGHT];

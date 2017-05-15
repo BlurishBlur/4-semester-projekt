@@ -26,6 +26,8 @@ public class Node implements Comparable {
      * The search depth of this node
      */
     private int depth;
+    
+    private boolean blocked;
 
     /**
      * Create a new node
@@ -103,6 +105,14 @@ public class Node implements Comparable {
 
     public void setDepth(int depth) {
         this.depth = depth;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
     }
 
 }
