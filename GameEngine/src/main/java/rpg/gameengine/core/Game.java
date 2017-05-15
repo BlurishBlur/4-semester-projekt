@@ -73,10 +73,9 @@ public class Game implements ApplicationListener {
         update();
         updatePlayerCamera();
         soundManager.loadSounds(world);
+        soundManager.playSounds(gameData, world);
         spriteManager.loadSprites(world);
         spriteManager.draw(gameData, world, playerCamera);
-        soundManager.playSounds(gameData, world);
-        skillpointsHud.drawSkillPointsHud();
         hudManager.draw(gameData, world);
         gameData.getKeys().update();
     }
