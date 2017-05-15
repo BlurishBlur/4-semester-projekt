@@ -44,7 +44,7 @@ public class FXMLDocumentController implements Initializable {
             if (name.toLowerCase().contains(searchTerm.toLowerCase())) {
                 CheckBox checkBox = new CheckBox(name);
                 checkBox.setSelected(unit.getInstalled() != null);
-                if (name.equals("GameEngine") || name.equals("Common")) {
+                if (name.equals("GameEngine") || name.startsWith("Common")) {
                     checkBox.setDisable(true);
                 }
                 else {
