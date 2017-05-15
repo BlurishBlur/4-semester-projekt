@@ -1,6 +1,8 @@
 package org.netbeans.modules.autoupdate.silentupdate.gui;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
@@ -38,6 +40,7 @@ public class FXMLDocumentController implements Initializable {
 
     private void createModuleCheckBoxes(String searchTerm) {
         moduleContainer.getChildren().clear();
+        List<CheckBox> checkBoxes = new ArrayList<>();
         String name;
         for (UpdateUnit unit : allModules) {
             name = unit.getCodeName().replace("rpg.", "");
@@ -54,9 +57,11 @@ public class FXMLDocumentController implements Initializable {
                         }).start();
                     });
                 }
-                moduleContainer.getChildren().add(checkBox);
+                checkBoxes.add(checkBox);
             }
         }
+        checkBoxes.sort(new CheckBoxComparator());
+        moduleContainer.getChildren().addAll(checkBoxes);
     }
 
     private void update(String codeName, boolean load) {
@@ -80,6 +85,15 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void searchModules(KeyEvent event) {
         createModuleCheckBoxes(txtSearch.getText());
+    }
+    
+    private class CheckBoxComparator implements Comparator {
+
+        @Override
+        public int compare(Object o1, Object o2) {
+            return Boolean.valueOf(((CheckBox) o1).isDisabled()).compareTo(((CheckBox) o2).isDisabled());
+        }
+        
     }
 
 }
