@@ -11,13 +11,12 @@ import rpg.common.services.IEntityProcessingService;
 import rpg.common.services.IGamePluginService;
 import rpg.common.world.World;
 import rpg.commonenemy.Enemy;
-import rpg.commonenemy.EnemySPI;
 
 @ServiceProviders(value = {
     @ServiceProvider(service = IEntityProcessingService.class),
     @ServiceProvider(service = IGamePluginService.class)
 })
-public class EnemyControlSystem implements IEntityProcessingService, IGamePluginService, EnemySPI {
+public class EnemyControlSystem implements IEntityProcessingService, IGamePluginService {
 
     private Entity enemy;
 
@@ -91,7 +90,6 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
         world.getCurrentRoom().removeEntity(enemy);
     }
 
-    @Override
     public Entity createEnemy(GameData gameData) {
         Entity newEnemy = new Enemy();
         //newEnemy.getRoomPosition().set(640, 360);
