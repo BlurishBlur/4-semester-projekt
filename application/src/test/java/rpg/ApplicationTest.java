@@ -17,22 +17,22 @@ import org.openide.util.Lookup;
 public class ApplicationTest extends NbTestCase {
 
     
-    private static final String ENEMY_FILE = "C:\\Users\\Antonio\\OneDrive\\Java Projekter\\4-semester-projekt\\application\\target\\with_enemy.xml";
-    private static final String NO_ENEMY_FILE = "C:\\Users\\Antonio\\OneDrive\\Java Projekter\\4-semester-projekt\\application\\target\\without_enemy.xml";
-    private static final String UPDATES_FILE = "C:\\Users\\Antonio\\OneDrive\\Java Projekter\\4-semester-projekt\\netbeans_site\\updates.xml";
+    //private static final String ENEMY_FILE = "C:\\Users\\Antonio\\OneDrive\\Java Projekter\\4-semester-projekt\\application\\target\\with_enemy.xml";
+    //private static final String NO_ENEMY_FILE = "C:\\Users\\Antonio\\OneDrive\\Java Projekter\\4-semester-projekt\\application\\target\\without_enemy.xml";
+    //private static final String UPDATES_FILE = "C:\\Users\\Antonio\\OneDrive\\Java Projekter\\4-semester-projekt\\netbeans_site\\updates.xml";
     
     List<IEntityProcessingService> processors;
     List<IGamePluginService> plugins;
     
-    public static Test suite() {
-        return NbModuleSuite.createConfiguration(ApplicationTest.class).
+    /*public static Test suite() {
+       /* return NbModuleSuite.createConfiguration(ApplicationTest.class).
                 gui(false).
                 failOnMessage(Level.WARNING). // works at least in RELEASE71
                 failOnException(Level.INFO).
                 enableClasspathModules(false). 
                 clusters(".*").
                 suite(); // RELEASE71+, else use NbModuleSuite.create(NbModuleSuite.createConfiguration(...))
-    }
+    }*/
 
     public ApplicationTest(String n) {
         super(n);
