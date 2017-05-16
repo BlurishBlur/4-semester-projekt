@@ -97,7 +97,7 @@ public class AStarPathFinder implements IEntityProcessingService {
                     int xp = x + current.getX();
                     int yp = y + current.getY();
 
-                    if (isValidLocation(entity, sx, sy, xp, yp)) {
+                    if (isValidLocation(entity, sx, sy, xp, yp) && xp != 64 && yp != 36) {
                         // the cost to get to this node is cost the current plus the movement
 
                         // cost to reach this node. Note that the heursitic value is only used
@@ -234,7 +234,7 @@ public class AStarPathFinder implements IEntityProcessingService {
     protected boolean isValidLocation(Entity enemy, float sx, float sy, int x, int y) {
         boolean invalid = (x < 0) || (y < 0) || (x >= room.getWidth()) || (y >= room.getHeight());
 
-        if ((!invalid) && ((sx != x) || (sy != y))) {
+        if ((!invalid) && ((sx != x) || (sy != y)) && x != 64 && y != 36) {
             //System.out.println(x+" " + y + " " + invalid);
             /////invalid = room.blocked((x*50), (y*50));
             invalid = nodes[x][y].isBlocked();
