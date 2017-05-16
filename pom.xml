@@ -84,6 +84,7 @@
         <module>SilentUpdate</module>
         <module>Collision</module>
         <module>AStarCnC</module>
+        <module>Map</module>
     </modules>
 
     <properties>

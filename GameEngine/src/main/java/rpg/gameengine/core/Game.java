@@ -13,6 +13,7 @@ import org.openide.util.LookupListener;
 import rpg.common.data.GameData;
 import rpg.common.world.World;
 import rpg.common.services.IEntityProcessingService;
+import rpg.common.services.IGameInitializationService;
 import rpg.common.services.IGamePluginService;
 import rpg.common.services.IPostEntityProcessingService;
 import rpg.gameengine.managers.SkillpointsHud;
@@ -41,7 +42,11 @@ public class Game implements ApplicationListener {
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
         gameData.setCameraZoom(1.50f);
-        world.loadRooms();
+        //world.loadRooms();
+        
+        for (IGameInitializationService initializer : getGameInitServices()) {
+            initializer.initialize(world, gameData);
+        }
         
         result = lookup.lookupResult(IGamePluginService.class);
         result.addLookupListener(lookupListener);
@@ -107,6 +112,10 @@ public class Game implements ApplicationListener {
 
     private Collection<? extends IGamePluginService> getGamePluginServices() {
         return lookup.lookupAll(IGamePluginService.class);
+    }
+    
+    private Collection<? extends IGameInitializationService> getGameInitServices() {
+        return lookup.lookupAll(IGameInitializationService.class);
     }
 
     private Collection<? extends IPostEntityProcessingService> getPostEntityProcessingServices() {
