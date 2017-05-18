@@ -1,4 +1,4 @@
-package rpg.astarcnc;
+package rpg.astar;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,7 +8,7 @@ import rpg.common.entities.Entity;
 import rpg.common.services.IEntityProcessingService;
 import rpg.common.world.World;
 
-public class AStarPathFinder implements IEntityProcessingService {
+public class AStarPathFinder implements IEntityProcessingService, PathFinder {
 
     private ArrayList closed = new ArrayList();
     private SortedList open = new SortedList();
@@ -16,43 +16,24 @@ public class AStarPathFinder implements IEntityProcessingService {
     private int maxSearchDistance;
     private Node[][] nodes;
     private boolean allowDiagMovement;
+    private int horizontalTiles;
+    private int verticalTiles;
 
     public AStarPathFinder(Room room, Node[][] nodes, int maxSearchDistance, boolean allowDiagMovement) {
         this.room = room;
         this.maxSearchDistance = maxSearchDistance;
         this.allowDiagMovement = allowDiagMovement;
         this.nodes = nodes;
+        this.horizontalTiles = room.getWidth() / World.SCALE;
+        this.verticalTiles = room.getHeight() / World.SCALE;
     }
 
-    public AStarPathFinder(Room room, int maxSearchDistance, boolean allowDiagMovement) {
-        this.room = room;
-        this.maxSearchDistance = maxSearchDistance;
-        this.allowDiagMovement = allowDiagMovement;
+    @Override
+    public Path findPath(Entity entity, int sx, int sy, int tx, int ty) {
 
-        nodes = new Node[room.getWidth()][room.getHeight()];
-        for (int x = 0; x < room.getWidth(); x++) {
-            for (int y = 0; y < room.getHeight(); y++) {
-                nodes[x][y] = new Node(x, y);
-            }
-        }
-    }
-
-    //@Override
-    public Path findPath(Entity entity, float originSx, float originSy, float originTx, float originTy) {
-        int sx = (int) originSx / World.SCALE;
-        int sy = (int) originSy / World.SCALE;
-        int tx = (int) originTx / World.SCALE;
-        int ty = (int) originTy / World.SCALE;
-        
         // easy first check, if the destination is blocked, we can't get there
-
-        /*if (room.blocked(tx, ty)) {
-            System.out.println("blocked");
-            return null;
-        }*/
         // initial state for A*. The closed group is empty. Only the starting
         // tile is in the open list and it'e're already there
-        //System.out.println(sx + " " + sy); TODO slet
         nodes[sx][sy].setCost(0);
         nodes[sx][sy].setDepth(0);
         closed.clear();
@@ -97,7 +78,7 @@ public class AStarPathFinder implements IEntityProcessingService {
                     int xp = x + current.getX();
                     int yp = y + current.getY();
 
-                    if (isValidLocation(entity, sx, sy, xp, yp)) {
+                    if (isValidLocation(entity, sx, sy, xp, yp) && xp != horizontalTiles && yp != verticalTiles) {
                         // the cost to get to this node is cost the current plus the movement
 
                         // cost to reach this node. Note that the heursitic value is only used
@@ -137,7 +118,6 @@ public class AStarPathFinder implements IEntityProcessingService {
         // since we'e've run out of search 
         // there was no path. Just return null
         if (nodes[tx][ty].getParent() == null) {
-            System.out.println("no parent");
             return null;
         }
 
@@ -234,17 +214,15 @@ public class AStarPathFinder implements IEntityProcessingService {
     protected boolean isValidLocation(Entity enemy, float sx, float sy, int x, int y) {
         boolean invalid = (x < 0) || (y < 0) || (x >= room.getWidth()) || (y >= room.getHeight());
 
-        if ((!invalid) && ((sx != x) || (sy != y))) {
-            //System.out.println(x+" " + y + " " + invalid);
-            /////invalid = room.blocked((x*50), (y*50));
+        if ((!invalid) && ((sx != x) || (sy != y)) && x != horizontalTiles && y != verticalTiles) {
+
             invalid = nodes[x][y].isBlocked();
-            //System.out.println(x+" " + y + " " + invalid);
-            //System.out.println("");
-            if(y * World.SCALE < enemy.getRoomPosition().getY() && !invalid) {
-                invalid = nodes[x][y+1].isBlocked();
+
+            if (y * World.SCALE < enemy.getRoomPosition().getY() && !invalid) {
+                invalid = nodes[x][y + 1].isBlocked();
             }
-            if(x * World.SCALE < enemy.getRoomPosition().getX() && !invalid) {
-                invalid = nodes[x+1][y].isBlocked();
+            if (x * World.SCALE < enemy.getRoomPosition().getX() && !invalid) {
+                invalid = nodes[x + 1][y].isBlocked();
             }
         }
 
