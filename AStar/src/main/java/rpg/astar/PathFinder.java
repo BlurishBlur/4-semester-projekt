@@ -5,10 +5,7 @@
  */
 package rpg.astar;
 import rpg.common.entities.Entity;
-/**
- *
- * @author Antonio
- */
+
 public interface PathFinder {
     
     public Path findPath(Entity entity, int startX, int startY, int targetX, int targetY);
