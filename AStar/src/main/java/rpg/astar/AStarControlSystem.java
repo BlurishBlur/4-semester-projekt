@@ -43,8 +43,10 @@ public class AStarControlSystem implements IEntityProcessingService {
                 pathFinder = new AStarPathFinder(currentRoom, nodes, 1000, true);
             }
 
-            path = pathFinder.findPath(enemy, (int) enemy.getRoomPosition().getX() / World.SCALE,
-                    (int) enemy.getRoomPosition().getY() / World.SCALE, (int) world.getPlayer().getRoomPosition().getX() / World.SCALE,
+            path = pathFinder.findPath(enemy, 
+                    (int) enemy.getRoomPosition().getX() / World.SCALE,
+                    (int) enemy.getRoomPosition().getY() / World.SCALE, 
+                    (int) world.getPlayer().getRoomPosition().getX() / World.SCALE,
                     (int) world.getPlayer().getRoomPosition().getY() / World.SCALE);
 
             if (path != null) {
