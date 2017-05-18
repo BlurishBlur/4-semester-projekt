@@ -34,17 +34,15 @@ public class CombatSystem implements IEntityProcessingService {
             if (world.getPlayer().getWeapon() == null) {
                 addSword(world);
             }
-            if (gameData.getKeys().isPressed(GameKeys.F1)) {
-                if (world.getPlayer().getWeapon().isAnimatable()) {
-                    addGun(world);
-                }
-                else {
-                    addSword(world);
-                }
+            if (gameData.getKeys().isPressed(GameKeys.ONE)) {
+                addSword(world);
             }
-            checkPlayerWeaponSwing(gameData, world);
-            handleWeaponHit(gameData, world);
+            else if (gameData.getKeys().isPressed(GameKeys.TWO)) {
+                addGun(world);
+            }
         }
+        checkPlayerWeaponSwing(gameData, world);
+        handleWeaponHit(gameData, world);
     }
 
     private void handleWeaponHit(GameData gameData, World world) {
