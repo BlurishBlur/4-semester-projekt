@@ -24,12 +24,10 @@ import rpg.common.world.World;
 })
 public class Map implements IGameInitializationService {
     
-    GameData gameData;
-    World world;
+    private World world;
 
     @Override
-    public void initialize(World world, GameData gameData) {
-        this.gameData = gameData;
+    public void initialize(World world) {
         this.world = world;
         loadRooms();
     }

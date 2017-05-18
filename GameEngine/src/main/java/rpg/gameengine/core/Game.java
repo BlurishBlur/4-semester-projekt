@@ -42,10 +42,9 @@ public class Game implements ApplicationListener {
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
         gameData.setCameraZoom(1.50f);
-        //world.loadRooms();
         
         for (IGameInitializationService initializer : getGameInitServices()) {
-            initializer.initialize(world, gameData);
+            initializer.initialize(world);
         }
         
         result = lookup.lookupResult(IGamePluginService.class);
