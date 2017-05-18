@@ -124,17 +124,17 @@ public class CollisionDetectionSystem implements IEntityProcessingService {
 
     private boolean isPointInPolygon(Polygon polygon, Vector point) {
         Vector lastVertice = polygon.getLast();
-        boolean oddNodes = false;
+        boolean intersects = false;
         for (int i = 0; i < polygon.size(); i++) {
             Vector vertice = polygon.get(i);
             if ((vertice.getY() < point.getY() && lastVertice.getY() >= point.getY()) || (lastVertice.getY() < point.getY() && vertice.getY() >= point.getY())) {
                 if (vertice.getX() + (point.getY() - vertice.getY()) / (lastVertice.getY() - vertice.getY()) * (lastVertice.getX() - vertice.getX()) < point.getX()) {
-                    oddNodes = !oddNodes;
+                    intersects = !intersects;
                 }
             }
             lastVertice = vertice;
         }
-        return oddNodes;
+        return intersects;
     }
 
 }
