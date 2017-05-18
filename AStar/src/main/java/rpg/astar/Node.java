@@ -1,4 +1,4 @@
-package rpg.astarcnc;
+package rpg.astar;
 
 public class Node implements Comparable {
 

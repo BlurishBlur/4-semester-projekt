@@ -1,4 +1,4 @@
-package rpg.astarcnc;
+package rpg.astar;
 
 import java.util.ArrayList;
 import java.util.Collections;
