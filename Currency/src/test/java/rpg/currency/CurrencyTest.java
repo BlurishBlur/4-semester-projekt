@@ -2,6 +2,8 @@ package rpg.currency;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,7 +50,7 @@ public class CurrencyTest {
         player.getWorldPosition().set(world.getCurrentRoom().getX(), world.getCurrentRoom().getY());
         player.setDefaultMovementSpeed(200);
         player.setMovementSpeedModifier(1);
-        player.setSize(500, 500);
+        player.setSize(5, 5);
         player.setCurrentMovementSpeed(player.getDefaultMovementSpeed() * player.getMovementSpeedModifier() * gameData.getDeltaTime());
         room.addEntity(player);
         when(world.getPlayer()).thenReturn(player);
@@ -71,12 +73,23 @@ public class CurrencyTest {
         events.add(new Event(EventType.ENEMY_DIED, enemy));
         when(gameData.getEvents(EventType.ENEMY_DIED)).thenReturn(events);
         currencySystem.process(gameData, world);
+        waitForThread();
         events.clear();
         assertFalse(world.getCurrentRoom().getEntities(Currency.class).isEmpty());
         
         player.getRoomPosition().set(50, 50);
+        player.setSize(500, 500);
         currencySystem.process(gameData, world);
         assertTrue(world.getCurrentRoom().getEntities(Currency.class).isEmpty());
+    }
+    
+    private void waitForThread() {
+        try {
+            Thread.sleep(1000);
+        }
+        catch (InterruptedException e) {
+            System.err.println("Thread interrupted");
+        }
     }
 
 }

@@ -71,12 +71,22 @@ public class ExperienceTest {
         events.add(new Event(EventType.ENEMY_DIED, enemy));
         when(gameData.getEvents(EventType.ENEMY_DIED)).thenReturn(events);
         experienceSystem.process(gameData, world);
+        waitForThread();
         events.clear();
         assertFalse(world.getCurrentRoom().getEntities(Experience.class).isEmpty());
         
         player.getRoomPosition().set(50, 50);
         experienceSystem.process(gameData, world);
         assertTrue(world.getCurrentRoom().getEntities(Experience.class).isEmpty());
+    }
+    
+    private void waitForThread() {
+        try {
+            Thread.sleep(1000);
+        }
+        catch (InterruptedException e) {
+            System.err.println("Thread interrupted");
+        }
     }
 
 }
