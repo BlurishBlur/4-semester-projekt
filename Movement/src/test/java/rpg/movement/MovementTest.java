@@ -61,10 +61,10 @@ public class MovementTest {
         assertTrue(entity.getRoomPosition().getY() == 0);
 
         entity.getVelocity().set(new Vector(10, 10));
-        movementControlSystem.process(gameData, world);
+        movementControlSystem.postProcess(gameData, world);
 
-        assertTrue(entity.getRoomPosition().getX() == 0);
-        assertTrue(entity.getRoomPosition().getY() == 0);
+        assertFalse(entity.getRoomPosition().getX() == 0);
+        assertFalse(entity.getRoomPosition().getY() == 0);
     }
 
     @Test
