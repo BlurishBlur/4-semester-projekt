@@ -64,8 +64,8 @@ public class PlayerTest {
         gameData.getKeys().setKey(GameKeys.W, false);
         gameData.getKeys().setKey(GameKeys.D, false);
         
-        assertFalse(player.getVelocity().getX() == 0);
-        assertFalse(player.getVelocity().getY() == 0);
+        assertTrue(player.getVelocity().getX() > 0);
+        assertTrue(player.getVelocity().getY() > 0);
     }
     
     @Test
