@@ -80,8 +80,8 @@ public class CombatTest {
         assertTrue(bullet.getVelocity().getX() == 0);
         assertTrue(bullet.getVelocity().getY() == 0);
         combatSystem.process(gameData, world);
-        assertFalse(bullet.getVelocity().getX() == 0);
-        assertFalse(bullet.getVelocity().getY() == 0);
+        assertTrue(bullet.getVelocity().getX() > 0);
+        assertTrue(bullet.getVelocity().getY() > 0);
     }
     
     @Test
@@ -100,7 +100,7 @@ public class CombatTest {
         gameData.getKeys().setKey(GameKeys.UP, true);
         combatSystem.process(gameData, world);
         gameData.getKeys().setKey(GameKeys.UP, false);
-        assertFalse(enemy.getCurrentHealth() == 100);
+        assertTrue(enemy.getCurrentHealth() < 100);
     }
 
 }
