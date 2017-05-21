@@ -40,9 +40,10 @@ public class CombatSystem implements IEntityProcessingService {
             else if (gameData.getKeys().isPressed(GameKeys.TWO)) {
                 addGun(world);
             }
+            checkPlayerWeaponSwing(gameData, world);
+            handleWeaponHit(gameData, world);
         }
-        checkPlayerWeaponSwing(gameData, world);
-        handleWeaponHit(gameData, world);
+        
     }
 
     private void handleWeaponHit(GameData gameData, World world) {
