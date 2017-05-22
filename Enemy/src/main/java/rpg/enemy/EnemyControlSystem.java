@@ -23,7 +23,7 @@ public class EnemyControlSystem implements IEntityProcessingService, IGamePlugin
     @Override
     public void start(GameData gameData, World world) {
         enemy = createEnemy(gameData);
-        world.getCurrentRoom().addEntity(enemy);
+        world.getRoom(1, 1).addEntity(enemy);
     }
 
     @Override

@@ -18,7 +18,7 @@ public class CollisionDetectionSystem implements IEntityProcessingService {
     @Override
     public void process(GameData gameData, World world) {
         for (Entity entity : world.getCurrentRoom().getEntities()) {
-            if (entity.getVelocity().isMoving()) {
+            if (entity.getVelocity().isMoving() && entity.hasHpBar()) {
                 if (entity.getVelocity().getX() < 0 && isPointInPolygons(world.getCurrentRoom().getCollidables(), 
                         new Vector(entity.getRoomPosition().getX() - entity.getWidth() / 2, entity.getRoomPosition().getY()))) {
                     entity.getVelocity().setX(0);
