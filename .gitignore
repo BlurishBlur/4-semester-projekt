@@ -19,3 +19,8 @@
 /Experience/target/
 /SilentUpdate/target/
 /target/
+*.class
+/Combat/nbproject/
+/Collision/nbproject/
+/Map/target/
+/AStar/target/

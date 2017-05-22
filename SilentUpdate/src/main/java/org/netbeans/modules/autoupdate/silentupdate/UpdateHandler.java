@@ -29,7 +29,7 @@ import org.openide.util.Exceptions;
  */
 public final class UpdateHandler {
 
-    public static final String SILENT_UC_CODE_NAME = "org_netbeans_modules_autoupdate_silentupdate_update_center"; // NOI18N
+    public static String SILENT_UC_CODE_NAME = "org_netbeans_modules_autoupdate_silentupdate_update_center"; // NOI18N
     private static Collection<UpdateElement> locallyInstalled = new CopyOnWriteArrayList<>();
     private static Collection<String> modulesToLoad = ConcurrentHashMap.newKeySet();
     private static final Logger LOGGER = Logger.getLogger(UpdateHandler.class.getPackage().getName());

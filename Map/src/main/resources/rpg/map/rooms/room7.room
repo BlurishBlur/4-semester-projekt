@@ -1,0 +1,27 @@
+spritePath = rpg/gameengine/Map8.png
+width = 1280
+height = 720
+worldPositionX = 2
+worldPositionY = 0
+canExitUp = false
+canExitDown = false
+canExitLeft = true
+canExitRight = false
+{
+#polygon der dækker epic loot
+(658, 438)
+(653, 378)
+(662, 343)
+(712, 342)
+(720, 379)
+(717, 414)
+(710, 442)
+(683, 453)
+(660, 443)
+}
+{
+(1204, 718)
+(1279, 719)
+(1279, 1)
+(1204, 1) 
+}

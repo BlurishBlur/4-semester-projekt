@@ -32,7 +32,6 @@ public class MovementControlSystem implements IEntityProcessingService, IPostEnt
                 entity.getVelocity().normalize(entity.getCurrentMovementSpeed());
             }
             if (entity.getVelocity().isMoving()) {
-                //entity.setDirection(entity.getVelocity().getAngle());
                 entity.getRoomPosition().add(entity.getVelocity());
             }
 

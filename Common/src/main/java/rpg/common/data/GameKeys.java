@@ -6,7 +6,7 @@ public class GameKeys implements Serializable {
     
     private static boolean[] keys;
     private static boolean[] pressedKeys;
-    private static final int NUMBER_OF_KEYS = 14;
+    private static final int NUMBER_OF_KEYS = 16;
     public static final int W = 0;
     public static final int A = 1;
     public static final int S = 2;
@@ -21,6 +21,8 @@ public class GameKeys implements Serializable {
     public static final int SHIFT = 11;
     public static final int H = 12;
     public static final int K = 13;
+    public static final int ONE = 14;
+    public static final int TWO = 15;
     
     public GameKeys() {
         keys = new boolean[NUMBER_OF_KEYS];

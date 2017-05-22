@@ -31,7 +31,7 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
 
     @Override
     public void process(GameData gameData, World world) {
-        if (player != null) {
+        for (Entity player : world.getCurrentRoom().getEntities(Player.class)) {
             player.getVelocity().set(0, 0);
             handleEdgeCollision(gameData, world, player);
             player.setSprintModifier(1);
@@ -57,7 +57,7 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
                 player.setSprintModifier(1.75f);
             }
             player.setCurrentMovementSpeed(player.getDefaultMovementSpeed() * player.getMovementSpeedModifier() * player.getSprintModifier());
-            sendMessages(world, player);
+            sendMessages(world, (Player) player);
         }
     }
 
@@ -66,7 +66,7 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
                 0, 50, world.getCurrentRoom().getHeight() - 40));
     }
 
-    private Player createPlayer(World world) {
+    public Player createPlayer(World world) {
         //test-kode, ignorér
         /*int degree = 356;
         boolean run = true;
@@ -81,14 +81,14 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
         }*/
 
         Player newPlayer = new Player();
-        newPlayer.getRoomPosition().set(500, 250);
+        newPlayer.getRoomPosition().set(471, 630);
         newPlayer.getWorldPosition().set(world.getCurrentRoom().getX(), world.getCurrentRoom().getY());
         newPlayer.setDefaultMovementSpeed(200);
         newPlayer.setMaxHealth(100);
         newPlayer.setCurrentHealth(newPlayer.getMaxHealth());
         newPlayer.setMovementSpeedModifier(1);
         newPlayer.setSize(50, 50);
-        newPlayer.setSpritePath("rpg/gameengine/testTexture.atlas");
+        newPlayer.setSpritePath("rpg/gameengine/noWeapon.atlas");
         //newPlayer.setSize(2, 2);
         //newPlayer.setSpritePath("rpg/gameengine/pink_dot.png");
         newPlayer.setCurrentFrame(1);
