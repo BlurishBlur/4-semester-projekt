@@ -58,6 +58,8 @@ public class CollisionTest {
         entity.getVelocity().set(50, 50);
         entity.getWorldPosition().set(world.getCurrentRoom().getX(), world.getCurrentRoom().getY());
         entity.setSize(50, 50);
+        entity.setMaxHealth(100);
+        entity.setCurrentHealth(entity.getMaxHealth());
         world.getCurrentRoom().addEntity(entity);
     }
 
