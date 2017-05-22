@@ -39,11 +39,13 @@ public class MovementTest {
 
         entity = new Entity();
         entity.getRoomPosition().set(0, 0);
-        entity.getWorldPosition().set(world.getCurrentRoom().getX(), world.getCurrentRoom().getY());
+        entity.getWorldPosition().set(world.getCurrentRoom().getX(), 
+                world.getCurrentRoom().getY());
         entity.setDefaultMovementSpeed(200);
         entity.setMovementSpeedModifier(1);
         entity.setSize(50, 50);
-        entity.setCurrentMovementSpeed(entity.getDefaultMovementSpeed() * entity.getMovementSpeedModifier() * gameData.getDeltaTime());
+        entity.setCurrentMovementSpeed(entity.getDefaultMovementSpeed() * 
+                entity.getMovementSpeedModifier() * gameData.getDeltaTime());
         room.addEntity(entity);
     }
 

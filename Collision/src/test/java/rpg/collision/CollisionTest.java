@@ -14,10 +14,7 @@ import rpg.common.util.Vector;
 import rpg.common.world.Room;
 import rpg.common.world.World;
 
-/**
- *
- * @author Niels
- */
+
 public class CollisionTest {
 
     private CollisionDetectionSystem collisionDetectionSystem;
