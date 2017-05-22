@@ -85,7 +85,6 @@ public class SoundManager {
             if (timer > calculatePlayRate(entity)) {
                 if (!entity.getSounds().isEmpty() && entity.getVelocity().isMoving()) {
                     walkingSounds.get(entity).play();
-                    System.out.println("LYD SPILLER");
                     timer = 0;
                 }
             }

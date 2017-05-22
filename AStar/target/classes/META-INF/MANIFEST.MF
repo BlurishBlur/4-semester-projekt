@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 OpenIDE-Module-Localizing-Bundle: rpg/astarcnc/Bundle.properties
 OpenIDE-Module-Specification-Version: 1.0.0
 OpenIDE-Module-Implementation-Version: 1.0.0-20170522
-OpenIDE-Module-Build-Version: 201705221158
+OpenIDE-Module-Build-Version: 201705221223
 OpenIDE-Module: rpg.AStar
 OpenIDE-Module-Public-Packages: -
 OpenIDE-Module-Requires: org.openide.modules.ModuleFormat1
