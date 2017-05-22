@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package rpg.astar;
 
 import org.openide.util.lookup.ServiceProvider;
@@ -23,7 +18,6 @@ public class AStarControlSystem implements IEntityProcessingService {
     private Node[][] nodes;
     private PathFinder pathFinder;
     private Path path;
-    private int k = 0;
 
     @Override
     public void process(GameData gameData, World world) {

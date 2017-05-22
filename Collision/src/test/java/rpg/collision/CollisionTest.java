@@ -1,5 +1,6 @@
 package rpg.collision;
 
+import java.util.Stack;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,6 +9,8 @@ import static org.mockito.Mockito.*;
 import rpg.common.data.GameData;
 import rpg.common.data.GameKeys;
 import rpg.common.entities.Entity;
+import rpg.common.util.Polygon;
+import rpg.common.util.Vector;
 import rpg.common.world.Room;
 import rpg.common.world.World;
 
@@ -26,8 +29,24 @@ public class CollisionTest {
     public void setUp() {
         collisionDetectionSystem = new CollisionDetectionSystem();
         
-        world = new World();
-        world.loadRooms();
+        Room room = new Room();
+        room.setWidth(1280);
+        room.setHeight(720);
+        room.setX(0);
+        room.setY(1);
+        
+        Stack<Polygon> polygons = new Stack<>();
+        Polygon poly = new Polygon();
+        poly.add(new Vector(-100, -100));
+        poly.add(new Vector(100, -100));
+        poly.add(new Vector(100, 100));
+        poly.add(new Vector(-100, 100));
+        polygons.add(poly);
+        
+        room.setCollidables(polygons);
+        
+        world = mock(World.class);
+        when(world.getCurrentRoom()).thenReturn(room);
 
         gameData = mock(GameData.class);
         GameKeys gameKeys = new GameKeys();
