@@ -59,6 +59,15 @@ public class GameData implements Serializable {
     public List<Event> getEvents() {
         return events;
     }
+    
+    public Event getEvent(Entity entity) {
+        for (Event event : events) {
+            if(event.getEntity().equals(entity)) {
+                return event;
+            }
+        }
+        return null;
+    }
 
     public List<Event> getEvents(EventType... eventTypes) {
         List<Event> results = new ArrayList<>();

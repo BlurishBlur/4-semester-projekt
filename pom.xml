@@ -83,6 +83,8 @@
         <module>Experience</module>
         <module>SilentUpdate</module>
         <module>Collision</module>
+        <module>Map</module>
+        <module>AStar</module>
     </modules>
 
     <properties>

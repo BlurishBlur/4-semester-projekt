@@ -81,14 +81,14 @@ public class PlayerControlSystem implements IEntityProcessingService, IGamePlugi
         }*/
 
         Player newPlayer = new Player();
-        newPlayer.getRoomPosition().set(500, 250);
+        newPlayer.getRoomPosition().set(471, 630);
         newPlayer.getWorldPosition().set(world.getCurrentRoom().getX(), world.getCurrentRoom().getY());
         newPlayer.setDefaultMovementSpeed(200);
         newPlayer.setMaxHealth(100);
         newPlayer.setCurrentHealth(newPlayer.getMaxHealth());
         newPlayer.setMovementSpeedModifier(1);
         newPlayer.setSize(50, 50);
-        newPlayer.setSpritePath("rpg/gameengine/testTexture.atlas");
+        newPlayer.setSpritePath("rpg/gameengine/noWeapon.atlas");
         //newPlayer.setSize(2, 2);
         //newPlayer.setSpritePath("rpg/gameengine/pink_dot.png");
         newPlayer.setCurrentFrame(1);
