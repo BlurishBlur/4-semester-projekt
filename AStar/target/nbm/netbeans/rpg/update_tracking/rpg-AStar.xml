@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><module codename="rpg.AStar">
+    <module_version install_time="1495454318325" last="true" origin="installer" specification_version="1.0.0">
+        <file crc="1160355783" name="config/Modules/rpg-AStar.xml"/>
+        <file crc="2924049514" name="modules/rpg-AStar.jar"/>
+    </module_version>
+</module>
