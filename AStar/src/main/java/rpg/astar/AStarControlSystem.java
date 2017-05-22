@@ -27,30 +27,30 @@ public class AStarControlSystem implements IEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
-        for (Entity entity : world.getCurrentRoom().getEntities(Enemy.class)) {
-            Enemy enemy = (Enemy) entity;
-            if (currentRoom == null && nodes == null && !world.getCurrentRoom().equals(currentRoom)) {
+        if (world.getPlayer() != null) {
+            for (Entity entity : world.getCurrentRoom().getEntities(Enemy.class)) {
+                Enemy enemy = (Enemy) entity;
+                if (currentRoom == null && nodes == null && !world.getCurrentRoom().equals(currentRoom)) {
 
-                currentRoom = world.getCurrentRoom();
-                nodes = new Node[currentRoom.getWidth() / World.SCALE][currentRoom.getHeight() / World.SCALE];
+                    currentRoom = world.getCurrentRoom();
+                    nodes = new Node[currentRoom.getWidth() / World.SCALE][currentRoom.getHeight() / World.SCALE];
 
-                for (int x = 0; x < currentRoom.getWidth() / World.SCALE; x++) {
-                    for (int y = 0; y < currentRoom.getHeight() / World.SCALE; y++) {
-                        nodes[x][y] = new Node(x, y);
-                        nodes[x][y].setBlocked(currentRoom.isNodeBlocked(x * World.SCALE, y * World.SCALE));
+                    for (int x = 0; x < currentRoom.getWidth() / World.SCALE; x++) {
+                        for (int y = 0; y < currentRoom.getHeight() / World.SCALE; y++) {
+                            nodes[x][y] = new Node(x, y);
+                            nodes[x][y].setBlocked(currentRoom.isNodeBlocked(x * World.SCALE, y * World.SCALE));
+                        }
                     }
+                    pathFinder = new AStarPathFinder(currentRoom, nodes, 1000, true);
                 }
-                pathFinder = new AStarPathFinder(currentRoom, nodes, 1000, true);
-            }
 
-            path = pathFinder.findPath(enemy, 
-                    (int) enemy.getRoomPosition().getX() / World.SCALE,
-                    (int) enemy.getRoomPosition().getY() / World.SCALE, 
-                    (int) world.getPlayer().getRoomPosition().getX() / World.SCALE,
-                    (int) world.getPlayer().getRoomPosition().getY() / World.SCALE);
+                path = pathFinder.findPath(enemy, (int) enemy.getRoomPosition().getX() / World.SCALE,
+                        (int) enemy.getRoomPosition().getY() / World.SCALE, (int) world.getPlayer().getRoomPosition().getX() / World.SCALE,
+                        (int) world.getPlayer().getRoomPosition().getY() / World.SCALE);
 
-            if (path != null) {
-                enemy.setNextStep(path.getStep(1));
+                if (path != null) {
+                    enemy.setNextStep(path.getStep(1));
+                }
             }
         }
     }

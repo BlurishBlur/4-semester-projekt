@@ -57,6 +57,12 @@ public class GameInputProcessor extends Stage {
         if(key == Keys.K) {
             gameData.getKeys().setKey(GameKeys.K, true);
         }
+        if(key == Keys.NUM_1) {
+            gameData.getKeys().setKey(GameKeys.ONE, true);
+        }
+        if(key == Keys.NUM_2) {
+            gameData.getKeys().setKey(GameKeys.TWO, true);
+        }
         return true;
     }
     
@@ -103,6 +109,12 @@ public class GameInputProcessor extends Stage {
         }
         if(key == Keys.K) {
             gameData.getKeys().setKey(GameKeys.K, false);
+        }
+        if(key == Keys.NUM_1) {
+            gameData.getKeys().setKey(GameKeys.ONE, false);
+        }
+        if(key == Keys.NUM_2) {
+            gameData.getKeys().setKey(GameKeys.TWO, false);
         }
         return true;
     }

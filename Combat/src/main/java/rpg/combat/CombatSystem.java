@@ -34,28 +34,28 @@ public class CombatSystem implements IEntityProcessingService {
             if (world.getPlayer().getWeapon() == null) {
                 addSword(world);
             }
-            if (gameData.getKeys().isPressed(GameKeys.F1)) {
-                if (world.getPlayer().getWeapon().isAnimatable()) {
-                    addGun(world);
-                }
-                else {
-                    addSword(world);
-                }
+            if (gameData.getKeys().isPressed(GameKeys.ONE)) {
+                addSword(world);
+            }
+            else if (gameData.getKeys().isPressed(GameKeys.TWO)) {
+                addGun(world);
             }
             checkPlayerWeaponSwing(gameData, world);
             handleWeaponHit(gameData, world);
         }
+        
     }
 
     private void handleWeaponHit(GameData gameData, World world) {
-        for (Event event : gameData.getEvents(EventType.ATTACK)) {
+        for (Entity bullet : world.getCurrentRoom().getEntities(Bullet.class)) {
+        //for (Event event : gameData.getEvents(EventType.ATTACK)) {
             for (Entity entity : world.getCurrentRoom().getEntities()) {
-                if (event.getEntity() != entity && entity.hasHpBar() && isHit(event.getEntity(), entity)) {
-                    entity.reduceCurrentHealth(((Bullet) event.getEntity()).getDamage());
+                if (bullet != entity && entity.hasHpBar() && isHit(bullet, entity)) {
+                    entity.reduceCurrentHealth(((Bullet) bullet).getDamage());
                     System.out.println("Attackee health: " + entity.getCurrentHealth());
-                    gameData.addEvent(new Event(EventType.WEAPON_HIT, event.getEntity()));
-                    world.getCurrentRoom().removeEntity(event.getEntity());
-                    gameData.removeEvent(event);
+                    gameData.addEvent(new Event(EventType.WEAPON_HIT, bullet));
+                    world.getCurrentRoom().removeEntity(bullet);
+                    //gameData.removeEvent(event);
                     break;
                 }
             }
