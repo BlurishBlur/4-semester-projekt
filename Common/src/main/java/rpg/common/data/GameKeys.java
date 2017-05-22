@@ -15,8 +15,8 @@ public class GameKeys implements Serializable {
     public static final int LEFT = 5;
     public static final int DOWN = 6;
     public static final int RIGHT = 7;
-    public static final int PLUS = 8;
-    public static final int MINUS = 9;
+    public static final int N = 8;
+    public static final int M = 9;
     public static final int F1 = 10;
     public static final int SHIFT = 11;
     public static final int H = 12;
